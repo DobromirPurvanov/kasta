@@ -65,8 +65,8 @@ export default function Navigation() {
 
           {/* Center logos */}
           <button onClick={() => navigate('/')} className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-            <img src="./images/eride-logo-real.jpg" alt="E RIDE PRO" className="h-8 w-8 object-contain" />
-            <img src="./images/kasta-logo-final.jpg" alt="Kasta Ventures" className="h-7 object-contain" />
+            <img src="./images/eride-logo-real.png" alt="E RIDE PRO" className="h-8 w-8 object-contain" />
+            <img src="./images/kasta-logo-final.png" alt="Kasta Ventures" className="h-7 object-contain" />
           </button>
 
           {/* Right */}

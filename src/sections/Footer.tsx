@@ -51,7 +51,7 @@ export default function Footer() {
                 </span>
               </div>
               {/* KaSta VENTURES logo */}
-              <img src="./images/kasta-logo-final.jpg" alt="Kasta Ventures" className="h-12 object-contain" />
+              <img src="./images/kasta-logo-final.png" alt="Kasta Ventures" className="h-12 object-contain" />
             </div>
             <p className="text-[12px] text-white/20 text-center max-w-[240px] leading-relaxed">
               {t('footer_official')}

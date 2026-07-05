@@ -38,12 +38,13 @@ export default function Hero() {
       {/* Content */}
       <div className="relative flex-1 flex flex-col justify-center px-6 md:px-10 pt-[100px] pb-8 max-w-[1400px] mx-auto w-full">
         {/* Logos */}
-        <div className="hero-logo flex items-center gap-4 mb-10" style={{ opacity: 0 }}>
+        <div className="hero-logo flex items-center gap-4 mb-10">
           {/* Real E RIDE PRO logo */}
           <img
-            src="./images/eride-logo-real.jpg"
+            src="./images/eride-logo-real.png"
             alt="E RIDE PRO"
             className="w-20 h-20 object-contain"
+            onError={(e) => { e.currentTarget.style.display = 'none' }}
           />
           {/* KaSta VENTURES */}
           <div className="flex flex-col">
