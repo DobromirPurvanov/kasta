@@ -35,6 +35,9 @@ export default function Footer() {
               <button onClick={() => navigate('/models')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{t('nav_models')}</button>
               <button onClick={() => goTo('#about')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{t('nav_about')}</button>
               <button onClick={() => goTo('#contact')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{t('nav_contact')}</button>
+              <button onClick={() => navigate('/privacy-policy')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{isBg ? 'Поверителност' : 'Privacy Policy'}</button>
+              <button onClick={() => navigate('/terms')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{isBg ? 'Условия за ползване' : 'Terms of Service'}</button>
+              <button onClick={() => navigate('/cookie-policy')} className="block text-[14px] text-white/50 hover:text-white transition-colors">{isBg ? 'Политика за бисквитки' : 'Cookie Policy'}</button>
             </nav>
           </div>
 
@@ -48,7 +51,7 @@ export default function Footer() {
                 </span>
               </div>
               {/* KaSta VENTURES logo */}
-              <img src="./images/kasta-logo-final.png" alt="Kasta Ventures" className="h-12 object-contain" />
+              <img src="./images/kasta-logo-final.jpg" alt="Kasta Ventures" className="h-12 object-contain" />
             </div>
             <p className="text-[12px] text-white/20 text-center max-w-[240px] leading-relaxed">
               {t('footer_official')}
@@ -87,8 +90,9 @@ export default function Footer() {
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-2">
           <p className="text-[11px] text-white/15">{t('footer_rights')}</p>
           <div className="flex gap-6 text-[11px] text-white/20">
-            <a href="#" className="hover:text-white/50 transition-colors">{isBg ? 'Поверителност' : 'Privacy'}</a>
-            <a href="#" className="hover:text-white/50 transition-colors">{isBg ? 'Условия' : 'Terms'}</a>
+            <button onClick={() => navigate('/privacy-policy')} className="hover:text-white/50 transition-colors">{isBg ? 'Поверителност' : 'Privacy'}</button>
+            <button onClick={() => navigate('/terms')} className="hover:text-white/50 transition-colors">{isBg ? 'Условия' : 'Terms'}</button>
+            <button onClick={() => navigate('/cookie-policy')} className="hover:text-white/50 transition-colors">{isBg ? 'Бисквитки' : 'Cookies'}</button>
           </div>
         </div>
       </div>

@@ -38,7 +38,7 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
           {/* Big image - spans 2x2 */}
           <div className="bento-item md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden relative group" style={{ opacity: 0 }}>
-            <img src="./images/kasta/hero-stoika.png" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <img src="./images/kasta/hero-stoika.jpg" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6">
               <span className="text-[var(--accent)] text-[48px] md:text-[72px] font-extrabold leading-none">100+</span>

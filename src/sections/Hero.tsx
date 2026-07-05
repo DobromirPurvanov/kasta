@@ -41,7 +41,7 @@ export default function Hero() {
         <div className="hero-logo flex items-center gap-4 mb-10" style={{ opacity: 0 }}>
           {/* Real E RIDE PRO logo */}
           <img
-            src="./images/eride-logo-real.png"
+            src="./images/eride-logo-real.jpg"
             alt="E RIDE PRO"
             className="w-20 h-20 object-contain"
           />

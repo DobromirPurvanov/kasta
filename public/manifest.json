@@ -1,0 +1,62 @@
+{
+  "name": "E RIDE PRO Bulgaria - Kasta Ventures",
+  "short_name": "E RIDE PRO BG",
+  "description": "Official distributor of E RIDE PRO electric dirt bikes and moto cross in Bulgaria. 2-year warranty, service & parts.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "bg",
+  "dir": "ltr",
+  "categories": ["shopping", "automotive", "motorcycles"],
+  "icons": [
+    {
+      "src": "/images/eride-logo-real.jpg",
+      "sizes": "72x72 96x96 128x128 144x144 152x152 192x192 384x384 512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/kasta-logo-final.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "/images/img-product-1.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "E RIDE PRO Product Gallery"
+    },
+    {
+      "src": "/images/img-product-2.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "E RIDE PRO Mobile View"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Models",
+      "short_name": "Models",
+      "description": "View all electric dirt bike models",
+      "url": "/models",
+      "icons": [{ "src": "/images/eride-logo-real.jpg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Contact Kasta Ventures",
+      "url": "/#contact",
+      "icons": [{ "src": "/images/eride-logo-real.jpg", "sizes": "96x96" }]
+    }
+  ]
+}

@@ -4,7 +4,11 @@ import Navigation from './sections/Navigation'
 import Home from './pages/Home'
 import ModelsPage from './pages/ModelsPage'
 import ProductDetail from './pages/ProductDetail'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import Terms from './pages/Terms'
+import CookiePolicy from './pages/CookiePolicy'
 import Footer from './sections/Footer'
+import CookieConsent from './components/CookieConsent'
 
 export default function App() {
   return (
@@ -15,8 +19,12 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/models" element={<ModelsPage />} />
           <Route path="/product/:slug" element={<ProductDetail />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
         </Routes>
         <Footer />
+        <CookieConsent />
       </div>
     </LangProvider>
   )
