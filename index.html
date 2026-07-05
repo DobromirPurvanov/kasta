@@ -1,17 +1,27 @@
-<!DOCTYPE html>
-<html lang="bg">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>E RIDE PRO Bulgaria | KaSta VENTURES</title>
-<meta name="description" content="Official E RIDE PRO distributor for Bulgaria. Electric dirt bikes and motorcycles.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script type="module" crossorigin src="./assets/index-Dc0Lju1y.js"></script>
-<link rel="stylesheet" crossorigin href="./assets/index-D0WiaszO.css">
-</head>
-<body>
-<div id="root"></div>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E RIDE PRO Bulgaria | Electric Dirt Bikes & Moto Cross | Kasta Ventures</title>
+    <meta name="description" content="Official distributor of E RIDE PRO electric dirt bikes and moto cross in Bulgaria. Explore Mini R, SS 2.5, SS 3.0, SR models. 2-year warranty, service & parts." />
+    <meta name="keywords" content="E RIDE PRO, electric dirt bike, moto cross, Bulgaria, Kasta Ventures, electric motorcycle, off-road, road legal, SS 3.0, SR, Mini R" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <script>
+      // SPA redirect handler for static hosting
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect !== location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
