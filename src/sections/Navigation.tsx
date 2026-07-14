@@ -16,11 +16,6 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false)
-  }, [location.pathname])
-
   const goTo = (path: string, hash?: string) => {
     setMobileOpen(false)
     if (!isHome) {

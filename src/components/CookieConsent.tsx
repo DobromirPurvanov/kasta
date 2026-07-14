@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useLang } from '../hooks/useLang'
 
@@ -38,18 +38,15 @@ export default function CookieConsent() {
   const { lang } = useLang()
   const navigate = useNavigate()
   const isBg = lang === 'bg'
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return getStoredConsent() === null
+  })
   const [showDetails, setShowDetails] = useState(false)
-  const [preferences, setPreferences] = useState<CookiePreferences>(defaultPreferences)
-
-  useEffect(() => {
-    const stored = getStoredConsent()
-    if (!stored) {
-      setVisible(true)
-    } else {
-      setPreferences(stored.preferences)
-    }
-  }, [])
+  const [preferences, setPreferences] = useState<CookiePreferences>(() => {
+    if (typeof window === 'undefined') return defaultPreferences
+    return getStoredConsent()?.preferences ?? defaultPreferences
+  })
 
   const acceptAll = () => {
     const allAccepted = {
@@ -216,7 +213,7 @@ export default function CookieConsent() {
 
         {/* Footer */}
         <div className="p-6 pt-4 border-t border-white/[0.04]">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
             <button onClick={acceptAll} className="btn-accent flex-1 min-w-[120px] text-[12px] py-3">
               {t.acceptAll}
             </button>

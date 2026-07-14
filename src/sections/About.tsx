@@ -35,7 +35,7 @@ export default function About() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-auto md:auto-rows-[200px]">
           {/* Big image - spans 2x2 */}
           <div className="bento-item md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden relative group" style={{ opacity: 0 }}>
             <img src="./images/kasta/hero-stoika.jpg" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
