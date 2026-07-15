@@ -101,15 +101,17 @@ export default function Models() {
               className="product-card group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-square bg-[#2a2a2a] p-6 overflow-hidden">
-                <img
-                  src={product.image}
-                  alt={product.alt}
-                  loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                  onError={(e) => { e.currentTarget.style.display = 'none' }}
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#5a5a5a_0%,_#252525_35%,_#141414_70%)] overflow-hidden flex items-center justify-center p-4">
+                <div className="w-[94%] h-[94%] bg-white rounded-lg p-3 shadow-[0_15px_40px_rgba(0,0,0,0.45)] flex items-center justify-center">
+                  <img
+                    src={product.image}
+                    alt={product.alt}
+                    loading="lazy"
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                    onError={(e) => { e.currentTarget.style.display = 'none' }}
+                  />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span className="px-5 py-2.5 bg-[var(--accent)] text-white text-[11px] font-bold tracking-wider uppercase rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 shadow-xl">
                     {t('quick_view')}
                   </span>

@@ -138,13 +138,15 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Image gallery */}
           <div className="pd-anim flex gap-3" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="flex-1 aspect-square bg-[#2a2a2a] rounded-2xl p-6 overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.alt}
-                className="w-full h-full object-contain"
-                onError={(e) => { e.currentTarget.style.display = 'none' }}
-              />
+            <div className="flex-1 aspect-square bg-[radial-gradient(circle_at_center,_#7a7a7a_0%,_#303030_35%,_#141414_70%)] rounded-2xl overflow-hidden flex items-center justify-center p-6 md:p-10">
+              <div className="w-full h-full bg-white rounded-xl p-5 md:p-8 shadow-[0_25px_60px_rgba(0,0,0,0.55)] flex items-center justify-center">
+                <img
+                  src={product.image}
+                  alt={product.alt}
+                  className="w-full h-full object-contain"
+                  onError={(e) => { e.currentTarget.style.display = 'none' }}
+                />
+              </div>
             </div>
           </div>
 
