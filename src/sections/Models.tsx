@@ -100,12 +100,12 @@ export default function Models() {
               className="product-card group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#333333_0%,_#1f1f1f_45%,_#0f0f0f_80%)] overflow-hidden flex items-center justify-center p-4 sm:p-6">
+              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#555555_0%,_#333333_35%,_#1a1a1a_70%)] overflow-hidden flex items-center justify-center p-4 sm:p-6">
                 <img
                   src={product.image}
                   alt={product.alt}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-2xl brightness-110 contrast-110"
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-2xl brightness-125 contrast-115"
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

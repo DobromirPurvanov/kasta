@@ -61,9 +61,9 @@ export default function Footer() {
                 </span>
               </div>
               <img
-                src="/images/kasta-logo-final.jpg"
+                src="/images/kasta-logo-final.png"
                 alt="Kasta Ventures"
-                className="h-12 object-contain"
+                className="h-12 object-contain brightness-150 contrast-125"
                 height="48"
               />
             </div>

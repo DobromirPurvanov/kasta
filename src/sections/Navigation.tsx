@@ -34,7 +34,7 @@ export default function Navigation() {
         }`}
         aria-label="Main navigation"
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-[64px] sm:h-[72px] flex items-center justify-between">
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
             <NavLink to="/#about" className={navLinkClass}>
@@ -53,18 +53,18 @@ export default function Navigation() {
           </div>
 
           {/* Center logo */}
-          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
             <img
               src="/images/eride-logo-real.jpg"
               alt="E RIDE PRO"
-              className="h-8 w-8 object-contain"
+              className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md"
               width="32"
               height="32"
             />
             <img
-              src="/images/kasta-logo-final.jpg"
+              src="/images/kasta-logo-final.png"
               alt="Kasta Ventures"
-              className="h-7 object-contain"
+              className="h-6 sm:h-7 object-contain brightness-150 contrast-125"
               height="28"
             />
           </Link>
@@ -97,14 +97,14 @@ export default function Navigation() {
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+            className="md:hidden w-10 h-10 -mr-1 flex flex-col justify-center items-center gap-1.5"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           >
-            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-5 rotate-45 translate-y-[5px]' : 'w-5'}`} />
-            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-5 -rotate-45 -translate-y-[3px]' : 'w-5'}`} />
+            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-6 rotate-45 translate-y-[5px]' : 'w-6'}`} />
+            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-6'}`} />
           </button>
         </div>
       </nav>

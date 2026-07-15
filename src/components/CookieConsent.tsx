@@ -177,12 +177,12 @@ export default function CookieConsent() {
       />
 
       <div
-        className="relative w-full max-w-[640px] sm:mx-4 sm:mb-4 bg-[#1a1a1a] border border-white/[0.06] sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300 max-h-[85vh] sm:max-h-none overflow-y-auto"
+        className="relative w-full max-w-[640px] sm:mx-4 sm:mb-4 bg-[#1a1a1a] border border-white/[0.06] sm:rounded-2xl rounded-t-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300 max-h-[80vh] sm:max-h-none overflow-y-auto"
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-title"
       >
-        <div className="p-4 sm:p-6 pb-3 sm:pb-4">
+        <div className="p-3 sm:p-6 pb-2 sm:pb-4">
           <div className="flex items-start gap-2.5 sm:gap-3">
             <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-[var(--accent)]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
               <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -196,13 +196,13 @@ export default function CookieConsent() {
             </div>
             <div className="flex-1 min-w-0">
               <h3 id="cookie-title" className="text-sm sm:text-lg font-semibold text-white mb-1 sm:mb-1.5">{t.title}</h3>
-              <p className="text-[12px] sm:text-[14px] text-white/60 leading-relaxed">{t.description}</p>
+              <p className="text-[11px] sm:text-[14px] text-white/60 leading-relaxed">{t.description}</p>
             </div>
           </div>
         </div>
 
         {showDetails && (
-          <div className="px-4 sm:px-6 pb-3 sm:pb-4 space-y-2.5 sm:space-y-3 border-t border-white/[0.04] pt-3 sm:pt-4">
+          <div className="px-3 sm:px-6 pb-2 sm:pb-4 space-y-2 sm:space-y-3 border-t border-white/[0.04] pt-2 sm:pt-4">
             <div className="flex items-start gap-2.5 sm:gap-3">
               <Toggle active disabled ariaLabel={t.necessary} />
               <div className="flex-1 min-w-0">
@@ -240,25 +240,25 @@ export default function CookieConsent() {
           </div>
         )}
 
-        <div className="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-white/[0.04]">
+        <div className="p-3 sm:p-6 pt-2 sm:pt-4 border-t border-white/[0.04]">
           <div className="grid grid-cols-2 gap-2">
-            <button type="button" onClick={acceptAll} className="btn-accent col-span-2 text-[11px] sm:text-[12px] py-2.5 sm:py-3">
+            <button type="button" onClick={acceptAll} className="btn-accent col-span-2 text-[11px] sm:text-[12px] py-2 sm:py-3">
               {t.acceptAll}
             </button>
-            <button type="button" onClick={rejectAll} className="btn-outline text-[11px] sm:text-[12px] py-2.5 sm:py-3">
+            <button type="button" onClick={rejectAll} className="btn-outline text-[11px] sm:text-[12px] py-2 sm:py-3">
               {t.rejectAll}
             </button>
             {showDetails ? (
-              <button type="button" onClick={savePreferences} className="btn-outline text-[11px] sm:text-[12px] py-2.5 sm:py-3">
+              <button type="button" onClick={savePreferences} className="btn-outline text-[11px] sm:text-[12px] py-2 sm:py-3">
                 {t.savePreferences}
               </button>
             ) : (
-              <button type="button" onClick={() => setShowDetails(true)} className="btn-outline text-[11px] sm:text-[12px] py-2.5 sm:py-3">
+              <button type="button" onClick={() => setShowDetails(true)} className="btn-outline text-[11px] sm:text-[12px] py-2 sm:py-3">
                 {t.customize}
               </button>
             )}
           </div>
-          <div className="flex justify-center gap-4 mt-3 sm:mt-4">
+          <div className="flex justify-center gap-4 mt-2 sm:mt-4">
             <a href="/privacy-policy" className="text-[10px] sm:text-[11px] text-white/40 hover:text-white/70 transition-colors underline">
               {t.privacyLink}
             </a>

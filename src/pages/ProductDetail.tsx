@@ -35,12 +35,12 @@ function RelatedModels({ currentProduct }: { currentProduct: ReturnType<typeof g
             to={`/product/${p.slug}`}
             className="group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden hover:border-white/15 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
           >
-            <div className="aspect-square bg-[radial-gradient(circle_at_center,_#333333_0%,_#1f1f1f_45%,_#0f0f0f_80%)] p-4 sm:p-6 overflow-hidden">
+            <div className="aspect-square bg-[radial-gradient(circle_at_center,_#555555_0%,_#333333_35%,_#1a1a1a_70%)] p-4 sm:p-6 overflow-hidden">
               <img
                 src={p.image}
                 alt={p.alt}
                 loading="lazy"
-                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl brightness-110 contrast-110"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl brightness-125 contrast-115"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             </div>
@@ -138,11 +138,11 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Image gallery */}
           <div className="pd-anim flex gap-3" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="flex-1 aspect-square bg-[radial-gradient(circle_at_center,_#333333_0%,_#1f1f1f_45%,_#0f0f0f_80%)] rounded-2xl overflow-hidden flex items-center justify-center p-4 sm:p-6 md:p-10">
+            <div className="flex-1 aspect-square bg-[radial-gradient(circle_at_center,_#555555_0%,_#333333_35%,_#1a1a1a_70%)] rounded-2xl overflow-hidden flex items-center justify-center p-4 sm:p-6 md:p-10">
               <img
                 src={product.image}
                 alt={product.alt}
-                className="w-full h-full object-contain drop-shadow-2xl brightness-110 contrast-110"
+                className="w-full h-full object-contain drop-shadow-2xl brightness-125 contrast-115"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             </div>

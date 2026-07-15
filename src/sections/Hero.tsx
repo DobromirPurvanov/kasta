@@ -39,34 +39,36 @@ export default function Hero() {
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/80 to-[#0f0f0f]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/70 to-[#0f0f0f]/30 sm:via-[#0f0f0f]/80 sm:to-[#0f0f0f]/40" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/50 sm:to-[#0f0f0f]/60" />
       </div>
 
       {/* Content */}
-      <div className="relative flex-1 flex flex-col justify-center px-6 md:px-10 pt-[100px] pb-8 max-w-[1400px] mx-auto w-full">
+      <div className="relative flex-1 flex flex-col justify-center px-5 sm:px-6 md:px-10 pt-[92px] sm:pt-[100px] pb-6 sm:pb-8 max-w-[1400px] mx-auto w-full">
         {/* Logos */}
-        <div className="hero-logo flex items-center gap-3 md:gap-4 mb-8 md:mb-10" style={{ opacity: 0 }}>
+        <div className="hero-logo flex items-center gap-3 md:gap-4 mb-6 sm:mb-8 md:mb-10" style={{ opacity: 0 }}>
           <img
             src="/images/eride-logo-real.jpg"
             alt="E RIDE PRO"
-            className="w-16 h-16 md:w-20 md:h-20 object-contain"
+            className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain rounded-lg"
             width="80"
             height="80"
             onError={(e) => { e.currentTarget.style.display = 'none' }}
           />
-          <div className="flex flex-col">
-            <span className="text-[22px] md:text-[28px] font-bold text-[#4a7fb5] tracking-[0.02em] leading-none">KaSta</span>
-            <span className="text-[8px] md:text-[9px] font-semibold text-[#4a7fb5] tracking-[0.35em] leading-none mt-0.5">VENTURES</span>
-          </div>
+          <img
+            src="/images/kasta-logo-final.png"
+            alt="Kasta Ventures"
+            className="h-9 sm:h-10 md:h-14 object-contain brightness-150 contrast-125"
+            onError={(e) => { e.currentTarget.style.display = 'none' }}
+          />
         </div>
 
         {/* Big title */}
-        <div className="hero-title mb-8" style={{ opacity: 0 }}>
-          <h1 className="text-display text-white mb-4 text-[26px] leading-[1.1] tracking-[-0.02em] sm:text-[32px] md:text-[clamp(40px,5vw,64px)]">
+        <div className="hero-title mb-6 sm:mb-8" style={{ opacity: 0 }}>
+          <h1 className="text-display text-white mb-3 sm:mb-4 text-[28px] leading-[1.05] tracking-[-0.02em] sm:text-[32px] md:text-[clamp(40px,5vw,64px)]">
             {isBg ? 'ОФИЦИАЛЕН ДИСТРИБУТОР ЗА БЪЛГАРИЯ' : 'OFFICIAL DISTRIBUTOR FOR BULGARIA'}
           </h1>
-          <p className="text-white/70 text-[15px] md:text-[16px] leading-relaxed max-w-[560px]">
+          <p className="text-white/80 sm:text-white/70 text-[15px] md:text-[16px] leading-relaxed max-w-[560px]">
             {isBg
               ? 'E RIDE PRO електрически мото крос. Дистрибуция, сервиз и гаранция от Kasta Ventures.'
               : 'E RIDE PRO electric dirt bikes. Distribution, service and warranty by Kasta Ventures.'}
@@ -74,7 +76,7 @@ export default function Hero() {
         </div>
 
         {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-10 md:mb-12">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-10 md:mb-12">
           <a href="#models" className="btn-accent text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
             {isBg ? 'ВИЖ МОДЕЛИТЕ' : 'VIEW MODELS'}
           </a>
@@ -84,7 +86,7 @@ export default function Hero() {
         </div>
 
         {/* Quick specs */}
-        <div className="hero-stats flex flex-wrap gap-6 sm:gap-8 md:gap-12" style={{ opacity: 0 }}>
+        <div className="hero-stats flex flex-wrap gap-5 sm:gap-8 md:gap-12" style={{ opacity: 0 }}>
           {[
             { num: '8', label: 'kW ' + (isBg ? 'пик' : 'peak') },
             { num: '75', label: 'km/h' },
@@ -92,7 +94,7 @@ export default function Hero() {
             { num: '2', label: isBg ? 'год. гаранция' : 'yr warranty' },
           ].map((s, i) => (
             <div key={i}>
-              <div className="text-[26px] md:text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
+              <div className="text-[24px] sm:text-[26px] md:text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
               <div className="text-[10px] md:text-[11px] text-white/60 tracking-[0.15em] uppercase mt-1 font-medium">{s.label}</div>
             </div>
           ))}
