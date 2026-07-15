@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { useLang } from '../hooks/useLang'
 
 export default function Navigation() {
   const { lang, setLang, t } = useLang()
-  const navigate = useNavigate()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -16,71 +14,93 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false)
-  }, [location.pathname])
-
-  const goTo = (path: string, hash?: string) => {
-    setMobileOpen(false)
-    if (!isHome) {
-      navigate('/')
-      if (hash) {
-        setTimeout(() => {
-          const el = document.querySelector(hash)
-          if (el) el.scrollIntoView({ behavior: 'smooth' })
-        }, 200)
-      }
-    } else if (hash) {
-      const el = document.querySelector(hash)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    } else if (path !== '/') {
-      navigate(path)
-    }
-  }
-
-  const navLinkClass = (isActive: boolean) =>
-    `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
-      isActive ? 'text-[var(--accent)] font-semibold' : 'text-white/40 hover:text-white'
-    }`
+  const toggleLang = () => setLang(lang === 'bg' ? 'en' : 'bg')
+  const isBg = lang === 'bg'
 
   const isModelsPage = location.pathname === '/models'
 
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
+      isActive ? 'text-[var(--accent)] font-semibold' : 'text-white/70 hover:text-white'
+    }`
+
   return (
     <>
-      <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-[#0f0f0f]/95 backdrop-blur-md border-b border-white/[0.06]' : 'bg-transparent'}`}>
+      <nav
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
+          scrolled
+            ? 'bg-[#0f0f0f]/95 backdrop-blur-md border-b border-white/[0.06]'
+            : 'bg-transparent'
+        }`}
+        aria-label="Main navigation"
+      >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => goTo('/', '#about')} className={navLinkClass(false)}>
+            <NavLink to="/#about" className={navLinkClass}>
               {t('nav_about')}
-            </button>
-            <button onClick={() => isModelsPage ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/models')} className={navLinkClass(isModelsPage)}>
+            </NavLink>
+            <NavLink
+              to="/models"
+              className={navLinkClass}
+              aria-current={isModelsPage ? 'page' : undefined}
+            >
               {t('nav_models')}
-            </button>
-            <button onClick={() => goTo('/', '#contact')} className={navLinkClass(false)}>
+            </NavLink>
+            <NavLink to="/#contact" className={navLinkClass}>
               {t('nav_contact')}
-            </button>
+            </NavLink>
           </div>
 
-          {/* Center logos */}
-          <button onClick={() => navigate('/')} className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
-            <img src="./images/eride-logo-real.jpg" alt="E RIDE PRO" className="h-8 w-8 object-contain" />
-            <img src="./images/kasta-logo-final.jpg" alt="Kasta Ventures" className="h-7 object-contain" />
-          </button>
+          {/* Center logo */}
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
+            <img
+              src="/images/eride-logo-real.jpg"
+              alt="E RIDE PRO"
+              className="h-8 w-8 object-contain"
+              width="32"
+              height="32"
+            />
+            <img
+              src="/images/kasta-logo-final.jpg"
+              alt="Kasta Ventures"
+              className="h-7 object-contain"
+              height="28"
+            />
+          </Link>
 
           {/* Right */}
           <div className="hidden md:flex items-center gap-4">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/30 hover:text-white hover:border-white/30 transition-all">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all"
+              aria-label="Instagram"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                <circle cx="12" cy="12" r="5"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
             </a>
-            <button onClick={() => setLang(lang === 'bg' ? 'en' : 'bg')} className="text-[11px] font-semibold tracking-wider text-white/40 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/5 transition-all">
+            <button
+              onClick={toggleLang}
+              className="text-[11px] font-semibold tracking-wider text-white/60 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-all"
+              aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
+            >
               {lang === 'bg' ? 'EN' : 'BG'}
             </button>
           </div>
 
           {/* Mobile hamburger */}
-          <button className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button
+            className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          >
             <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-5 rotate-45 translate-y-[5px]' : 'w-5'}`} />
             <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-5 -rotate-45 -translate-y-[3px]' : 'w-5'}`} />
           </button>
@@ -88,11 +108,40 @@ export default function Navigation() {
       </nav>
 
       {/* Mobile overlay */}
-      <div className={`fixed inset-0 z-[99] bg-[#0f0f0f] transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 ${mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}>
-        <button onClick={() => goTo('/', '#about')} className="text-2xl font-light text-white/80">{t('nav_about')}</button>
-        <button onClick={() => isModelsPage ? window.scrollTo({ top: 0, behavior: 'smooth' }) : navigate('/models')} className={`text-2xl ${isModelsPage ? 'font-semibold text-[var(--accent)]' : 'font-light text-white/80'}`}>{t('nav_models')}</button>
-        <button onClick={() => goTo('/', '#contact')} className="text-2xl font-light text-white/80">{t('nav_contact')}</button>
-        <button onClick={() => { setLang(lang === 'bg' ? 'en' : 'bg'); setMobileOpen(false) }} className="text-lg text-white/30">{lang === 'bg' ? 'English' : 'Bulgarian'}</button>
+      <div
+        id="mobile-menu"
+        className={`fixed inset-0 z-[99] bg-[#0f0f0f] transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 ${
+          mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        }`}
+        aria-hidden={!mobileOpen}
+      >
+        <Link
+          to="/#about"
+          onClick={() => setMobileOpen(false)}
+          className="text-2xl font-light text-white/80 hover:text-white"
+        >
+          {t('nav_about')}
+        </Link>
+        <Link
+          to="/models"
+          onClick={() => setMobileOpen(false)}
+          className={`text-2xl ${isModelsPage ? 'font-semibold text-[var(--accent)]' : 'font-light text-white/80'}`}
+        >
+          {t('nav_models')}
+        </Link>
+        <Link
+          to="/#contact"
+          onClick={() => setMobileOpen(false)}
+          className="text-2xl font-light text-white/80 hover:text-white"
+        >
+          {t('nav_contact')}
+        </Link>
+        <button
+          onClick={() => { toggleLang(); setMobileOpen(false) }}
+          className="text-lg text-white/40 hover:text-white/70"
+        >
+          {lang === 'bg' ? 'English' : 'Bulgarian'}
+        </button>
       </div>
     </>
   )

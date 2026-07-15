@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { useLang } from '../hooks/useLang'
 
 export default function CookiePolicy() {
   const { lang } = useLang()
-  const navigate = useNavigate()
   const isBg = lang === 'bg'
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    document.title = isBg 
+    document.title = isBg
       ? 'Политика за бисквитки | Kasta Ventures'
       : 'Cookie Policy | Kasta Ventures'
   }, [isBg])
@@ -98,10 +97,10 @@ export default function CookiePolicy() {
       {/* Breadcrumb */}
       <div className="border-b border-white/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
-          <nav className="flex items-center gap-2 text-[12px]">
-            <button onClick={() => navigate('/')} className="text-white/20 hover:text-white transition-colors">{isBg ? 'Начало' : 'Home'}</button>
-            <span className="text-white/10">/</span>
-            <span className="text-white/60 font-medium">{isBg ? 'Бисквитки' : 'Cookies'}</span>
+          <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
+            <Link to="/" className="text-white/50 hover:text-white transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <span className="text-white/20">/</span>
+            <span className="text-white/80 font-medium" aria-current="page">{isBg ? 'Бисквитки' : 'Cookies'}</span>
           </nav>
         </div>
       </div>
@@ -110,9 +109,9 @@ export default function CookiePolicy() {
         <h1 className="text-display text-white mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
           {content.title}
         </h1>
-        <p className="text-[13px] text-white/30 mb-10">{content.lastUpdated}</p>
-        
-        <p className="text-[15px] text-white/50 leading-relaxed mb-12">{content.intro}</p>
+        <p className="text-[13px] text-white/50 mb-10">{content.lastUpdated}</p>
+
+        <p className="text-[15px] text-white/70 leading-relaxed mb-12">{content.intro}</p>
 
         <div className="space-y-10">
           {content.sections.map((section, i) => (
@@ -123,26 +122,26 @@ export default function CookiePolicy() {
                   <table className="w-full text-[13px]">
                     <thead>
                       <tr className="border-b border-white/[0.08]">
-                        <th className="text-left py-3 pr-4 text-white/60 font-medium">{isBg ? 'Категория' : 'Category'}</th>
-                        <th className="text-left py-3 pr-4 text-white/60 font-medium">{isBg ? 'Цел' : 'Purpose'}</th>
-                        <th className="text-left py-3 pr-4 text-white/60 font-medium">{isBg ? 'Примери' : 'Examples'}</th>
-                        <th className="text-left py-3 text-white/60 font-medium">{isBg ? 'Валидност' : 'Duration'}</th>
+                        <th className="text-left py-3 pr-4 text-white/70 font-medium">{isBg ? 'Категория' : 'Category'}</th>
+                        <th className="text-left py-3 pr-4 text-white/70 font-medium">{isBg ? 'Цел' : 'Purpose'}</th>
+                        <th className="text-left py-3 pr-4 text-white/70 font-medium">{isBg ? 'Примери' : 'Examples'}</th>
+                        <th className="text-left py-3 text-white/70 font-medium">{isBg ? 'Валидност' : 'Duration'}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {section.table.map((row, j) => (
                         <tr key={j} className="border-b border-white/[0.04]">
                           <td className="py-4 pr-4 text-white font-medium align-top">{row.category}</td>
-                          <td className="py-4 pr-4 text-white/45 align-top leading-relaxed">{row.purpose}</td>
-                          <td className="py-4 pr-4 text-white/45 align-top">{row.examples}</td>
-                          <td className="py-4 text-white/45 align-top whitespace-nowrap">{row.duration}</td>
+                          <td className="py-4 pr-4 text-white/60 align-top leading-relaxed">{row.purpose}</td>
+                          <td className="py-4 pr-4 text-white/60 align-top">{row.examples}</td>
+                          <td className="py-4 text-white/60 align-top whitespace-nowrap">{row.duration}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               ) : (
-                <div className="text-[14px] text-white/45 leading-[1.85] whitespace-pre-line">
+                <div className="text-[14px] text-white/60 leading-[1.85] whitespace-pre-line">
                   {section.content}
                 </div>
               )}
@@ -152,9 +151,9 @@ export default function CookiePolicy() {
 
         {/* Back button */}
         <div className="mt-16 pt-8 border-t border-white/[0.06]">
-          <button onClick={() => navigate('/')} className="btn-accent">
+          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
             {isBg ? '← Обратно към началото' : '← Back to Home'}
-          </button>
+          </Link>
         </div>
       </div>
     </div>

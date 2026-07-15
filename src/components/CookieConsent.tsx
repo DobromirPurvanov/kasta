@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { useState } from 'react'
 import { useLang } from '../hooks/useLang'
 
 interface CookiePreferences {
@@ -29,27 +28,55 @@ function storeConsent(accepted: boolean, preferences: CookiePreferences) {
     accepted,
     preferences,
     timestamp: new Date().toISOString(),
-    version: '1.0',
+    version: '1.1',
   }
   localStorage.setItem('cookie_consent', JSON.stringify(data))
+  window.dispatchEvent(new Event('cookieconsent'))
+}
+
+function Toggle({
+  active,
+  onClick,
+  disabled,
+}: {
+  active: boolean
+  onClick?: () => void
+  disabled?: boolean
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-checked={active}
+      role="switch"
+      className={`relative w-10 h-6 rounded-full flex items-center flex-shrink-0 transition-colors ${
+        active ? 'bg-[var(--accent)]' : 'bg-white/10'
+      } ${disabled ? 'cursor-default' : 'cursor-pointer'}`}
+    >
+      <span
+        className={`block w-4 h-4 rounded-full bg-white transition-transform ${
+          active ? 'translate-x-5' : 'translate-x-1'
+        }`}
+      />
+    </button>
+  )
 }
 
 export default function CookieConsent() {
   const { lang } = useLang()
-  const navigate = useNavigate()
   const isBg = lang === 'bg'
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return getStoredConsent() === null
+  })
   const [showDetails, setShowDetails] = useState(false)
-  const [preferences, setPreferences] = useState<CookiePreferences>(defaultPreferences)
+  const [preferences, setPreferences] = useState<CookiePreferences>(() => {
+    if (typeof window === 'undefined') return defaultPreferences
+    return getStoredConsent()?.preferences ?? defaultPreferences
+  })
 
-  useEffect(() => {
-    const stored = getStoredConsent()
-    if (!stored) {
-      setVisible(true)
-    } else {
-      setPreferences(stored.preferences)
-    }
-  }, [])
+  if (!visible) return null
 
   const acceptAll = () => {
     const allAccepted = {
@@ -61,7 +88,6 @@ export default function CookieConsent() {
     setPreferences(allAccepted)
     storeConsent(true, allAccepted)
     setVisible(false)
-    window.dispatchEvent(new Event('cookieconsent'))
   }
 
   const rejectAll = () => {
@@ -74,15 +100,17 @@ export default function CookieConsent() {
     setPreferences(onlyNecessary)
     storeConsent(true, onlyNecessary)
     setVisible(false)
-    window.dispatchEvent(new Event('cookieconsent'))
+  }
+
+  const savePreferences = () => {
+    storeConsent(true, preferences)
+    setVisible(false)
   }
 
   const togglePreference = (key: keyof CookiePreferences) => {
     if (key === 'necessary') return
     setPreferences(prev => ({ ...prev, [key]: !prev[key] }))
   }
-
-  if (!visible) return null
 
   const translations = {
     bg: {
@@ -102,6 +130,7 @@ export default function CookieConsent() {
       preferencesDesc: 'Запомнят вашите настройки и предпочитания за по-добро изживяване.',
       privacyLink: 'Поверителност',
       cookiePolicy: 'Бисквитки',
+      required: 'Задължителни',
     },
     en: {
       title: 'We use cookies',
@@ -120,22 +149,26 @@ export default function CookieConsent() {
       preferencesDesc: 'Remember your settings and preferences for a better experience.',
       privacyLink: 'Privacy',
       cookiePolicy: 'Cookies',
+      required: 'Required',
     },
   }
 
   const t = translations[isBg ? 'bg' : 'en']
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center pointer-events-none">
-      {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/60 pointer-events-auto transition-opacity"
+    <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center">
+      <div
+        className="absolute inset-0 bg-black/60 transition-opacity"
         onClick={() => setVisible(false)}
+        aria-hidden="true"
       />
-      
-      {/* Modal */}
-      <div className="relative w-full max-w-[640px] mx-4 mb-4 sm:mb-0 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl shadow-2xl pointer-events-auto overflow-hidden animate-in slide-in-from-bottom-4 duration-300">
-        {/* Header */}
+
+      <div
+        className="relative w-full max-w-[640px] mx-4 mb-4 sm:mb-0 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cookie-title"
+      >
         <div className="p-6 pb-4">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-xl bg-[var(--accent)]/10 flex items-center justify-center">
@@ -148,92 +181,75 @@ export default function CookieConsent() {
                 <path d="M7 14v.01"/>
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-white">{t.title}</h3>
+            <h3 id="cookie-title" className="text-lg font-semibold text-white">{t.title}</h3>
           </div>
-          <p className="text-[14px] text-white/50 leading-relaxed">{t.description}</p>
+          <p className="text-[14px] text-white/60 leading-relaxed">{t.description}</p>
         </div>
 
-        {/* Cookie Categories */}
         {showDetails && (
           <div className="px-6 pb-4 space-y-3 border-t border-white/[0.04] pt-4">
-            {/* Necessary - Always On */}
             <div className="flex items-start gap-3">
-              <div className="mt-0.5 w-10 h-6 rounded-full bg-[var(--accent)] flex items-center justify-center flex-shrink-0">
-                <div className="w-4 h-4 rounded-full bg-white translate-x-1 transition-transform" />
-              </div>
+              <Toggle active disabled />
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <span className="text-[14px] font-medium text-white">{t.necessary}</span>
-                  <span className="text-[11px] font-semibold text-[var(--accent)] uppercase tracking-wider">{isBg ? 'Задължителни' : 'Required'}</span>
+                  <span className="text-[11px] font-semibold text-[var(--accent)] uppercase tracking-wider">{t.required}</span>
                 </div>
-                <p className="text-[12px] text-white/30 mt-0.5">{t.necessaryDesc}</p>
+                <p className="text-[12px] text-white/40 mt-0.5">{t.necessaryDesc}</p>
               </div>
             </div>
 
-            {/* Analytics */}
             <div className="flex items-start gap-3">
-              <button 
-                onClick={() => togglePreference('analytics')}
-                className={`mt-0.5 w-10 h-6 rounded-full flex items-center flex-shrink-0 transition-colors ${preferences.analytics ? 'bg-[var(--accent)]' : 'bg-white/10'}`}
-              >
-                <div className={`w-4 h-4 rounded-full bg-white transition-transform ${preferences.analytics ? 'translate-x-1' : '-translate-x-1'}`} />
-              </button>
+              <Toggle active={preferences.analytics} onClick={() => togglePreference('analytics')} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.analytics}</span>
-                <p className="text-[12px] text-white/30 mt-0.5">{t.analyticsDesc}</p>
+                <p className="text-[12px] text-white/40 mt-0.5">{t.analyticsDesc}</p>
               </div>
             </div>
 
-            {/* Marketing */}
             <div className="flex items-start gap-3">
-              <button 
-                onClick={() => togglePreference('marketing')}
-                className={`mt-0.5 w-10 h-6 rounded-full flex items-center flex-shrink-0 transition-colors ${preferences.marketing ? 'bg-[var(--accent)]' : 'bg-white/10'}`}
-              >
-                <div className={`w-4 h-4 rounded-full bg-white transition-transform ${preferences.marketing ? 'translate-x-1' : '-translate-x-1'}`} />
-              </button>
+              <Toggle active={preferences.marketing} onClick={() => togglePreference('marketing')} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.marketing}</span>
-                <p className="text-[12px] text-white/30 mt-0.5">{t.marketingDesc}</p>
+                <p className="text-[12px] text-white/40 mt-0.5">{t.marketingDesc}</p>
               </div>
             </div>
 
-            {/* Preferences */}
             <div className="flex items-start gap-3">
-              <button 
-                onClick={() => togglePreference('preferences')}
-                className={`mt-0.5 w-10 h-6 rounded-full flex items-center flex-shrink-0 transition-colors ${preferences.preferences ? 'bg-[var(--accent)]' : 'bg-white/10'}`}
-              >
-                <div className={`w-4 h-4 rounded-full bg-white transition-transform ${preferences.preferences ? 'translate-x-1' : '-translate-x-1'}`} />
-              </button>
+              <Toggle active={preferences.preferences} onClick={() => togglePreference('preferences')} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.preferences}</span>
-                <p className="text-[12px] text-white/30 mt-0.5">{t.preferencesDesc}</p>
+                <p className="text-[12px] text-white/40 mt-0.5">{t.preferencesDesc}</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Footer */}
         <div className="p-6 pt-4 border-t border-white/[0.04]">
-          <div className="flex flex-wrap gap-2">
-            <button onClick={acceptAll} className="btn-accent flex-1 min-w-[120px] text-[12px] py-3">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+            <button type="button" onClick={acceptAll} className="btn-accent flex-1 min-w-[120px] text-[12px] py-3">
               {t.acceptAll}
             </button>
-            <button onClick={rejectAll} className="btn-outline flex-1 min-w-[120px] text-[12px] py-3">
+            <button type="button" onClick={rejectAll} className="btn-outline flex-1 min-w-[120px] text-[12px] py-3">
               {t.rejectAll}
             </button>
-            <button onClick={() => showDetails ? (storeConsent(true, preferences), setVisible(false), window.dispatchEvent(new Event('cookieconsent'))) : setShowDetails(true)} className="btn-outline flex-1 min-w-[120px] text-[12px] py-3">
-              {showDetails ? t.savePreferences : t.customize}
-            </button>
+            {showDetails ? (
+              <button type="button" onClick={savePreferences} className="btn-outline flex-1 min-w-[120px] text-[12px] py-3">
+                {t.savePreferences}
+              </button>
+            ) : (
+              <button type="button" onClick={() => setShowDetails(true)} className="btn-outline flex-1 min-w-[120px] text-[12px] py-3">
+                {t.customize}
+              </button>
+            )}
           </div>
           <div className="flex justify-center gap-4 mt-4">
-            <button onClick={() => { setVisible(false); navigate('/privacy-policy') }} className="text-[11px] text-white/30 hover:text-white/60 transition-colors underline">
+            <a href="/privacy-policy" className="text-[11px] text-white/40 hover:text-white/70 transition-colors underline">
               {t.privacyLink}
-            </button>
-            <button onClick={() => { setVisible(false); navigate('/cookie-policy') }} className="text-[11px] text-white/30 hover:text-white/60 transition-colors underline">
+            </a>
+            <a href="/cookie-policy" className="text-[11px] text-white/40 hover:text-white/70 transition-colors underline">
               {t.cookiePolicy}
-            </button>
+            </a>
           </div>
         </div>
       </div>

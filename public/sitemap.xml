@@ -3,14 +3,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <!-- Homepage -->
   <url>
     <loc>https://kastaventures.com/</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="https://kastaventures.com/" />
@@ -31,7 +30,7 @@
   <!-- Models Page -->
   <url>
     <loc>https://kastaventures.com/models</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="https://kastaventures.com/models" />
@@ -42,11 +41,11 @@
   <!-- Product Detail Pages -->
   <url>
     <loc>https://kastaventures.com/product/mini-r-72v</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/mini-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/mini-main-bg.png</image:loc>
       <image:title>E Ride Pro Mini R 72V 2026</image:title>
       <image:caption>Compact electric dirt bike for beginners</image:caption>
     </image:image>
@@ -54,11 +53,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/sr-off-road</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/sr-offroad-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/sr-offroad-main-bg.png</image:loc>
       <image:title>E Ride Pro SR Off Road Fatty</image:title>
       <image:caption>High-performance off-road electric dirt bike</image:caption>
     </image:image>
@@ -66,11 +65,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/sr-l1e</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/sr-l1e-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/sr-l1e-main-bg.png</image:loc>
       <image:title>E Ride Pro SR L1e Road Legal</image:title>
       <image:caption>Road legal electric dirt bike with EU homologation</image:caption>
     </image:image>
@@ -78,11 +77,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/ss-30-l1e</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss30-l1e-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss30-l1e-main-bg.png</image:loc>
       <image:title>E Ride Pro SS 3.0 L1e Road Legal</image:title>
       <image:caption>Sleek road legal electric motorcycle</image:caption>
     </image:image>
@@ -90,11 +89,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/ss-25-l1e</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss25-l1e-main.jpg</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss25-l1e-main-bg.png</image:loc>
       <image:title>E Ride Pro SS 2.5 L1e Road Legal</image:title>
       <image:caption>Best-selling road legal model on sale</image:caption>
     </image:image>
@@ -102,11 +101,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/ss-25-off-road</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss25-offroad-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss25-offroad-main-bg.png</image:loc>
       <image:title>E Ride Pro SS 2.5 Off Road Fatty</image:title>
       <image:caption>Off-road ready with fat tires</image:caption>
     </image:image>
@@ -114,11 +113,11 @@
 
   <url>
     <loc>https://kastaventures.com/product/ss-30-off-road</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss30-offroad-main.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss30-offroad-main-bg.png</image:loc>
       <image:title>E Ride Pro SS 3.0 Off Road Fatty</image:title>
       <image:caption>Flagship off-road model with maximum performance</image:caption>
     </image:image>
@@ -127,7 +126,7 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://kastaventures.com/privacy-policy</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="https://kastaventures.com/privacy-policy" />
@@ -138,7 +137,7 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://kastaventures.com/terms</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="https://kastaventures.com/terms" />
@@ -149,7 +148,7 @@
   <!-- Cookie Policy -->
   <url>
     <loc>https://kastaventures.com/cookie-policy</loc>
-    <lastmod>2026-07-05</lastmod>
+    <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link rel="alternate" hreflang="bg" href="https://kastaventures.com/cookie-policy" />

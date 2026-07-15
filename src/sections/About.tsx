@@ -8,8 +8,11 @@ gsap.registerPlugin(ScrollTrigger)
 export default function About() {
   const { lang } = useLang()
   const sectionRef = useRef<HTMLDivElement>(null)
+  const isBg = lang === 'bg'
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
+    if (prefersReducedMotion || !sectionRef.current) return
     const ctx = gsap.context(() => {
       gsap.fromTo('.bento-item', { opacity: 0, y: 30, scale: 0.97 }, {
         opacity: 1, y: 0, scale: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out',
@@ -17,9 +20,7 @@ export default function About() {
       })
     }, sectionRef)
     return () => ctx.revert()
-  }, [])
-
-  const isBg = lang === 'bg'
+  }, [prefersReducedMotion])
 
   return (
     <section id="about" ref={sectionRef} className="bg-[#0f0f0f] py-20 md:py-28">
@@ -35,57 +36,57 @@ export default function About() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-auto md:auto-rows-[200px]">
           {/* Big image - spans 2x2 */}
-          <div className="bento-item md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden relative group" style={{ opacity: 0 }}>
-            <img src="./images/kasta/hero-stoika.jpg" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+          <div className="bento-item md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden relative group" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+            <img src="/images/kasta/hero-stoika-bg.png" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
             <div className="absolute bottom-6 left-6">
               <span className="text-[var(--accent)] text-[48px] md:text-[72px] font-extrabold leading-none">100+</span>
-              <p className="text-white/60 text-[12px] tracking-wider uppercase mt-1">
+              <p className="text-white/70 text-[12px] tracking-wider uppercase mt-1">
                 {isBg ? 'магазина по света' : 'Stores Worldwide'}
               </p>
             </div>
           </div>
 
           {/* OEM Engineering card */}
-          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: 0 }}>
+          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
             <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center mb-4">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
             <h3 className="text-[15px] font-bold text-white mb-2">
               {isBg ? 'OEM ИНЖЕНЕРИНГ' : 'OEM ENGINEERING'}
             </h3>
-            <p className="text-[13px] text-white/40 leading-relaxed">
+            <p className="text-[13px] text-white/60 leading-relaxed">
               {isBg ? 'Професионално инженерство и производство от най-висок клас.' : 'Professional engineering and top-tier manufacturing.'}
             </p>
           </div>
 
           {/* Warranty card */}
-          <div className="bento-item bg-[var(--accent)] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: 0 }}>
+          <div className="bento-item bg-[var(--accent)] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
             <span className="text-[48px] font-extrabold text-white leading-none">2</span>
-            <p className="text-white/80 text-[13px] font-medium mt-2">
+            <p className="text-white/90 text-[13px] font-medium mt-2">
               {isBg ? 'ГОДИШНА ГАРАНЦИЯ' : 'YEAR WARRANTY'}
             </p>
-            <p className="text-white/50 text-[11px] mt-1">
+            <p className="text-white/70 text-[11px] mt-1">
               {isBg ? 'Пълно покритие от Kasta Ventures' : 'Full coverage from Kasta Ventures'}
             </p>
           </div>
 
           {/* Performance card */}
-          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center md:col-span-1 lg:col-span-2" style={{ opacity: 0 }}>
+          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center md:col-span-1 lg:col-span-2" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
             <h3 className="text-[15px] font-bold text-white mb-2">
               {isBg ? 'ДОКАЗАНА ОФРОУД ПРОИЗВОДИТЕЛНОСТ' : 'PERFORMANCE PROVEN OFF-ROAD EXCELLENCE'}
             </h3>
-            <p className="text-[13px] text-white/40 leading-relaxed">
-              {isBg 
+            <p className="text-[13px] text-white/60 leading-relaxed">
+              {isBg
                 ? 'Всеки модел е тестван в най-екстремните условия — от планинските пътеки на Рила до пустинните терени.'
                 : 'Every model is tested in the most extreme conditions — from Rila mountain trails to desert terrain.'}
             </p>
           </div>
 
           {/* Stats row */}
-          <div className="bento-item md:col-span-3 lg:col-span-4 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 md:p-8" style={{ opacity: 0 }}>
+          <div className="bento-item md:col-span-3 lg:col-span-4 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 md:p-8" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
                 { num: '7+', label: isBg ? 'Модела' : 'Models' },
@@ -95,7 +96,7 @@ export default function About() {
               ].map((s, i) => (
                 <div key={i} className="text-center">
                   <div className="text-[clamp(32px,5vw,56px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
-                  <div className="text-[11px] text-white/30 tracking-[0.15em] uppercase mt-2 font-medium">{s.label}</div>
+                  <div className="text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-medium">{s.label}</div>
                 </div>
               ))}
             </div>

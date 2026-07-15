@@ -7,6 +7,13 @@ export default function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      const elements = sectionRef.current?.querySelectorAll('.hero-logo, .hero-title, .hero-stats')
+      elements?.forEach((el) => { (el as HTMLElement).style.opacity = '1' })
+      return
+    }
+
     const ctx = gsap.context(() => {
       gsap.fromTo('.hero-logo', { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out', delay: 0.3 })
       gsap.fromTo('.hero-title', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.8 })
@@ -27,9 +34,10 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover"
-          poster="./images/kasta/sr-offroad-main.jpg"
+          poster="/images/kasta/sr-offroad-main-bg.png"
+          aria-label={isBg ? 'Видео на E RIDE PRO мотоциклет' : 'E RIDE PRO motorcycle video'}
         >
-          <source src="./videos/hero.mp4" type="video/mp4" />
+          <source src="/videos/hero.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-[#0f0f0f] via-[#0f0f0f]/80 to-[#0f0f0f]/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] via-transparent to-[#0f0f0f]/60" />
@@ -38,15 +46,15 @@ export default function Hero() {
       {/* Content */}
       <div className="relative flex-1 flex flex-col justify-center px-6 md:px-10 pt-[100px] pb-8 max-w-[1400px] mx-auto w-full">
         {/* Logos */}
-        <div className="hero-logo flex items-center gap-4 mb-10">
-          {/* Real E RIDE PRO logo */}
+        <div className="hero-logo flex items-center gap-4 mb-10" style={{ opacity: 0 }}>
           <img
-            src="./images/eride-logo-real.jpg"
+            src="/images/eride-logo-real.jpg"
             alt="E RIDE PRO"
             className="w-20 h-20 object-contain"
+            width="80"
+            height="80"
             onError={(e) => { e.currentTarget.style.display = 'none' }}
           />
-          {/* KaSta VENTURES */}
           <div className="flex flex-col">
             <span className="text-[28px] font-bold text-[#4a7fb5] tracking-[0.02em] leading-none">KaSta</span>
             <span className="text-[9px] font-semibold text-[#4a7fb5] tracking-[0.35em] leading-none mt-0.5">VENTURES</span>
@@ -58,8 +66,8 @@ export default function Hero() {
           <h1 className="text-display text-white mb-4" style={{ fontSize: 'clamp(32px, 5vw, 64px)' }}>
             {isBg ? 'ОФИЦИАЛЕН ДИСТРИБУТОР ЗА БЪЛГАРИЯ' : 'OFFICIAL DISTRIBUTOR FOR BULGARIA'}
           </h1>
-          <p className="text-white/40 text-[16px] leading-relaxed max-w-[600px]">
-            {isBg 
+          <p className="text-white/70 text-[16px] leading-relaxed max-w-[600px]">
+            {isBg
               ? 'E RIDE PRO електрически мото крос. Дистрибуция, сервиз и гаранция от Kasta Ventures.'
               : 'E RIDE PRO electric dirt bikes. Distribution, service and warranty by Kasta Ventures.'}
           </p>
@@ -67,8 +75,12 @@ export default function Hero() {
 
         {/* CTA buttons */}
         <div className="flex flex-wrap gap-4 mb-12">
-          <a href="#models" className="btn-accent">{isBg ? 'ВИЖ МОДЕЛИТЕ' : 'VIEW MODELS'}</a>
-          <a href="#specs" className="btn-outline">{isBg ? 'СПЕЦИФИКАЦИИ' : 'SPECIFICATIONS'}</a>
+          <a href="#models" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
+            {isBg ? 'ВИЖ МОДЕЛИТЕ' : 'VIEW MODELS'}
+          </a>
+          <a href="#specs" className="btn-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
+            {isBg ? 'СПЕЦИФИКАЦИИ' : 'SPECIFICATIONS'}
+          </a>
         </div>
 
         {/* Quick specs */}
@@ -81,7 +93,7 @@ export default function Hero() {
           ].map((s, i) => (
             <div key={i}>
               <div className="text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
-              <div className="text-[11px] text-white/30 tracking-[0.15em] uppercase mt-1 font-medium">{s.label}</div>
+              <div className="text-[11px] text-white/60 tracking-[0.15em] uppercase mt-1 font-medium">{s.label}</div>
             </div>
           ))}
         </div>
@@ -89,12 +101,12 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <div className="relative pb-8 text-center">
-        <div className="flex flex-col items-center gap-2 text-white/20">
+        <a href="#models" className="inline-flex flex-col items-center gap-2 text-white/50 hover:text-white/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg px-2">
           <span className="text-[10px] tracking-[0.2em] uppercase">{isBg ? 'Разгледай' : 'Explore'}</span>
-          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-bounce">
+          <svg width="16" height="24" viewBox="0 0 16 24" fill="none" className="animate-bounce" aria-hidden="true">
             <path d="M8 4v12M4 14l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        </div>
+        </a>
       </div>
     </section>
   )

@@ -1,15 +1,14 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { useLang } from '../hooks/useLang'
 
 export default function Terms() {
   const { lang } = useLang()
-  const navigate = useNavigate()
   const isBg = lang === 'bg'
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    document.title = isBg 
+    document.title = isBg
       ? 'Условия за ползване | Kasta Ventures'
       : 'Terms of Service | Kasta Ventures'
   }, [isBg])
@@ -118,10 +117,10 @@ export default function Terms() {
       {/* Breadcrumb */}
       <div className="border-b border-white/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
-          <nav className="flex items-center gap-2 text-[12px]">
-            <button onClick={() => navigate('/')} className="text-white/20 hover:text-white transition-colors">{isBg ? 'Начало' : 'Home'}</button>
-            <span className="text-white/10">/</span>
-            <span className="text-white/60 font-medium">{isBg ? 'Условия' : 'Terms'}</span>
+          <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
+            <Link to="/" className="text-white/50 hover:text-white transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <span className="text-white/20">/</span>
+            <span className="text-white/80 font-medium" aria-current="page">{isBg ? 'Условия' : 'Terms'}</span>
           </nav>
         </div>
       </div>
@@ -130,15 +129,15 @@ export default function Terms() {
         <h1 className="text-display text-white mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
           {content.title}
         </h1>
-        <p className="text-[13px] text-white/30 mb-10">{content.lastUpdated}</p>
-        
-        <p className="text-[15px] text-white/50 leading-relaxed mb-12">{content.intro}</p>
+        <p className="text-[13px] text-white/50 mb-10">{content.lastUpdated}</p>
+
+        <p className="text-[15px] text-white/70 leading-relaxed mb-12">{content.intro}</p>
 
         <div className="space-y-10">
           {content.sections.map((section, i) => (
             <div key={i} className="border-t border-white/[0.06] pt-8">
               <h2 className="text-[18px] font-semibold text-white mb-4">{section.title}</h2>
-              <div className="text-[14px] text-white/45 leading-[1.85] whitespace-pre-line">
+              <div className="text-[14px] text-white/60 leading-[1.85] whitespace-pre-line">
                 {section.content}
               </div>
             </div>
@@ -147,9 +146,9 @@ export default function Terms() {
 
         {/* Back button */}
         <div className="mt-16 pt-8 border-t border-white/[0.06]">
-          <button onClick={() => navigate('/')} className="btn-accent">
+          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
             {isBg ? '← Обратно към началото' : '← Back to Home'}
-          </button>
+          </Link>
         </div>
       </div>
     </div>
