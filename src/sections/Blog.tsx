@@ -71,10 +71,8 @@ export default function Blog() {
   const sectionRef = useRef<HTMLElement>(null)
   const isBg = lang === 'bg'
   const posts = postsByLang[isBg ? 'bg' : 'en']
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
-    if (prefersReducedMotion || !sectionRef.current) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.blog-item',
@@ -90,7 +88,7 @@ export default function Blog() {
       )
     }, sectionRef)
     return () => ctx.revert()
-  }, [prefersReducedMotion])
+  }, [])
 
   return (
     <section
@@ -114,19 +112,19 @@ export default function Blog() {
           {posts.map((post, index) => (
             <article
               key={index}
-              className="blog-item group p-6 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl hover:border-white/15 transition-all focus-within:border-white/15 focus-within:ring-2 focus-within:ring-[var(--accent)]"
-              style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+              className="blog-item group p-6 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl hover:border-white/10 transition-all cursor-pointer"
+              style={{ opacity: 0 }}
             >
               <span className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-[10px] font-bold tracking-wider uppercase mb-4">
                 {post.tag}
               </span>
-              <h3 className="text-[17px] font-semibold text-white mb-2">
+              <h3 className="text-[17px] font-semibold text-white mb-2 group-hover:text-[var(--accent)] transition-colors">
                 {post.title}
               </h3>
-              <p className="text-[13px] text-white/60 leading-relaxed mb-4">
+              <p className="text-[13px] text-white/40 leading-relaxed mb-4">
                 {post.excerpt}
               </p>
-              <span className="inline-flex items-center gap-2 text-[12px] font-semibold text-white/50 group-hover:text-[var(--accent)] transition-colors">
+              <div className="flex items-center gap-2 text-[12px] font-semibold text-white/30 group-hover:text-[var(--accent)] transition-colors">
                 <span>{t('read_more')}</span>
                 <svg
                   width="14"
@@ -135,12 +133,10 @@ export default function Blog() {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
-                  aria-hidden="true"
                 >
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
-              </span>
-              <span className="sr-only">{isBg ? ' — скоро' : ' — coming soon'}</span>
+              </div>
             </article>
           ))}
         </div>

@@ -9,10 +9,8 @@ export default function Contact() {
   const { t, lang } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
   const isBg = lang === 'bg'
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
-    if (prefersReducedMotion || !sectionRef.current) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.contact-overlay',
@@ -39,7 +37,7 @@ export default function Contact() {
       )
     }, sectionRef)
     return () => ctx.revert()
-  }, [prefersReducedMotion])
+  }, [])
 
   return (
     <section id="contact" ref={sectionRef} className="bg-[#0f0f0f] pt-20 md:pt-28">
@@ -61,7 +59,7 @@ export default function Contact() {
       >
         <iframe
           title="Kasta Ventures Location"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.0!2d23.2727!3d42.6484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM4JzU0LjUiTiAyM8KwMTYnMjEuNyJF!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.0!2d23.27323!3d42.648462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM4JzU0LjUiTiAyM8KwMTYnMjMuNiJF!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg"
           width="100%"
           height="100%"
           style={{
@@ -75,7 +73,7 @@ export default function Contact() {
         />
         <div
           className="contact-overlay absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-10"
-          style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+          style={{ opacity: 0 }}
         >
           <div className="bg-[#0f0f0f]/95 backdrop-blur-md border border-white/[0.08] rounded-2xl p-6 md:p-8 max-w-[340px] shadow-2xl">
             <div className="flex items-center gap-3 mb-6">
@@ -90,7 +88,7 @@ export default function Contact() {
               </div>
               <div>
                 <span className="text-[16px] font-bold text-white">KaSta</span>
-                <span className="text-[10px] font-bold text-white/60 ml-1">
+                <span className="text-[10px] font-bold text-white/40 ml-1">
                   VENTURES
                 </span>
               </div>
@@ -98,7 +96,7 @@ export default function Contact() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/[0.08] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-full bg-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5">
                   <svg
                     width="14"
                     height="14"
@@ -106,22 +104,21 @@ export default function Contact() {
                     fill="none"
                     stroke="var(--accent)"
                     strokeWidth="1.5"
-                    aria-hidden="true"
                   >
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[0.1em] text-white/50 uppercase font-semibold">
+                  <p className="text-[10px] tracking-[0.1em] text-white/30 uppercase font-semibold">
                     {t('location_title')}
                   </p>
-                  <p className="text-[14px] text-white/80">{t('location_address')}</p>
+                  <p className="text-[14px] text-white/70">{t('location_address')}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/[0.08] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-full bg-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5">
                   <svg
                     width="14"
                     height="14"
@@ -129,23 +126,22 @@ export default function Contact() {
                     fill="none"
                     stroke="var(--accent)"
                     strokeWidth="1.5"
-                    aria-hidden="true"
                   >
                     <path d="M22 17H2a3 3 0 003-3V9a7 7 0 0114 0v5a3 3 0 003 3zm-8.5 4h-3a1.5 1.5 0 00-1.5 1.5V23h6v-.5A1.5 1.5 0 0013.5 21z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[0.1em] text-white/50 uppercase font-semibold">
+                  <p className="text-[10px] tracking-[0.1em] text-white/30 uppercase font-semibold">
                     {t('contact_email_label')}
                   </p>
-                  <a href="mailto:office@kastaventures.com" className="text-[14px] text-white/80 hover:text-white transition-colors">
+                  <p className="text-[14px] text-white/70">
                     office@kastaventures.com
-                  </a>
+                  </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-white/[0.08] flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-full bg-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5">
                   <svg
                     width="14"
                     height="14"
@@ -153,25 +149,22 @@ export default function Contact() {
                     fill="none"
                     stroke="var(--accent)"
                     strokeWidth="1.5"
-                    aria-hidden="true"
                   >
                     <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[10px] tracking-[0.1em] text-white/50 uppercase font-semibold">
+                  <p className="text-[10px] tracking-[0.1em] text-white/30 uppercase font-semibold">
                     {t('contact_phone_label')}
                   </p>
-                  <a href="tel:+359887773733" className="text-[14px] text-white/80 hover:text-white transition-colors">
-                    +359 887 77 37 33
-                  </a>
+                  <p className="text-[14px] text-white/70">+359 887 77 37 33</p>
                 </div>
               </div>
             </div>
 
             <a
               href="mailto:office@kastaventures.com"
-              className="btn-accent w-full mt-6 text-[12px] py-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]"
+              className="btn-accent w-full mt-6 text-[12px] py-3"
             >
               {t('make_inquiry')}
             </a>
@@ -188,11 +181,11 @@ export default function Contact() {
               { num: '80', label: isBg ? 'км/ч макс.' : 'km/h top' },
               { num: '2', label: isBg ? 'часа зареждане' : 'hours charging' },
             ].map((s, i) => (
-              <div key={i} className="contact-stat text-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+              <div key={i} className="contact-stat text-center" style={{ opacity: 0 }}>
                 <div className="text-[clamp(28px,4vw,48px)] font-extrabold text-white leading-none tracking-tighter">
                   {s.num}
                 </div>
-                <div className="text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-medium">
+                <div className="text-[11px] text-white/30 tracking-[0.15em] uppercase mt-2 font-medium">
                   {s.label}
                 </div>
               </div>

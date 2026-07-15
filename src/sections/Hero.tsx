@@ -34,7 +34,7 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover"
-          poster="/images/kasta/sr-offroad-main-bg.png"
+          poster="/images/kasta/sr-offroad-main.png"
           aria-label={isBg ? 'Видео на E RIDE PRO мотоциклет' : 'E RIDE PRO motorcycle video'}
         >
           <source src="/videos/hero.mp4" type="video/mp4" />
