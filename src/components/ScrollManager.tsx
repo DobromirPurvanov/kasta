@@ -10,8 +10,9 @@ export default function ScrollManager() {
     if (hash) {
       const el = document.getElementById(hash.slice(1))
       if (el) {
-        // behavior left to CSS scroll-behavior (respects prefers-reduced-motion)
-        el.scrollIntoView()
+        // Instant: a CSS smooth scroll gets cancelled by ScrollTrigger.refresh()
+        // (fired on image load) and strands the user between sections.
+        el.scrollIntoView({ behavior: 'instant', block: 'start' })
         return
       }
     }
