@@ -5,20 +5,20 @@ import { Link, useLocation } from 'react-router'
 function NavItem({ to, hash, isHome, children }: { to?: string; hash?: string; isHome: boolean; children: ReactNode }) {
   if (hash && isHome) {
     return (
-      <a href={hash} className="block text-[14px] text-white/70 hover:text-white transition-colors">
+      <a href={hash} className="block text-[14px] text-white/70 hover:text-white transition-colors focus:outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm">
         {children}
       </a>
     )
   }
   if (hash && !isHome) {
     return (
-      <Link to={`/${hash}`} className="block text-[14px] text-white/70 hover:text-white transition-colors">
+      <Link to={`/${hash}`} className="block text-[14px] text-white/70 hover:text-white transition-colors focus:outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm">
         {children}
       </Link>
     )
   }
   return (
-    <Link to={to || '/'} className="block text-[14px] text-white/70 hover:text-white transition-colors">
+    <Link to={to || '/'} className="block text-[14px] text-white/70 hover:text-white transition-colors focus:outline-none focus-visible:text-white focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm">
       {children}
     </Link>
   )
@@ -73,7 +73,7 @@ export default function Footer() {
             {/* Social */}
             <div className="flex gap-3 mt-6">
               <a
-                href="https://instagram.com"
+                href="https://instagram.com/erideprobulgaria"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all"
@@ -114,6 +114,7 @@ export default function Footer() {
               <p className="text-[13px] text-white/50">{t('location_address')}</p>
             </div>
             <button
+              type="button"
               onClick={scrollToTop}
               className="mt-8 inline-flex items-center gap-2 text-[12px] text-white/50 hover:text-white transition-colors group"
             >

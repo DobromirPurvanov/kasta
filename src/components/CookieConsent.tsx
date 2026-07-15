@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLang } from '../hooks/useLang'
 
 interface CookiePreferences {
@@ -38,10 +38,12 @@ function Toggle({
   active,
   onClick,
   disabled,
+  ariaLabel,
 }: {
   active: boolean
   onClick?: () => void
   disabled?: boolean
+  ariaLabel?: string
 }) {
   return (
     <button
@@ -50,6 +52,7 @@ function Toggle({
       disabled={disabled}
       aria-checked={active}
       role="switch"
+      aria-label={ariaLabel}
       className={`relative w-10 h-6 rounded-full flex items-center flex-shrink-0 transition-colors ${
         active ? 'bg-[var(--accent)]' : 'bg-white/10'
       } ${disabled ? 'cursor-default' : 'cursor-pointer'}`}
@@ -75,8 +78,6 @@ export default function CookieConsent() {
     if (typeof window === 'undefined') return defaultPreferences
     return getStoredConsent()?.preferences ?? defaultPreferences
   })
-
-  if (!visible) return null
 
   const acceptAll = () => {
     const allAccepted = {
@@ -155,11 +156,23 @@ export default function CookieConsent() {
 
   const t = translations[isBg ? 'bg' : 'en']
 
+  useEffect(() => {
+    if (!visible) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        rejectAll()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => document.removeEventListener('keydown', onKeyDown)
+  }, [visible])
+
+  if (!visible) return null
+
   return (
     <div className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center">
       <div
         className="absolute inset-0 bg-black/60 transition-opacity"
-        onClick={() => setVisible(false)}
         aria-hidden="true"
       />
 
@@ -189,7 +202,7 @@ export default function CookieConsent() {
         {showDetails && (
           <div className="px-6 pb-4 space-y-3 border-t border-white/[0.04] pt-4">
             <div className="flex items-start gap-3">
-              <Toggle active disabled />
+              <Toggle active disabled ariaLabel={t.necessary} />
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <span className="text-[14px] font-medium text-white">{t.necessary}</span>
@@ -200,7 +213,7 @@ export default function CookieConsent() {
             </div>
 
             <div className="flex items-start gap-3">
-              <Toggle active={preferences.analytics} onClick={() => togglePreference('analytics')} />
+              <Toggle active={preferences.analytics} onClick={() => togglePreference('analytics')} ariaLabel={t.analytics} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.analytics}</span>
                 <p className="text-[12px] text-white/40 mt-0.5">{t.analyticsDesc}</p>
@@ -208,7 +221,7 @@ export default function CookieConsent() {
             </div>
 
             <div className="flex items-start gap-3">
-              <Toggle active={preferences.marketing} onClick={() => togglePreference('marketing')} />
+              <Toggle active={preferences.marketing} onClick={() => togglePreference('marketing')} ariaLabel={t.marketing} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.marketing}</span>
                 <p className="text-[12px] text-white/40 mt-0.5">{t.marketingDesc}</p>
@@ -216,7 +229,7 @@ export default function CookieConsent() {
             </div>
 
             <div className="flex items-start gap-3">
-              <Toggle active={preferences.preferences} onClick={() => togglePreference('preferences')} />
+              <Toggle active={preferences.preferences} onClick={() => togglePreference('preferences')} ariaLabel={t.preferences} />
               <div className="flex-1">
                 <span className="text-[14px] font-medium text-white">{t.preferences}</span>
                 <p className="text-[12px] text-white/40 mt-0.5">{t.preferencesDesc}</p>

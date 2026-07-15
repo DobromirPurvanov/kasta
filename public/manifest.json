@@ -29,15 +29,15 @@
   "prefer_related_applications": false,
   "screenshots": [
     {
-      "src": "/images/kasta/sr-offroad-main-bg.png",
-      "sizes": "1200x630",
+      "src": "/images/kasta/hero-stoika-bg.png",
+      "sizes": "1200x1006",
       "type": "image/png",
       "form_factor": "wide",
       "label": "E RIDE PRO Product Gallery"
     },
     {
-      "src": "/images/kasta/mini-main-bg.png",
-      "sizes": "1200x630",
+      "src": "/images/kasta/mini-main.png",
+      "sizes": "1200x1006",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "E RIDE PRO Mobile View"

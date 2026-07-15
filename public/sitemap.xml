@@ -45,7 +45,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/mini-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/mini-main.png</image:loc>
       <image:title>E Ride Pro Mini R 72V 2026</image:title>
       <image:caption>Compact electric dirt bike for beginners</image:caption>
     </image:image>
@@ -57,7 +57,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/sr-offroad-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/sr-offroad-main.png</image:loc>
       <image:title>E Ride Pro SR Off Road Fatty</image:title>
       <image:caption>High-performance off-road electric dirt bike</image:caption>
     </image:image>
@@ -69,7 +69,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/sr-l1e-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/sr-l1e-main.png</image:loc>
       <image:title>E Ride Pro SR L1e Road Legal</image:title>
       <image:caption>Road legal electric dirt bike with EU homologation</image:caption>
     </image:image>
@@ -81,7 +81,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss30-l1e-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss30-l1e-main.png</image:loc>
       <image:title>E Ride Pro SS 3.0 L1e Road Legal</image:title>
       <image:caption>Sleek road legal electric motorcycle</image:caption>
     </image:image>
@@ -93,7 +93,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss25-l1e-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss25-l1e-main.png</image:loc>
       <image:title>E Ride Pro SS 2.5 L1e Road Legal</image:title>
       <image:caption>Best-selling road legal model on sale</image:caption>
     </image:image>
@@ -105,7 +105,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss25-offroad-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss25-offroad-main.png</image:loc>
       <image:title>E Ride Pro SS 2.5 Off Road Fatty</image:title>
       <image:caption>Off-road ready with fat tires</image:caption>
     </image:image>
@@ -117,7 +117,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
-      <image:loc>https://kastaventures.com/images/kasta/ss30-offroad-main-bg.png</image:loc>
+      <image:loc>https://kastaventures.com/images/kasta/ss30-offroad-main.png</image:loc>
       <image:title>E Ride Pro SS 3.0 Off Road Fatty</image:title>
       <image:caption>Flagship off-road model with maximum performance</image:caption>
     </image:image>

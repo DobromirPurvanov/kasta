@@ -78,8 +78,8 @@ export default function Hero() {
           <a href="#models" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
             {isBg ? 'ВИЖ МОДЕЛИТЕ' : 'VIEW MODELS'}
           </a>
-          <a href="#specs" className="btn-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
-            {isBg ? 'СПЕЦИФИКАЦИИ' : 'SPECIFICATIONS'}
+          <a href="/models" className="btn-outline focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0f0f0f]">
+            {isBg ? 'МОДЕЛИ' : 'MODELS'}
           </a>
         </div>
 

@@ -72,7 +72,7 @@ export default function Navigation() {
           {/* Right */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/erideprobulgaria"
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all"
@@ -85,6 +85,7 @@ export default function Navigation() {
               </svg>
             </a>
             <button
+              type="button"
               onClick={toggleLang}
               className="text-[11px] font-semibold tracking-wider text-white/60 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-all"
               aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
@@ -95,6 +96,7 @@ export default function Navigation() {
 
           {/* Mobile hamburger */}
           <button
+            type="button"
             className="md:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
@@ -137,6 +139,7 @@ export default function Navigation() {
           {t('nav_contact')}
         </Link>
         <button
+          type="button"
           onClick={() => { toggleLang(); setMobileOpen(false) }}
           className="text-lg text-white/40 hover:text-white/70"
         >
