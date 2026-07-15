@@ -34,8 +34,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#0a0a0a] border-t border-white/[0.06]">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-12 md:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">
           {/* Column 1 - Navigation */}
           <div>
             <h4 className="text-[11px] font-bold tracking-[0.15em] text-white/50 uppercase mb-6">

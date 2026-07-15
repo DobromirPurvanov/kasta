@@ -45,10 +45,7 @@ export default function Contact() {
         <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
           {t('contact_title')}
         </span>
-        <h2
-          className="text-display text-white"
-          style={{ fontSize: 'clamp(32px, 4vw, 56px)' }}
-        >
+        <h2 className="text-display text-white text-[28px] sm:text-[32px] md:text-[clamp(40px,4vw,56px)]">
           {isBg ? 'СВЪРЖИ СЕ С НАС' : 'GET IN TOUCH'}
         </h2>
       </div>
@@ -72,10 +69,10 @@ export default function Contact() {
           referrerPolicy="no-referrer-when-downgrade"
         />
         <div
-          className="contact-overlay absolute left-6 md:left-10 top-1/2 -translate-y-1/2 z-10"
+          className="contact-overlay absolute left-4 right-4 md:left-10 md:right-auto top-auto bottom-4 md:top-1/2 md:-translate-y-1/2 z-10"
           style={{ opacity: 0 }}
         >
-          <div className="bg-[#0f0f0f]/95 backdrop-blur-md border border-white/[0.08] rounded-2xl p-6 md:p-8 max-w-[340px] shadow-2xl">
+          <div className="bg-[#0f0f0f]/95 backdrop-blur-md border border-white/[0.08] rounded-2xl p-5 md:p-8 max-w-full md:max-w-[340px] shadow-2xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 bg-[var(--accent)] rounded-lg flex items-center justify-center">
                 <span className="text-white font-extrabold text-[7px] tracking-wider leading-tight text-center">

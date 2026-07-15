@@ -30,7 +30,7 @@ export default function About() {
           <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
             {isBg ? 'ЗА НАС' : 'OUR ETHOS'}
           </span>
-          <h2 className="text-display text-white" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
+          <h2 className="text-display text-white text-[26px] sm:text-[32px] md:text-[clamp(36px,4vw,48px)]">
             {isBg ? 'ИСТОРИЯ НА КАЧЕСТВОТО' : 'HISTORY OF QUALITY'}
           </h2>
         </div>
@@ -95,8 +95,8 @@ export default function About() {
                 { num: '120', label: 'km ' + (isBg ? 'обхват' : 'range') },
               ].map((s, i) => (
                 <div key={i} className="text-center">
-                  <div className="text-[clamp(32px,5vw,56px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
-                  <div className="text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-medium">{s.label}</div>
+                  <div className="text-[28px] sm:text-[32px] md:text-[clamp(32px,5vw,56px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
+                  <div className="text-[10px] md:text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-medium">{s.label}</div>
                 </div>
               ))}
             </div>

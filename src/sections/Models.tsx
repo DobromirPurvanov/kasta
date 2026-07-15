@@ -67,10 +67,7 @@ export default function Models() {
             <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
               {t('models_title')}
             </span>
-            <h2
-              className="text-display text-white"
-              style={{ fontSize: 'clamp(32px, 5vw, 56px)' }}
-            >
+            <h2 className="text-display text-white text-[28px] sm:text-[32px] md:text-[clamp(40px,5vw,56px)]">
               {isBg ? 'ИЗБЕРИ СВОЯ МОДЕЛ' : 'CHOOSE YOUR MODEL'}
             </h2>
           </div>
@@ -103,21 +100,21 @@ export default function Models() {
               className="product-card group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#2a2a2a_0%,_#1a1a1a_45%,_#0f0f0f_80%)] overflow-hidden flex items-center justify-center p-6">
+              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#333333_0%,_#1f1f1f_45%,_#0f0f0f_80%)] overflow-hidden flex items-center justify-center p-4 sm:p-6">
                 <img
                   src={product.image}
                   alt={product.alt}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-2xl"
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-2xl brightness-110 contrast-110"
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="px-5 py-2.5 bg-[var(--accent)] text-white text-[11px] font-bold tracking-wider uppercase rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 shadow-xl">
+                  <span className="px-4 sm:px-5 py-2 sm:py-2.5 bg-[var(--accent)] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 shadow-xl">
                     {t('quick_view')}
                   </span>
                 </div>
               </div>
-              <div className="p-5">
+              <div className="p-4 sm:p-5">
                 <span className="text-[10px] font-semibold tracking-[0.15em] text-white/50 uppercase">
                   {product.category}
                 </span>
