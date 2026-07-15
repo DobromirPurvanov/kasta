@@ -3,61 +3,23 @@
 
 User-agent: *
 Allow: /
-Allow: /models
-Allow: /product/
-Allow: /images/
-Allow: /videos/
 
-# Disallow admin and private areas
-Disallow: /admin/
-Disallow: /api/
-Disallow: /private/
-Disallow: /draft/
-
-# Crawl-delay for slower crawlers
-Crawl-delay: 1
-
-# Sitemap location
 Sitemap: https://kastaventures.com/sitemap.xml
 
-# Specific crawler rules
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0.5
-
-User-agent: Googlebot-Image
-Allow: /images/
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-User-agent: DuckDuckBot
-Allow: /
-
-# AI Crawlers - Allow for indexing
-User-agent: ChatGPT-User
-Allow: /
-
+# AI crawlers - allowed
 User-agent: GPTBot
 Allow: /
 
-User-agent: Claude-Web
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Anthropic-ai
-Allow: /
-
-# Block known malicious crawlers
-User-agent: AhrefsBot
-Crawl-delay: 2
-
-User-agent: SemrushBot
-Crawl-delay: 2
-
+# Blocked crawlers
 User-agent: MJ12bot
 Disallow: /
 

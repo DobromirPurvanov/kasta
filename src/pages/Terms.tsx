@@ -1,17 +1,15 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useLang } from '../hooks/useLang'
+import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Terms() {
   const { lang } = useLang()
   const isBg = lang === 'bg'
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    document.title = isBg
-      ? 'Условия за ползване | Kasta Ventures'
-      : 'Terms of Service | Kasta Ventures'
-  }, [isBg])
+  usePageMeta({
+    title: isBg ? 'Условия за ползване | Kasta Ventures' : 'Terms of Service | Kasta Ventures',
+    path: '/terms',
+  })
 
   const t = {
     bg: {

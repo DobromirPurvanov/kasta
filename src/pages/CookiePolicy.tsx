@@ -1,17 +1,15 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useLang } from '../hooks/useLang'
+import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function CookiePolicy() {
   const { lang } = useLang()
   const isBg = lang === 'bg'
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    document.title = isBg
-      ? 'Политика за бисквитки | Kasta Ventures'
-      : 'Cookie Policy | Kasta Ventures'
-  }, [isBg])
+  usePageMeta({
+    title: isBg ? 'Политика за бисквитки | Kasta Ventures' : 'Cookie Policy | Kasta Ventures',
+    path: '/cookie-policy',
+  })
 
   const t = {
     bg: {
@@ -28,9 +26,9 @@ export default function CookiePolicy() {
           content: '',
           table: [
             { category: 'Необходими', purpose: 'Тези бисквитки са от съществено значение за правилното функциониране на уебсайта. Те ви позволяват да навигирате в сайта и да използвате неговите функции.', examples: 'Сесийни бисквитки, CSRF защита, предпочитания за език', duration: 'Сесия до 1 година' },
-            { category: 'Аналитични', purpose: 'Тези бисквитки ни помагат да разберем как посетителите взаимодействат с нашия уебсайт, като събират информация за броя посетители, източниците на трафик и най-популярните страници.', examples: 'Google Analytics, Plausible', duration: 'До 26 месеца' },
+            { category: 'Аналитични', purpose: 'Тези бисквитки биха ни помогнали да разберем как посетителите взаимодействат с уебсайта. Понастоящем не използваме аналитични инструменти — ако това се промени, те ще се активират само след вашето изрично съгласие.', examples: 'Google Analytics, Plausible (не се използват в момента)', duration: 'До 26 месеца' },
             { category: 'Предпочитания', purpose: 'Тези бисквитки позволяват на уебсайта да запомни изборите, които правите (като език или регион), и да предостави подобрени, по-персонализирани функции.', examples: 'Езикови настройки, тема, потребителски предпочитания', duration: 'До 1 година' },
-            { category: 'Маркетингови', purpose: 'Тези бисквитки се използват за проследяване на посетителите в уебсайтовете. Целта е да се показват реклами, които са подходящи и ангажиращи за отделния потребител.', examples: 'Facebook Pixel, Google Ads', duration: 'До 2 години' },
+            { category: 'Маркетингови', purpose: 'Тези бисквитки биха се използвали за показване на релевантни реклами. Понастоящем не използваме маркетингови инструменти за проследяване — ако това се промени, те ще се активират само след вашето изрично съгласие.', examples: 'Facebook Pixel, Google Ads (не се използват в момента)', duration: 'До 2 години' },
           ],
         },
         {
@@ -65,9 +63,9 @@ export default function CookiePolicy() {
           content: '',
           table: [
             { category: 'Necessary', purpose: 'These cookies are essential for the proper functioning of the website. They enable you to navigate the site and use its features.', examples: 'Session cookies, CSRF protection, language preferences', duration: 'Session to 1 year' },
-            { category: 'Analytics', purpose: 'These cookies help us understand how visitors interact with our website by collecting information about the number of visitors, traffic sources, and most popular pages.', examples: 'Google Analytics, Plausible', duration: 'Up to 26 months' },
+            { category: 'Analytics', purpose: 'These cookies would help us understand how visitors interact with the website. We currently do not use any analytics tools — if this changes, they will only be activated after your explicit consent.', examples: 'Google Analytics, Plausible (not currently in use)', duration: 'Up to 26 months' },
             { category: 'Preferences', purpose: 'These cookies allow the website to remember choices you make (such as language or region) and provide enhanced, more personalized features.', examples: 'Language settings, theme, user preferences', duration: 'Up to 1 year' },
-            { category: 'Marketing', purpose: 'These cookies are used to track visitors across websites. The intention is to display ads that are relevant and engaging for the individual user.', examples: 'Facebook Pixel, Google Ads', duration: 'Up to 2 years' },
+            { category: 'Marketing', purpose: 'These cookies would be used to display relevant ads. We currently do not use any marketing tracking tools — if this changes, they will only be activated after your explicit consent.', examples: 'Facebook Pixel, Google Ads (not currently in use)', duration: 'Up to 2 years' },
           ],
         },
         {

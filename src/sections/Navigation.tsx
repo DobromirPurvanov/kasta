@@ -1,12 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useLang } from '../hooks/useLang'
+
+const anchorLinkClass =
+  'text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-white/70 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
 
 export default function Navigation() {
   const { lang, setLang, t } = useLang()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const burgerRef = useRef<HTMLButtonElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -14,22 +19,51 @@ export default function Navigation() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Mobile menu: lock body scroll, close on Escape, move focus in and back out
+  useEffect(() => {
+    if (!mobileOpen) return
+    const burger = burgerRef.current
+    document.body.style.overflow = 'hidden'
+    menuRef.current?.querySelector<HTMLElement>('a, button')?.focus()
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileOpen(false)
+        return
+      }
+      if (e.key !== 'Tab' || !menuRef.current) return
+
+      const focusable = Array.from(
+        menuRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+      )
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      document.removeEventListener('keydown', onKeyDown)
+      burger?.focus()
+    }
+  }, [mobileOpen])
+
   const toggleLang = () => setLang(lang === 'bg' ? 'en' : 'bg')
   const isBg = lang === 'bg'
-
   const isModelsPage = location.pathname === '/models'
-
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors ${
-      isActive ? 'text-[var(--accent)] font-semibold' : 'text-white/70 hover:text-white'
-    }`
 
   return (
     <>
       <nav
         className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
-          scrolled
-            ? 'bg-[#0f0f0f]/95 backdrop-blur-md border-b border-white/[0.06]'
+          scrolled || mobileOpen
+            ? 'bg-[var(--bg)]/95 backdrop-blur-md border-b border-white/[0.08]'
             : 'bg-transparent'
         }`}
         aria-label="Main navigation"
@@ -37,48 +71,53 @@ export default function Navigation() {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-[64px] sm:h-[72px] flex items-center justify-between">
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
-            <NavLink to="/#about" className={navLinkClass}>
+            <Link to="/#about" className={anchorLinkClass}>
               {t('nav_about')}
-            </NavLink>
+            </Link>
             <NavLink
               to="/models"
-              className={navLinkClass}
+              className={({ isActive }) =>
+                `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm ${
+                  isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-white/70 hover:text-white'
+                }`
+              }
               aria-current={isModelsPage ? 'page' : undefined}
             >
               {t('nav_models')}
             </NavLink>
-            <NavLink to="/#contact" className={navLinkClass}>
+            <Link to="/#contact" className={anchorLinkClass}>
               {t('nav_contact')}
-            </NavLink>
+            </Link>
           </div>
 
           {/* Center logo */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
             <img
-              src="/images/eride-logo-real.png"
+              src="/images/eride-logo-small.png"
               alt="E RIDE PRO"
               className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md"
               width="32"
               height="32"
             />
             <img
-              src="/images/kasta-logo-final.png"
+              src="/images/kasta-logo-small.png"
               alt="Kasta Ventures"
               className="h-6 sm:h-7 object-contain brightness-150 contrast-125"
+              width="110"
               height="28"
             />
           </Link>
 
           {/* Right */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3">
             <a
               href="https://instagram.com/erideprobulgaria"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 transition-all"
+              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label="Instagram"
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                 <rect x="2" y="2" width="20" height="20" rx="5"/>
                 <circle cx="12" cy="12" r="5"/>
                 <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
@@ -87,7 +126,7 @@ export default function Navigation() {
             <button
               type="button"
               onClick={toggleLang}
-              className="text-[11px] font-semibold tracking-wider text-white/60 hover:text-white px-3 py-1.5 rounded-full hover:bg-white/10 transition-all"
+              className="text-[11px] font-semibold tracking-wider text-white/70 hover:text-white px-4 py-2.5 rounded-full hover:bg-white/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
             >
               {lang === 'bg' ? 'EN' : 'BG'}
@@ -96,8 +135,9 @@ export default function Navigation() {
 
           {/* Mobile hamburger */}
           <button
+            ref={burgerRef}
             type="button"
-            className="md:hidden w-10 h-10 -mr-1 flex flex-col justify-center items-center gap-1.5"
+            className="md:hidden w-11 h-11 -mr-1 flex flex-col justify-center items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
@@ -112,39 +152,60 @@ export default function Navigation() {
       {/* Mobile overlay */}
       <div
         id="mobile-menu"
-        className={`fixed inset-0 z-[99] bg-[#0f0f0f] transition-all duration-500 md:hidden flex flex-col items-center justify-center gap-8 ${
+        ref={menuRef}
+        className={`fixed inset-0 z-[99] bg-[var(--bg)] transition-all duration-300 md:hidden ${
           mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         aria-hidden={!mobileOpen}
+        inert={!mobileOpen}
       >
-        <Link
-          to="/#about"
-          onClick={() => setMobileOpen(false)}
-          className="text-2xl font-light text-white/80 hover:text-white"
-        >
-          {t('nav_about')}
-        </Link>
-        <Link
-          to="/models"
-          onClick={() => setMobileOpen(false)}
-          className={`text-2xl ${isModelsPage ? 'font-semibold text-[var(--accent)]' : 'font-light text-white/80'}`}
-        >
-          {t('nav_models')}
-        </Link>
-        <Link
-          to="/#contact"
-          onClick={() => setMobileOpen(false)}
-          className="text-2xl font-light text-white/80 hover:text-white"
-        >
-          {t('nav_contact')}
-        </Link>
-        <button
-          type="button"
-          onClick={() => { toggleLang(); setMobileOpen(false) }}
-          className="text-lg text-white/40 hover:text-white/70"
-        >
-          {lang === 'bg' ? 'English' : 'Bulgarian'}
-        </button>
+        <div className="section-shell h-full pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] flex flex-col">
+          <p className="section-eyebrow mb-7">{isBg ? 'Меню' : 'Menu'}</p>
+          <nav className="border-t border-white/10" aria-label={isBg ? 'Мобилна навигация' : 'Mobile navigation'}>
+            {[
+              { to: '/#about', number: '01', label: t('nav_about'), active: false },
+              { to: '/models', number: '02', label: t('nav_models'), active: isModelsPage },
+              { to: '/#contact', number: '03', label: t('nav_contact'), active: false },
+            ].map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={() => setMobileOpen(false)}
+                className="group min-h-[76px] flex items-center gap-4 border-b border-white/10"
+              >
+                <span className="text-[10px] font-bold tracking-[0.14em] text-white/40">{item.number}</span>
+                <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-white'}`}>
+                  {item.label}
+                </span>
+                <svg className="ml-auto text-white/35 group-hover:text-white transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="mt-auto pt-8">
+            <div className="flex flex-col gap-2 mb-6 text-[14px] text-white/65">
+              <a href="tel:+359887773733" className="min-h-11 inline-flex items-center">+359 887 77 37 33</a>
+              <a href="mailto:office@kastaventures.com" className="min-h-11 inline-flex items-center">office@kastaventures.com</a>
+            </div>
+            <div className="flex items-center justify-between gap-4 pt-5 border-t border-white/10">
+              <a
+                href="https://instagram.com/erideprobulgaria"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-white/60"
+              >
+                Instagram
+              </a>
+              <button
+                type="button"
+                onClick={() => { toggleLang(); setMobileOpen(false) }}
+                className="min-h-11 px-4 rounded-full border border-white/15 text-[12px] font-bold tracking-[0.12em] uppercase text-white"
+              >
+                {lang === 'bg' ? 'EN' : 'BG'}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   )

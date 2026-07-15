@@ -23,62 +23,69 @@ export default function About() {
   }, [prefersReducedMotion])
 
   return (
-    <section id="about" ref={sectionRef} className="bg-[#0f0f0f] py-20 md:py-28">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+    <section id="about" ref={sectionRef} className="bg-[var(--bg)] py-16 sm:py-20 lg:py-28">
+      <div className="section-shell">
         {/* Section label */}
-        <div className="text-center mb-12">
-          <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
+        <div className="mb-9 sm:mb-12 lg:mb-14">
+          <span className="section-eyebrow mb-4">
             {isBg ? 'ЗА НАС' : 'OUR ETHOS'}
           </span>
-          <h2 className="text-display text-white text-[26px] sm:text-[32px] md:text-[clamp(36px,4vw,48px)]">
+          <h2 className="text-display max-w-[760px] text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
             {isBg ? 'ИСТОРИЯ НА КАЧЕСТВОТО' : 'HISTORY OF QUALITY'}
           </h2>
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-auto md:auto-rows-[200px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 auto-rows-auto lg:auto-rows-[210px]">
           {/* Big image - spans 2x2 */}
-          <div className="bento-item md:col-span-2 md:row-span-2 rounded-2xl overflow-hidden relative group" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <img src="/images/kasta/hero-stoika-bg.png" alt="E RIDE PRO" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-6 left-6">
-              <span className="text-[var(--accent)] text-[48px] md:text-[72px] font-extrabold leading-none">100+</span>
-              <p className="text-white/70 text-[12px] tracking-wider uppercase mt-1">
+          <div className="bento-item sm:col-span-2 lg:row-span-2 min-h-[360px] sm:min-h-[440px] rounded-2xl sm:rounded-3xl overflow-hidden relative group" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+            <img
+              src="/images/kasta/hero-stoika-bg.jpg"
+              alt={isBg ? 'Ездач на E RIDE PRO електрически мотокрос' : 'Rider on an E RIDE PRO electric dirt bike'}
+              loading="lazy"
+              width="1200"
+              height="1006"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-black/15" />
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+              <span className="text-[var(--accent-text)] text-[52px] sm:text-[72px] font-extrabold leading-none tracking-[-0.05em]">100+</span>
+              <p className="text-white/75 text-[11px] tracking-[0.16em] uppercase mt-2 font-semibold">
                 {isBg ? 'магазина по света' : 'Stores Worldwide'}
               </p>
             </div>
           </div>
 
           {/* OEM Engineering card */}
-          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center mb-4">
+          <div className="bento-item surface-card min-h-[210px] rounded-2xl sm:rounded-3xl p-6 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+            <div className="w-11 h-11 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center mb-5">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
             <h3 className="text-[15px] font-bold text-white mb-2">
               {isBg ? 'OEM ИНЖЕНЕРИНГ' : 'OEM ENGINEERING'}
             </h3>
-            <p className="text-[13px] text-white/60 leading-relaxed">
+            <p className="text-[14px] text-white/65 leading-relaxed">
               {isBg ? 'Професионално инженерство и производство от най-висок клас.' : 'Professional engineering and top-tier manufacturing.'}
             </p>
           </div>
 
           {/* Warranty card */}
-          <div className="bento-item bg-[var(--accent)] rounded-2xl p-6 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <span className="text-[48px] font-extrabold text-white leading-none">2</span>
-            <p className="text-white/90 text-[13px] font-medium mt-2">
+          <div className="bento-item min-h-[210px] bg-[var(--accent)] rounded-2xl sm:rounded-3xl p-6 flex flex-col justify-center shadow-[0_24px_70px_rgba(227,6,19,0.18)]" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+            <span className="text-[56px] font-extrabold text-white leading-none tracking-[-0.05em]">2</span>
+            <p className="text-white text-[13px] font-bold tracking-[0.08em] mt-3">
               {isBg ? 'ГОДИШНА ГАРАНЦИЯ' : 'YEAR WARRANTY'}
             </p>
-            <p className="text-white/70 text-[11px] mt-1">
+            <p className="text-white/75 text-[12px] mt-1.5">
               {isBg ? 'Пълно покритие от Kasta Ventures' : 'Full coverage from Kasta Ventures'}
             </p>
           </div>
 
           {/* Performance card */}
-          <div className="bento-item bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 flex flex-col justify-center md:col-span-1 lg:col-span-2" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+          <div className="bento-item surface-card sm:col-span-2 min-h-[210px] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
             <h3 className="text-[15px] font-bold text-white mb-2">
               {isBg ? 'ДОКАЗАНА ОФРОУД ПРОИЗВОДИТЕЛНОСТ' : 'PERFORMANCE PROVEN OFF-ROAD EXCELLENCE'}
             </h3>
-            <p className="text-[13px] text-white/60 leading-relaxed">
+            <p className="text-[14px] text-white/65 leading-relaxed max-w-[620px]">
               {isBg
                 ? 'Всеки модел е тестван в най-екстремните условия — от планинските пътеки на Рила до пустинните терени.'
                 : 'Every model is tested in the most extreme conditions — from Rila mountain trails to desert terrain.'}
@@ -86,17 +93,17 @@ export default function About() {
           </div>
 
           {/* Stats row */}
-          <div className="bento-item md:col-span-3 lg:col-span-4 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl p-6 md:p-8" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="bento-item sm:col-span-2 lg:col-span-4 surface-card rounded-2xl sm:rounded-3xl p-3 sm:p-4" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+            <div className="grid grid-cols-2 lg:grid-cols-4">
               {[
-                { num: '7+', label: isBg ? 'Модела' : 'Models' },
-                { num: '80', label: 'km/h ' + (isBg ? 'макс.' : 'top') },
+                { num: '7', label: isBg ? 'Модела' : 'Models' },
+                { num: '77', label: 'km/h ' + (isBg ? 'макс.' : 'top') },
                 { num: '8', label: 'kW ' + (isBg ? 'пик' : 'peak') },
                 { num: '120', label: 'km ' + (isBg ? 'обхват' : 'range') },
               ].map((s, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-[28px] sm:text-[32px] md:text-[clamp(32px,5vw,56px)] font-extrabold text-white leading-none tracking-tighter">{s.num}</div>
-                  <div className="text-[10px] md:text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-medium">{s.label}</div>
+                <div key={i} className={`text-center px-3 py-6 sm:py-7 ${i % 2 === 0 ? 'border-r border-white/10' : ''} ${i < 2 ? 'border-b border-white/10 lg:border-b-0' : ''} ${i === 1 ? 'lg:border-r' : ''}`}>
+                  <div className="text-[32px] sm:text-[38px] lg:text-[48px] font-extrabold text-white leading-none tracking-[-0.05em]">{s.num}</div>
+                  <div className="text-[10px] sm:text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-semibold">{s.label}</div>
                 </div>
               ))}
             </div>

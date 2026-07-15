@@ -71,8 +71,10 @@ export default function Blog() {
   const sectionRef = useRef<HTMLElement>(null)
   const isBg = lang === 'bg'
   const posts = postsByLang[isBg ? 'bg' : 'en']
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
+    if (prefersReducedMotion || !sectionRef.current) return
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.blog-item',
@@ -88,55 +90,47 @@ export default function Blog() {
       )
     }, sectionRef)
     return () => ctx.revert()
-  }, [])
+  }, [prefersReducedMotion])
 
   return (
     <section
       ref={sectionRef}
-      className="bg-[#0f0f0f] py-20 md:py-28 border-t border-white/[0.04]"
+      className="bg-[var(--bg)] py-16 sm:py-20 lg:py-28 border-t border-white/[0.06]"
     >
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        <div className="text-center mb-14">
-          <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
+      <div className="section-shell">
+        <div className="mb-9 sm:mb-12 lg:mb-14">
+          <span className="section-eyebrow mb-4">
             {t('blog_title')}
           </span>
-          <h2
-            className="text-display text-white"
-            style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}
-          >
+          <h2 className="text-display text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
             {t('blog_subtitle')}
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           {posts.map((post, index) => (
             <article
               key={index}
-              className="blog-item group p-6 bg-[#1a1a1a] border border-white/[0.06] rounded-2xl hover:border-white/10 transition-all cursor-pointer"
-              style={{ opacity: 0 }}
+              className="blog-item surface-card min-h-[220px] p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col"
+              style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <span className="inline-block px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-[10px] font-bold tracking-wider uppercase mb-4">
-                {post.tag}
-              </span>
-              <h3 className="text-[17px] font-semibold text-white mb-2 group-hover:text-[var(--accent)] transition-colors">
+              <div className="flex items-center justify-between gap-4 mb-8">
+                <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/15 text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
+                  {post.tag}
+                </span>
+                <span className="text-[11px] font-semibold tracking-[0.12em] text-white/45" aria-hidden="true">
+                  0{index + 1}
+                </span>
+              </div>
+              <h3 className="text-[19px] sm:text-[21px] leading-snug font-semibold text-white mb-3">
                 {post.title}
               </h3>
-              <p className="text-[13px] text-white/40 leading-relaxed mb-4">
+              <p className="text-[14px] text-white/65 leading-relaxed mb-6">
                 {post.excerpt}
               </p>
-              <div className="flex items-center gap-2 text-[12px] font-semibold text-white/30 group-hover:text-[var(--accent)] transition-colors">
-                <span>{t('read_more')}</span>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </div>
+              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-white/50">
+                {t('coming_soon')}
+              </span>
             </article>
           ))}
         </div>

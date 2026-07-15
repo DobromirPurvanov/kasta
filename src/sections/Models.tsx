@@ -48,31 +48,39 @@ export default function Models() {
   }, [prefersReducedMotion])
 
   useEffect(() => {
-    if (prefersReducedMotion) return
-    gsap.fromTo(
-      '.product-card',
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out' }
-    )
+    if (prefersReducedMotion || !sectionRef.current) return
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        '.product-card',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out' }
+      )
+    }, sectionRef)
+    return () => ctx.revert()
   }, [activeFilter, prefersReducedMotion])
 
   return (
-    <section id="models" ref={sectionRef} className="bg-[#0f0f0f] py-20 md:py-28">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+    <section id="models" ref={sectionRef} className="bg-[var(--bg)] py-16 sm:py-20 lg:py-28">
+      <div className="section-shell">
         <div
-          className="models-title flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12"
+          className="models-title mb-8 sm:mb-10"
           style={{ opacity: prefersReducedMotion ? 1 : 0 }}
         >
-          <div>
-            <span className="text-[var(--accent)] text-[12px] font-bold tracking-[0.15em] uppercase mb-3 block">
+          <div className="flex items-end justify-between gap-5 mb-8">
+            <div>
+            <span className="section-eyebrow mb-4">
               {t('models_title')}
             </span>
-            <h2 className="text-display text-white text-[28px] sm:text-[32px] md:text-[clamp(40px,5vw,56px)]">
+            <h2 className="text-display text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
               {isBg ? 'ИЗБЕРИ СВОЯ МОДЕЛ' : 'CHOOSE YOUR MODEL'}
             </h2>
+            </div>
+            <p className="hidden sm:block shrink-0 text-[12px] font-semibold tracking-[0.12em] uppercase text-white/50" aria-live="polite">
+              {filtered.length} {isBg ? (filtered.length === 1 ? 'модел' : 'модела') : (filtered.length === 1 ? 'model' : 'models')}
+            </p>
           </div>
           <div
-            className="flex flex-wrap md:flex-nowrap gap-2 -mx-1 px-1 md:mx-0 md:px-0 overflow-x-auto pb-2 md:pb-0 scrollbar-hide"
+            className="flex flex-nowrap gap-2 -mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto pb-2 scrollbar-hide snap-x"
             role="group"
             aria-label={isBg ? 'Филтри на модели' : 'Model filters'}
           >
@@ -81,7 +89,7 @@ export default function Models() {
                 type="button"
                 key={f.key}
                 onClick={() => setActiveFilter(f.key)}
-                className={`filter-pill whitespace-nowrap focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${
+                className={`filter-pill snap-start whitespace-nowrap ${
                   activeFilter === f.key ? 'active' : ''
                 }`}
                 aria-pressed={activeFilter === f.key}
@@ -92,49 +100,56 @@ export default function Models() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {filtered.map((product) => (
             <Link
               key={product.id}
               to={`/product/${product.slug}`}
-              className="product-card group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="product-card group surface-card rounded-2xl sm:rounded-3xl overflow-hidden card-hover"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-square bg-[radial-gradient(circle_at_center,_#555555_0%,_#333333_35%,_#1a1a1a_70%)] overflow-hidden flex items-center justify-center p-4 sm:p-6">
+              <div className="relative aspect-[4/3] bg-[radial-gradient(circle_at_center,_#4a4a4d_0%,_#29292c_42%,_#151517_76%)] overflow-hidden flex items-center justify-center p-4 sm:p-5">
                 <img
                   src={product.image}
                   alt={product.alt}
                   loading="lazy"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 drop-shadow-2xl brightness-125 contrast-115"
+                  width="600"
+                  height="600"
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-2xl brightness-125 contrast-115"
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="absolute inset-0 hidden lg:flex items-center justify-center pointer-events-none">
                   <span className="px-4 sm:px-5 py-2 sm:py-2.5 bg-[var(--accent)] text-white text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0 shadow-xl">
                     {t('quick_view')}
                   </span>
                 </div>
               </div>
-              <div className="p-4 sm:p-5">
-                <span className="text-[10px] font-semibold tracking-[0.15em] text-white/50 uppercase">
+              <div className="p-5 sm:p-6">
+                <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--accent-text)] uppercase">
                   {product.category}
                 </span>
-                <h3 className="text-[15px] font-semibold text-white mt-1 group-hover:text-[var(--accent)] transition-colors">
+                <h3 className="text-[16px] leading-snug font-semibold text-white mt-1.5 group-hover:text-[var(--accent-text)] transition-colors">
                   {isBg ? product.nameBg : product.name}
                 </h3>
-                <p className="text-[13px] text-white/60 mt-2 line-clamp-2">
+                <p className="text-[13px] leading-relaxed text-white/60 mt-2.5 line-clamp-2 min-h-[42px]">
                   {isBg ? product.taglineBg : product.tagline}
                 </p>
-                <div className="flex items-baseline gap-2 mt-4">
-                  {product.salePrice && (
-                    <span className="text-[13px] text-white/40 line-through">
-                      {product.salePrice}
+                <div className="flex items-end justify-between gap-4 mt-5 pt-4 border-t border-white/[0.08]">
+                  <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                    {product.originalPrice && (
+                      <span className="text-[12px] text-white/55 line-through">
+                        {product.originalPrice}
+                      </span>
+                    )}
+                    <span className="text-[19px] font-bold text-white">
+                      {product.price}
                     </span>
-                  )}
-                  <span className="text-[18px] font-bold text-white">
-                    {product.price}
-                  </span>
-                  <span className="text-[12px] text-white/50">
-                    {product.priceBgn}
+                    <span className="text-[11px] text-white/60">
+                      {product.priceBgn}
+                    </span>
+                  </div>
+                  <span className="w-10 h-10 shrink-0 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/70 group-hover:bg-[var(--accent)] group-hover:text-white group-hover:border-[var(--accent)] transition-colors" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                   </span>
                 </div>
               </div>

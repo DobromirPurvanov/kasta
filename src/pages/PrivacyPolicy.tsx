@@ -1,17 +1,15 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useLang } from '../hooks/useLang'
+import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function PrivacyPolicy() {
   const { lang } = useLang()
   const isBg = lang === 'bg'
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    document.title = isBg
-      ? 'Политика за поверителност | Kasta Ventures'
-      : 'Privacy Policy | Kasta Ventures'
-  }, [isBg])
+  usePageMeta({
+    title: isBg ? 'Политика за поверителност | Kasta Ventures' : 'Privacy Policy | Kasta Ventures',
+    path: '/privacy-policy',
+  })
 
   const t = {
     bg: {
