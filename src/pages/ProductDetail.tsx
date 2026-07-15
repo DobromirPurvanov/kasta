@@ -138,7 +138,7 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           {/* Image gallery */}
           <div className="pd-anim flex gap-3" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="flex-1 aspect-square bg-[#141414] rounded-2xl p-6 overflow-hidden">
+            <div className="flex-1 aspect-square bg-[#2a2a2a] rounded-2xl p-6 overflow-hidden">
               <img
                 src={product.image}
                 alt={product.alt}

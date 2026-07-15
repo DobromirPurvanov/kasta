@@ -101,7 +101,7 @@ export default function Models() {
               className="product-card group bg-[#1a1a1a] border border-white/[0.06] rounded-2xl overflow-hidden card-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-square bg-[#141414] p-6 overflow-hidden">
+              <div className="relative aspect-square bg-[#2a2a2a] p-6 overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.alt}

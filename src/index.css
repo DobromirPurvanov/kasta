@@ -140,15 +140,16 @@
     font-weight: 500;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: transparent;
-    color: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.85);
     transition: all 0.25s ease;
     cursor: pointer;
   }
   .filter-pill:hover {
-    border-color: rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
   }
   .filter-pill.active {
     background: var(--accent);
