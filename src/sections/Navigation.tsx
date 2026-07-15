@@ -55,7 +55,7 @@ export default function Navigation() {
           {/* Center logo */}
           <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
             <img
-              src="/images/eride-logo-real.jpg"
+              src="/images/eride-logo-real.png"
               alt="E RIDE PRO"
               className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md"
               width="32"
