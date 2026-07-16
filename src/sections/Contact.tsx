@@ -47,7 +47,7 @@ export default function Contact() {
         <span className="section-eyebrow mb-4">
           {t('contact_title')}
         </span>
-        <h2 className="text-display text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
+        <h2 className="text-display text-fg text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
           {isBg ? 'СВЪРЖИ СЕ С НАС' : 'GET IN TOUCH'}
         </h2>
       </div>
@@ -66,8 +66,8 @@ export default function Contact() {
                 </span>
               </div>
               <div>
-                <span className="text-[16px] font-bold text-white">KaSta</span>
-                <span className="text-[10px] font-bold text-white/40 ml-1">
+                <span className="text-[16px] font-bold text-fg">KaSta</span>
+                <span className="text-[10px] font-bold text-fg/40 ml-1">
                   VENTURES
                 </span>
               </div>
@@ -75,7 +75,7 @@ export default function Contact() {
 
             <div className="space-y-5">
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
                   <svg
                     width="14"
                     height="14"
@@ -89,15 +89,15 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[11px] tracking-[0.1em] text-white/60 uppercase font-semibold">
+                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
                     {t('location_title')}
                   </p>
-                  <p className="text-[14px] text-white/80">{t('location_address')}</p>
+                  <p className="text-[14px] text-fg/80">{t('location_address')}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
                   <svg
                     width="14"
                     height="14"
@@ -110,12 +110,12 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[11px] tracking-[0.1em] text-white/60 uppercase font-semibold">
+                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
                     {t('contact_email_label')}
                   </p>
                   <a
                     href="mailto:office@kastaventures.com"
-                    className="text-[14px] text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
+                    className="text-[14px] text-fg/80 hover:text-fg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
                   >
                     office@kastaventures.com
                   </a>
@@ -123,7 +123,7 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-white/[0.05] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
                   <svg
                     width="14"
                     height="14"
@@ -136,12 +136,12 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[11px] tracking-[0.1em] text-white/60 uppercase font-semibold">
+                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
                     {t('contact_phone_label')}
                   </p>
                   <a
                     href="tel:+359887773733"
-                    className="text-[14px] text-white/80 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
+                    className="text-[14px] text-fg/80 hover:text-fg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
                   >
                     +359 887 77 37 33
                   </a>
@@ -158,17 +158,13 @@ export default function Contact() {
           </div>
         </div>
 
-        <div className="h-[340px] sm:h-[420px] md:h-[clamp(480px,56vh,620px)] overflow-hidden border-y border-white/[0.08]">
+        <div className="h-[340px] sm:h-[420px] md:h-[clamp(480px,56vh,620px)] overflow-hidden border-y border-fg/[0.08]">
           <iframe
             title={isBg ? 'Местоположение на Kasta Ventures' : 'Kasta Ventures location'}
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.0!2d23.27323!3d42.648462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM4JzU0LjUiTiAyM8KwMTYnMjMuNiJF!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg"
             width="100%"
             height="100%"
-            style={{
-              border: 0,
-              filter: 'grayscale(100%) invert(92%) hue-rotate(180deg) contrast(85%)',
-              borderRadius: 0,
-            }}
+            className="map-frame"
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
@@ -176,7 +172,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="contact-stats-row bg-[#080809]">
+      <div className="contact-stats-row bg-[var(--bg-deep)]">
         <div className="section-shell py-5 sm:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4">
             {[
@@ -185,11 +181,11 @@ export default function Contact() {
               { num: '77', label: isBg ? 'км/ч макс.' : 'km/h top' },
               { num: '2', label: isBg ? 'часа зареждане' : 'hours charging' },
             ].map((s, i) => (
-              <div key={i} className={`contact-stat text-center px-2 py-5 sm:py-6 ${i % 2 === 0 ? 'border-r border-white/10' : ''} ${i < 2 ? 'border-b border-white/10 md:border-b-0' : ''} ${i === 1 ? 'md:border-r' : ''}`} style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-                <div className="text-[30px] sm:text-[38px] lg:text-[46px] font-extrabold text-white leading-none tracking-[-0.05em]">
+              <div key={i} className={`contact-stat text-center px-2 py-5 sm:py-6 ${i % 2 === 0 ? 'border-r border-fg/10' : ''} ${i < 2 ? 'border-b border-fg/10 md:border-b-0' : ''} ${i === 1 ? 'md:border-r' : ''}`} style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
+                <div className="text-[30px] sm:text-[38px] lg:text-[46px] font-extrabold text-fg leading-none tracking-[-0.05em]">
                   {s.num}
                 </div>
-                <div className="text-[10px] sm:text-[11px] text-white/60 tracking-[0.14em] uppercase mt-2 font-semibold">
+                <div className="text-[10px] sm:text-[11px] text-fg/60 tracking-[0.14em] uppercase mt-2 font-semibold">
                   {s.label}
                 </div>
               </div>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+
     <!-- Primary Meta Tags -->
     <title>E RIDE PRO България — Електрически мотокрос | Kasta Ventures</title>
     <meta name="title" content="E RIDE PRO България — Електрически мотокрос | Kasta Ventures" />
@@ -39,8 +40,24 @@
     <meta name="twitter:image:alt" content="E RIDE PRO SR Off Road електрически мотокрос" />
 
     <!-- Theme Color -->
-    <meta name="theme-color" content="#0f0f0f" />
+    <meta name="theme-color" content="#0b0b0c" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- Apply theme before first paint to avoid a flash of the wrong theme -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme')
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+          }
+          if (t === 'dark') document.documentElement.classList.add('dark')
+          document.documentElement.style.colorScheme = t
+          var meta = document.querySelector('meta[name="theme-color"]')
+          if (meta) meta.setAttribute('content', t === 'dark' ? '#0b0b0c' : '#f6f6f7')
+        } catch (e) { /* ignore */ }
+      })()
+    </script>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/images/icon-192x192.png" />

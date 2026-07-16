@@ -17,7 +17,7 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 function RouteFallback() {
   return (
     <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center pt-[72px]" aria-busy="true">
-      <div className="w-8 h-8 rounded-full border-2 border-white/10 border-t-[var(--accent)] animate-spin" />
+      <div className="w-8 h-8 rounded-full border-2 border-fg/10 border-t-[var(--accent)] animate-spin" />
     </div>
   )
 }
@@ -37,7 +37,7 @@ function SkipLink() {
 export default function App() {
   return (
     <LangProvider>
-      <div className="min-h-screen bg-[var(--bg)] text-white">
+      <div className="min-h-screen bg-[var(--bg)] text-fg">
         <SkipLink />
         <ScrollManager />
         <Navigation />

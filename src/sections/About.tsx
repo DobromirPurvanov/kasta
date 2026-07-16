@@ -30,7 +30,7 @@ export default function About() {
           <span className="section-eyebrow mb-4">
             {isBg ? 'ЗА НАС' : 'OUR ETHOS'}
           </span>
-          <h2 className="text-display max-w-[760px] text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
+          <h2 className="text-display max-w-[760px] text-fg text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
             {isBg ? 'ИСТОРИЯ НА КАЧЕСТВОТО' : 'HISTORY OF QUALITY'}
           </h2>
         </div>
@@ -61,10 +61,10 @@ export default function About() {
             <div className="w-11 h-11 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/20 flex items-center justify-center mb-5">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             </div>
-            <h3 className="text-[15px] font-bold text-white mb-2">
+            <h3 className="text-[15px] font-bold text-fg mb-2">
               {isBg ? 'OEM ИНЖЕНЕРИНГ' : 'OEM ENGINEERING'}
             </h3>
-            <p className="text-[14px] text-white/65 leading-relaxed">
+            <p className="text-[14px] text-fg/65 leading-relaxed">
               {isBg ? 'Професионално инженерство и производство от най-висок клас.' : 'Professional engineering and top-tier manufacturing.'}
             </p>
           </div>
@@ -82,10 +82,10 @@ export default function About() {
 
           {/* Performance card */}
           <div className="bento-item surface-card sm:col-span-2 min-h-[210px] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-center" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <h3 className="text-[15px] font-bold text-white mb-2">
+            <h3 className="text-[15px] font-bold text-fg mb-2">
               {isBg ? 'ДОКАЗАНА ОФРОУД ПРОИЗВОДИТЕЛНОСТ' : 'PERFORMANCE PROVEN OFF-ROAD EXCELLENCE'}
             </h3>
-            <p className="text-[14px] text-white/65 leading-relaxed max-w-[620px]">
+            <p className="text-[14px] text-fg/65 leading-relaxed max-w-[620px]">
               {isBg
                 ? 'Всеки модел е тестван в най-екстремните условия — от планинските пътеки на Рила до пустинните терени.'
                 : 'Every model is tested in the most extreme conditions — from Rila mountain trails to desert terrain.'}
@@ -101,9 +101,9 @@ export default function About() {
                 { num: '8', label: 'kW ' + (isBg ? 'пик' : 'peak') },
                 { num: '120', label: 'km ' + (isBg ? 'обхват' : 'range') },
               ].map((s, i) => (
-                <div key={i} className={`text-center px-3 py-6 sm:py-7 ${i % 2 === 0 ? 'border-r border-white/10' : ''} ${i < 2 ? 'border-b border-white/10 lg:border-b-0' : ''} ${i === 1 ? 'lg:border-r' : ''}`}>
-                  <div className="text-[32px] sm:text-[38px] lg:text-[48px] font-extrabold text-white leading-none tracking-[-0.05em]">{s.num}</div>
-                  <div className="text-[10px] sm:text-[11px] text-white/60 tracking-[0.15em] uppercase mt-2 font-semibold">{s.label}</div>
+                <div key={i} className={`text-center px-3 py-6 sm:py-7 ${i % 2 === 0 ? 'border-r border-fg/10' : ''} ${i < 2 ? 'border-b border-fg/10 lg:border-b-0' : ''} ${i === 1 ? 'lg:border-r' : ''}`}>
+                  <div className="text-[32px] sm:text-[38px] lg:text-[48px] font-extrabold text-fg leading-none tracking-[-0.05em]">{s.num}</div>
+                  <div className="text-[10px] sm:text-[11px] text-fg/60 tracking-[0.15em] uppercase mt-2 font-semibold">{s.label}</div>
                 </div>
               ))}
             </div>

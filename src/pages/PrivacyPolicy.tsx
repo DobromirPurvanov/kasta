@@ -119,31 +119,31 @@ export default function PrivacyPolicy() {
   const content = t[isBg ? 'bg' : 'en']
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] pt-[72px]">
+    <div className="min-h-screen bg-[var(--bg)] pt-[72px]">
       {/* Breadcrumb */}
-      <div className="border-b border-white/[0.06]">
+      <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
           <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
-            <Link to="/" className="text-white/50 hover:text-white transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
-            <span className="text-white/20">/</span>
-            <span className="text-white/80 font-medium" aria-current="page">{isBg ? 'Поверителност' : 'Privacy'}</span>
+            <Link to="/" className="text-fg/50 hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <span className="text-fg/20">/</span>
+            <span className="text-fg/80 font-medium" aria-current="page">{isBg ? 'Поверителност' : 'Privacy'}</span>
           </nav>
         </div>
       </div>
 
       <div className="max-w-[800px] mx-auto px-6 md:px-10 py-16">
-        <h1 className="text-display text-white mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
+        <h1 className="text-display text-fg mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
           {content.title}
         </h1>
-        <p className="text-[13px] text-white/50 mb-10">{content.lastUpdated}</p>
+        <p className="text-[13px] text-fg/50 mb-10">{content.lastUpdated}</p>
 
-        <p className="text-[15px] text-white/70 leading-relaxed mb-12">{content.intro}</p>
+        <p className="text-[15px] text-fg/70 leading-relaxed mb-12">{content.intro}</p>
 
         <div className="space-y-10">
           {content.sections.map((section, i) => (
-            <div key={i} className="border-t border-white/[0.06] pt-8">
-              <h2 className="text-[18px] font-semibold text-white mb-4">{section.title}</h2>
-              <div className="text-[14px] text-white/60 leading-[1.85] whitespace-pre-line">
+            <div key={i} className="border-t border-fg/[0.06] pt-8">
+              <h2 className="text-[18px] font-semibold text-fg mb-4">{section.title}</h2>
+              <div className="text-[14px] text-fg/60 leading-[1.85] whitespace-pre-line">
                 {section.content}
               </div>
             </div>
@@ -151,8 +151,8 @@ export default function PrivacyPolicy() {
         </div>
 
         {/* Back button */}
-        <div className="mt-16 pt-8 border-t border-white/[0.06]">
-          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+        <div className="mt-16 pt-8 border-t border-fg/[0.06]">
+          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-fg">
             {isBg ? '← Обратно към началото' : '← Back to Home'}
           </Link>
         </div>

@@ -12,13 +12,13 @@ export default function NotFound() {
   })
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center pt-[72px] px-6">
+    <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center pt-[72px] px-6">
       <div className="text-center">
         <p className="text-[var(--accent-text)] text-[12px] font-bold tracking-[0.15em] uppercase mb-4">
           {isBg ? 'Грешка 404' : 'Error 404'}
         </p>
-        <h1 className="text-display text-white text-[64px] sm:text-[96px] leading-none mb-4">404</h1>
-        <p className="text-white/60 text-[15px] mb-8 max-w-[400px] mx-auto">
+        <h1 className="text-display text-fg text-[64px] sm:text-[96px] leading-none mb-4">404</h1>
+        <p className="text-fg/60 text-[15px] mb-8 max-w-[400px] mx-auto">
           {isBg
             ? 'Страницата, която търсиш, не съществува или е преместена.'
             : 'The page you are looking for does not exist or has been moved.'}

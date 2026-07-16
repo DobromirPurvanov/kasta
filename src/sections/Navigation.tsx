@@ -1,12 +1,37 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useLang } from '../hooks/useLang'
+import { useTheme } from '../hooks/useTheme'
 
 const anchorLinkClass =
-  'text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-white/70 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
+  'text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-fg/70 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
+
+function ThemeToggle({ onToggle, isDark, label, className = '' }: { onToggle: () => void; isDark: boolean; label: string; className?: string }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className={`w-10 h-10 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
+      aria-label={label}
+      title={label}
+    >
+      {isDark ? (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
+      ) : (
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      )}
+    </button>
+  )
+}
 
 export default function Navigation() {
   const { lang, setLang, t } = useLang()
+  const { theme, toggleTheme } = useTheme()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -56,14 +81,22 @@ export default function Navigation() {
 
   const toggleLang = () => setLang(lang === 'bg' ? 'en' : 'bg')
   const isBg = lang === 'bg'
+  const isDark = theme === 'dark'
   const isModelsPage = location.pathname === '/models'
+  const isHome = location.pathname === '/'
+  // Over the hero video the nav sits on dark imagery regardless of theme —
+  // force the dark scope so text/icons stay light until the page is scrolled.
+  const overHero = isHome && !scrolled && !mobileOpen
+  const themeLabel = isDark
+    ? (isBg ? 'Светла тема' : 'Switch to light theme')
+    : (isBg ? 'Тъмна тема' : 'Switch to dark theme')
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
+        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${overHero ? 'dark' : ''} ${
           scrolled || mobileOpen
-            ? 'bg-[var(--bg)]/95 backdrop-blur-md border-b border-white/[0.08]'
+            ? 'nav-solid backdrop-blur-md border-b border-fg/[0.08]'
             : 'bg-transparent'
         }`}
         aria-label="Main navigation"
@@ -78,7 +111,7 @@ export default function Navigation() {
               to="/models"
               className={({ isActive }) =>
                 `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm ${
-                  isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-white/70 hover:text-white'
+                  isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-fg/70 hover:text-fg'
                 }`
               }
               aria-current={isModelsPage ? 'page' : undefined}
@@ -102,7 +135,7 @@ export default function Navigation() {
             <img
               src="/images/kasta-logo-small.png"
               alt="Kasta Ventures"
-              className="h-6 sm:h-7 object-contain brightness-150 contrast-125"
+              className="h-6 sm:h-7 object-contain logo-ink"
               width="110"
               height="28"
             />
@@ -110,11 +143,12 @@ export default function Navigation() {
 
           {/* Right */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <a
               href="https://instagram.com/erideprobulgaria"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white/70 hover:text-white hover:border-white/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="w-10 h-10 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label="Instagram"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -126,26 +160,29 @@ export default function Navigation() {
             <button
               type="button"
               onClick={toggleLang}
-              className="text-[11px] font-semibold tracking-wider text-white/70 hover:text-white px-4 py-2.5 rounded-full hover:bg-white/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="text-[11px] font-semibold tracking-wider text-fg/70 hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
             >
               {lang === 'bg' ? 'EN' : 'BG'}
             </button>
           </div>
 
-          {/* Mobile hamburger */}
-          <button
-            ref={burgerRef}
-            type="button"
-            className="md:hidden w-11 h-11 -mr-1 flex flex-col justify-center items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          >
-            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-6 rotate-45 translate-y-[5px]' : 'w-6'}`} />
-            <span className={`block h-[2px] bg-white transition-all ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-6'}`} />
-          </button>
+          {/* Mobile: theme toggle + hamburger */}
+          <div className="md:hidden flex items-center gap-1">
+            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="border-transparent" />
+            <button
+              ref={burgerRef}
+              type="button"
+              className="w-11 h-11 -mr-1 flex flex-col justify-center items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              <span className={`block h-[2px] bg-fg transition-all ${mobileOpen ? 'w-6 rotate-45 translate-y-[5px]' : 'w-6'}`} />
+              <span className={`block h-[2px] bg-fg transition-all ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[3px]' : 'w-6'}`} />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -161,7 +198,7 @@ export default function Navigation() {
       >
         <div className="section-shell h-full pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] flex flex-col">
           <p className="section-eyebrow mb-7">{isBg ? 'Меню' : 'Menu'}</p>
-          <nav className="border-t border-white/10" aria-label={isBg ? 'Мобилна навигация' : 'Mobile navigation'}>
+          <nav className="border-t border-fg/10" aria-label={isBg ? 'Мобилна навигация' : 'Mobile navigation'}>
             {[
               { to: '/#about', number: '01', label: t('nav_about'), active: false },
               { to: '/models', number: '02', label: t('nav_models'), active: isModelsPage },
@@ -171,38 +208,41 @@ export default function Navigation() {
                 key={item.to}
                 to={item.to}
                 onClick={() => setMobileOpen(false)}
-                className="group min-h-[76px] flex items-center gap-4 border-b border-white/10"
+                className="group min-h-[76px] flex items-center gap-4 border-b border-fg/10"
               >
-                <span className="text-[10px] font-bold tracking-[0.14em] text-white/40">{item.number}</span>
-                <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-white'}`}>
+                <span className="text-[10px] font-bold tracking-[0.14em] text-fg/40">{item.number}</span>
+                <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-fg'}`}>
                   {item.label}
                 </span>
-                <svg className="ml-auto text-white/35 group-hover:text-white transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                <svg className="ml-auto text-fg/35 group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>
             ))}
           </nav>
 
           <div className="mt-auto pt-8">
-            <div className="flex flex-col gap-2 mb-6 text-[14px] text-white/65">
+            <div className="flex flex-col gap-2 mb-6 text-[14px] text-fg/65">
               <a href="tel:+359887773733" className="min-h-11 inline-flex items-center">+359 887 77 37 33</a>
               <a href="mailto:office@kastaventures.com" className="min-h-11 inline-flex items-center">office@kastaventures.com</a>
             </div>
-            <div className="flex items-center justify-between gap-4 pt-5 border-t border-white/10">
+            <div className="flex items-center justify-between gap-4 pt-5 border-t border-fg/10">
               <a
                 href="https://instagram.com/erideprobulgaria"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-white/60"
+                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-fg/60"
               >
                 Instagram
               </a>
-              <button
-                type="button"
-                onClick={() => { toggleLang(); setMobileOpen(false) }}
-                className="min-h-11 px-4 rounded-full border border-white/15 text-[12px] font-bold tracking-[0.12em] uppercase text-white"
-              >
-                {lang === 'bg' ? 'EN' : 'BG'}
-              </button>
+              <div className="flex items-center gap-2">
+                <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="!w-11 !h-11 border-fg/15" />
+                <button
+                  type="button"
+                  onClick={() => { toggleLang(); setMobileOpen(false) }}
+                  className="min-h-11 px-4 rounded-full border border-fg/15 text-[12px] font-bold tracking-[0.12em] uppercase text-fg"
+                >
+                  {lang === 'bg' ? 'EN' : 'BG'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

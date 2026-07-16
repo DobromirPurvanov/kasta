@@ -60,11 +60,11 @@ function Toggle({
     >
       <span
         className={`relative block w-10 h-6 rounded-full transition-colors ${
-          active ? 'bg-[var(--accent)]' : 'bg-white/15'
+          active ? 'bg-[var(--accent)]' : 'bg-fg/15'
         }`}
       >
         <span
-          className={`absolute top-1 left-1 block w-4 h-4 rounded-full bg-white transition-transform ${
+          className={`absolute top-1 left-1 block w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${
             active ? 'translate-x-4' : 'translate-x-0'
           }`}
         />
@@ -210,7 +210,7 @@ export default function CookieConsent() {
 
       <div
         ref={dialogRef}
-        className="relative w-full max-w-[640px] sm:mx-4 sm:mb-4 bg-[var(--bg-card)] border border-white/10 sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300 max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] overflow-y-auto"
+        className="relative w-full max-w-[640px] sm:mx-4 sm:mb-4 bg-[var(--bg-card)] border border-fg/10 sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-4 duration-300 max-h-[calc(100dvh-1rem)] sm:max-h-[90dvh] overflow-y-auto"
         role="dialog"
         aria-modal="true"
         aria-labelledby="cookie-title"
@@ -228,52 +228,52 @@ export default function CookieConsent() {
               </svg>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 id="cookie-title" className="text-sm sm:text-lg font-semibold text-white mb-1 sm:mb-1.5">{t.title}</h3>
-              <p className="text-[13px] sm:text-[14px] text-white/65 leading-relaxed">{t.description}</p>
+              <h3 id="cookie-title" className="text-sm sm:text-lg font-semibold text-fg mb-1 sm:mb-1.5">{t.title}</h3>
+              <p className="text-[13px] sm:text-[14px] text-fg/65 leading-relaxed">{t.description}</p>
             </div>
           </div>
         </div>
 
         {showDetails && (
-          <div className="px-4 sm:px-6 pb-3 sm:pb-4 space-y-2 sm:space-y-3 border-t border-white/[0.06] pt-3 sm:pt-4">
+          <div className="px-4 sm:px-6 pb-3 sm:pb-4 space-y-2 sm:space-y-3 border-t border-fg/[0.06] pt-3 sm:pt-4">
             <div className="flex items-start gap-2.5 sm:gap-3">
               <Toggle active disabled ariaLabel={t.necessary} />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[13px] sm:text-[14px] font-medium text-white">{t.necessary}</span>
+                  <span className="text-[13px] sm:text-[14px] font-medium text-fg">{t.necessary}</span>
                   <span className="text-[10px] sm:text-[11px] font-semibold text-[var(--accent)] uppercase tracking-wider flex-shrink-0">{t.required}</span>
                 </div>
-                <p className="text-[12px] text-white/65 mt-0.5">{t.necessaryDesc}</p>
+                <p className="text-[12px] text-fg/65 mt-0.5">{t.necessaryDesc}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-2.5 sm:gap-3">
               <Toggle active={preferences.analytics} onClick={() => togglePreference('analytics')} ariaLabel={t.analytics} />
               <div className="flex-1 min-w-0">
-                <span className="text-[13px] sm:text-[14px] font-medium text-white">{t.analytics}</span>
-                <p className="text-[12px] text-white/65 mt-0.5">{t.analyticsDesc}</p>
+                <span className="text-[13px] sm:text-[14px] font-medium text-fg">{t.analytics}</span>
+                <p className="text-[12px] text-fg/65 mt-0.5">{t.analyticsDesc}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-2.5 sm:gap-3">
               <Toggle active={preferences.marketing} onClick={() => togglePreference('marketing')} ariaLabel={t.marketing} />
               <div className="flex-1 min-w-0">
-                <span className="text-[13px] sm:text-[14px] font-medium text-white">{t.marketing}</span>
-                <p className="text-[12px] text-white/65 mt-0.5">{t.marketingDesc}</p>
+                <span className="text-[13px] sm:text-[14px] font-medium text-fg">{t.marketing}</span>
+                <p className="text-[12px] text-fg/65 mt-0.5">{t.marketingDesc}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-2.5 sm:gap-3">
               <Toggle active={preferences.preferences} onClick={() => togglePreference('preferences')} ariaLabel={t.preferences} />
               <div className="flex-1 min-w-0">
-                <span className="text-[13px] sm:text-[14px] font-medium text-white">{t.preferences}</span>
-                <p className="text-[12px] text-white/65 mt-0.5">{t.preferencesDesc}</p>
+                <span className="text-[13px] sm:text-[14px] font-medium text-fg">{t.preferences}</span>
+                <p className="text-[12px] text-fg/65 mt-0.5">{t.preferencesDesc}</p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-white/[0.06] pb-[max(1rem,env(safe-area-inset-bottom))]">
+        <div className="p-4 sm:p-6 pt-3 sm:pt-4 border-t border-fg/[0.06] pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <button type="button" onClick={acceptAll} className="btn-accent sm:col-span-2">
               {t.acceptAll}
@@ -292,10 +292,10 @@ export default function CookieConsent() {
             )}
           </div>
           <div className="flex justify-center gap-5 mt-3 sm:mt-4">
-            <Link to="/privacy-policy" onClick={() => setVisible(false)} className="min-h-11 inline-flex items-center text-[12px] text-white/65 hover:text-white transition-colors underline">
+            <Link to="/privacy-policy" onClick={() => setVisible(false)} className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline">
               {t.privacyLink}
             </Link>
-            <Link to="/cookie-policy" onClick={() => setVisible(false)} className="min-h-11 inline-flex items-center text-[12px] text-white/65 hover:text-white transition-colors underline">
+            <Link to="/cookie-policy" onClick={() => setVisible(false)} className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline">
               {t.cookiePolicy}
             </Link>
           </div>

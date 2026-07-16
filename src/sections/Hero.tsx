@@ -42,7 +42,8 @@ export default function Hero() {
   const isBg = lang === 'bg'
 
   return (
-    <section ref={sectionRef} className="relative min-h-[100svh] bg-[var(--bg)] overflow-hidden flex flex-col">
+    // Always-dark scope ("dark" class): the hero sits on video footage in both themes
+    <section ref={sectionRef} className="dark relative min-h-[100svh] bg-[var(--bg)] text-white overflow-hidden flex flex-col">
       {/* Video background (decorative) */}
       <div className="absolute inset-0">
         <video
@@ -92,7 +93,7 @@ export default function Hero() {
           <img
             src="/images/kasta-logo-small.png"
             alt=""
-            className="h-9 sm:h-10 md:h-14 object-contain brightness-150 contrast-125"
+            className="h-9 sm:h-10 md:h-14 object-contain logo-ink"
             width="220"
             height="56"
             onError={(e) => { e.currentTarget.style.display = 'none' }}

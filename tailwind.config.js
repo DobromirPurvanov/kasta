@@ -5,6 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        fg: "rgb(var(--fg-rgb) / <alpha-value>)",
         border: "hsl(var(--border-hsl))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

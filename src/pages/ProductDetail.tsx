@@ -24,7 +24,7 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
   if (related.length === 0) return null
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-14 sm:py-16 border-t border-white/[0.06]">
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-14 sm:py-16 border-t border-fg/[0.06]">
       <span className="section-eyebrow mb-7">
         {isBg ? 'Подобни модели' : 'Related Models'}
       </span>
@@ -35,27 +35,27 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
             to={`/product/${p.slug}`}
             className="group surface-card rounded-2xl sm:rounded-3xl overflow-hidden card-hover snap-start"
           >
-            <div className="aspect-[4/3] bg-[radial-gradient(circle_at_center,_#4a4a4d_0%,_#29292c_42%,_#151517_76%)] p-4 sm:p-5 overflow-hidden">
+            <div className="aspect-[4/3] media-tile p-4 sm:p-5 overflow-hidden">
               <img
                 src={p.image}
                 alt={p.alt}
                 loading="lazy"
                 width="600"
                 height="600"
-                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl brightness-125 contrast-115"
+                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-xl dark:brightness-125 dark:contrast-115"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             </div>
             <div className="p-4 sm:p-5">
-              <span className="text-[10px] font-semibold tracking-[0.15em] text-white/60 uppercase">
+              <span className="text-[10px] font-semibold tracking-[0.15em] text-fg/60 uppercase">
                 {p.category}
               </span>
-              <h3 className="text-[14px] font-semibold text-white mt-1 group-hover:text-[var(--accent-text)] transition-colors">
+              <h3 className="text-[14px] font-semibold text-fg mt-1 group-hover:text-[var(--accent-text)] transition-colors">
                 {isBg ? p.nameBg : p.name}
               </h3>
               <div className="flex items-baseline gap-2 mt-2">
-                <span className="text-[16px] font-bold text-white">{p.price}</span>
-                <span className="text-[12px] text-white/60">{p.priceBgn}</span>
+                <span className="text-[16px] font-bold text-fg">{p.price}</span>
+                <span className="text-[12px] text-fg/60">{p.priceBgn}</span>
               </div>
             </div>
           </Link>
@@ -103,12 +103,12 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center pt-[72px]">
+      <div className="min-h-screen bg-[var(--bg)] flex items-center justify-center pt-[72px]">
         <div className="text-center">
-          <h1 className="text-xl font-light mb-4 text-white/60">
+          <h1 className="text-xl font-light mb-4 text-fg/60">
             {isBg ? 'Продуктът не е намерен' : 'Product Not Found'}
           </h1>
-          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+          <Link to="/" className="btn-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-fg">
             {isBg ? 'Назад' : 'Back'}
           </Link>
         </div>
@@ -119,18 +119,18 @@ export default function ProductDetail() {
   return (
     <div ref={sectionRef} className="min-h-screen bg-[var(--bg)] pt-16 sm:pt-[72px]">
       {/* Breadcrumb */}
-      <div className="border-b border-white/[0.06]">
+      <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-3 overflow-x-auto scrollbar-hide">
           <nav className="flex items-center gap-2 text-[12px] whitespace-nowrap min-w-max" aria-label="Breadcrumb">
-            <Link to="/" className="text-white/50 hover:text-white transition-colors">
+            <Link to="/" className="text-fg/50 hover:text-fg transition-colors">
               {isBg ? 'Начало' : 'Home'}
             </Link>
-            <span className="text-white/20">/</span>
-            <Link to="/#models" className="text-white/50 hover:text-white transition-colors">
+            <span className="text-fg/20">/</span>
+            <Link to="/#models" className="text-fg/50 hover:text-fg transition-colors">
               {isBg ? 'МОДЕЛИ' : 'MODELS'}
             </Link>
-            <span className="text-white/20">/</span>
-            <span className="text-white/75 font-medium max-w-[180px] sm:max-w-none truncate" aria-current="page">
+            <span className="text-fg/20">/</span>
+            <span className="text-fg/75 font-medium max-w-[180px] sm:max-w-none truncate" aria-current="page">
               {isBg ? product.nameBg : product.name}
             </span>
           </nav>
@@ -142,13 +142,13 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16 items-start">
           {/* Image gallery */}
           <div className="pd-anim flex gap-3" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="flex-1 aspect-[4/3] lg:aspect-square bg-[radial-gradient(circle_at_center,_#4a4a4d_0%,_#29292c_42%,_#151517_76%)] rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center p-4 sm:p-6 md:p-10 border border-white/[0.08]">
+            <div className="flex-1 aspect-[4/3] lg:aspect-square media-tile rounded-2xl sm:rounded-3xl overflow-hidden flex items-center justify-center p-4 sm:p-6 md:p-10 border border-fg/[0.08]">
               <img
                 src={product.image}
                 alt={product.alt}
                 width="800"
                 height="800"
-                className="w-full h-full object-contain drop-shadow-2xl brightness-125 contrast-115"
+                className="w-full h-full object-contain drop-shadow-2xl dark:brightness-125 dark:contrast-115"
                 onError={(e) => { e.currentTarget.style.display = 'none' }}
               />
             </div>
@@ -159,20 +159,20 @@ export default function ProductDetail() {
             <span className="text-[11px] font-bold tracking-[0.15em] text-[var(--accent-text)] uppercase">
               {product.category}
             </span>
-            <h1 className="text-display text-white mt-2 mb-4 text-[32px] sm:text-[38px] md:text-[clamp(40px,4vw,56px)]">
+            <h1 className="text-display text-fg mt-2 mb-4 text-[32px] sm:text-[38px] md:text-[clamp(40px,4vw,56px)]">
               {isBg ? product.nameBg : product.name}
             </h1>
-            <p className="text-[15px] sm:text-[16px] text-white/70 font-medium mb-6 leading-relaxed">
+            <p className="text-[15px] sm:text-[16px] text-fg/70 font-medium mb-6 leading-relaxed">
               {isBg ? product.taglineBg : product.tagline}
             </p>
             <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-8">
               {product.originalPrice && (
-                <span className="text-[16px] sm:text-[18px] text-white/60 line-through">
+                <span className="text-[16px] sm:text-[18px] text-fg/60 line-through">
                   {product.originalPrice}
                 </span>
               )}
-              <span className="text-[28px] sm:text-[32px] font-bold text-white">{product.price}</span>
-              <span className="text-[13px] sm:text-[14px] text-white/60">{product.priceBgn}</span>
+              <span className="text-[28px] sm:text-[32px] font-bold text-fg">{product.price}</span>
+              <span className="text-[13px] sm:text-[14px] text-fg/60">{product.priceBgn}</span>
             </div>
 
             <a
@@ -188,7 +188,7 @@ export default function ProductDetail() {
               {(isBg ? product.descriptionBg : product.description)
                 .split('\n\n')
                 .map((para, idx) => (
-                  <p key={idx} className="text-[15px] text-white/70 leading-[1.8] max-w-[68ch]">
+                  <p key={idx} className="text-[15px] text-fg/70 leading-[1.8] max-w-[68ch]">
                     {para}
                   </p>
                 ))}
@@ -206,10 +206,10 @@ export default function ProductDetail() {
           <div className="surface-card rounded-2xl sm:rounded-3xl px-5 sm:px-7">
             {product.specs.map((spec, idx) => (
               <div key={idx} className="spec-row">
-                <span className="text-[12px] text-white/55 font-semibold tracking-[0.04em] uppercase">
+                <span className="text-[12px] text-fg/55 font-semibold tracking-[0.04em] uppercase">
                   {isBg ? spec.labelBg : spec.label}
                 </span>
-                <span className="text-[14px] text-white font-semibold sm:text-right break-words">
+                <span className="text-[14px] text-fg font-semibold sm:text-right break-words">
                   {spec.value}
                 </span>
               </div>
@@ -219,7 +219,7 @@ export default function ProductDetail() {
       </div>
 
       {/* FAQ */}
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-14 sm:py-16 border-t border-white/[0.06]">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-14 sm:py-16 border-t border-fg/[0.06]">
         <div className="pd-anim" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
           <h2 className="section-eyebrow mb-7">
             {isBg ? 'Често задавани въпроси' : 'FAQ'}
@@ -227,10 +227,10 @@ export default function ProductDetail() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-[1000px]">
             {product.faq.map((item, idx) => (
               <div key={idx} className="faq-item">
-                <h3 className="text-[15px] font-semibold text-white mb-1.5">
+                <h3 className="text-[15px] font-semibold text-fg mb-1.5">
                   {isBg ? item.qBg : item.q}
                 </h3>
-                <p className="text-[14px] text-white/60 leading-relaxed">
+                <p className="text-[14px] text-fg/60 leading-relaxed">
                   {isBg ? item.aBg : item.a}
                 </p>
               </div>

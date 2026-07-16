@@ -71,11 +71,11 @@ export default function Models() {
             <span className="section-eyebrow mb-4">
               {t('models_title')}
             </span>
-            <h2 className="text-display text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
+            <h2 className="text-display text-fg text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
               {isBg ? 'ИЗБЕРИ СВОЯ МОДЕЛ' : 'CHOOSE YOUR MODEL'}
             </h2>
             </div>
-            <p className="hidden sm:block shrink-0 text-[12px] font-semibold tracking-[0.12em] uppercase text-white/50" aria-live="polite">
+            <p className="hidden sm:block shrink-0 text-[12px] font-semibold tracking-[0.12em] uppercase text-fg/50" aria-live="polite">
               {filtered.length} {isBg ? (filtered.length === 1 ? 'модел' : 'модела') : (filtered.length === 1 ? 'model' : 'models')}
             </p>
           </div>
@@ -108,14 +108,14 @@ export default function Models() {
               className="product-card group surface-card rounded-2xl sm:rounded-3xl overflow-hidden card-hover"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
-              <div className="relative aspect-[4/3] bg-[radial-gradient(circle_at_center,_#4a4a4d_0%,_#29292c_42%,_#151517_76%)] overflow-hidden flex items-center justify-center p-4 sm:p-5">
+              <div className="relative aspect-[4/3] media-tile overflow-hidden flex items-center justify-center p-4 sm:p-5">
                 <img
                   src={product.image}
                   alt={product.alt}
                   loading="lazy"
                   width="600"
                   height="600"
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-2xl brightness-125 contrast-115"
+                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.04] drop-shadow-2xl dark:brightness-125 dark:contrast-115"
                   onError={(e) => { e.currentTarget.style.display = 'none' }}
                 />
                 <div className="absolute inset-0 hidden lg:flex items-center justify-center pointer-events-none">
@@ -128,27 +128,27 @@ export default function Models() {
                 <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--accent-text)] uppercase">
                   {product.category}
                 </span>
-                <h3 className="text-[16px] leading-snug font-semibold text-white mt-1.5 group-hover:text-[var(--accent-text)] transition-colors">
+                <h3 className="text-[16px] leading-snug font-semibold text-fg mt-1.5 group-hover:text-[var(--accent-text)] transition-colors">
                   {isBg ? product.nameBg : product.name}
                 </h3>
-                <p className="text-[13px] leading-relaxed text-white/60 mt-2.5 line-clamp-2 min-h-[42px]">
+                <p className="text-[13px] leading-relaxed text-fg/60 mt-2.5 line-clamp-2 min-h-[42px]">
                   {isBg ? product.taglineBg : product.tagline}
                 </p>
-                <div className="flex items-end justify-between gap-4 mt-5 pt-4 border-t border-white/[0.08]">
+                <div className="flex items-end justify-between gap-4 mt-5 pt-4 border-t border-fg/[0.08]">
                   <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                     {product.originalPrice && (
-                      <span className="text-[12px] text-white/55 line-through">
+                      <span className="text-[12px] text-fg/55 line-through">
                         {product.originalPrice}
                       </span>
                     )}
-                    <span className="text-[19px] font-bold text-white">
+                    <span className="text-[19px] font-bold text-fg">
                       {product.price}
                     </span>
-                    <span className="text-[11px] text-white/60">
+                    <span className="text-[11px] text-fg/60">
                       {product.priceBgn}
                     </span>
                   </div>
-                  <span className="w-10 h-10 shrink-0 rounded-full bg-white/[0.06] border border-white/10 flex items-center justify-center text-white/70 group-hover:bg-[var(--accent)] group-hover:text-white group-hover:border-[var(--accent)] transition-colors" aria-hidden="true">
+                  <span className="w-10 h-10 shrink-0 rounded-full bg-fg/[0.06] border border-fg/10 flex items-center justify-center text-fg/70 group-hover:bg-[var(--accent)] group-hover:text-white group-hover:border-[var(--accent)] transition-colors" aria-hidden="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                   </span>
                 </div>

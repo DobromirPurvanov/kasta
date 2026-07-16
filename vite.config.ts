@@ -19,4 +19,15 @@ export default defineConfig(async ({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    target: 'es2020',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router'],
+          gsap: ['gsap'],
+        },
+      },
+    },
+  },
 }))

@@ -95,14 +95,14 @@ export default function Blog() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[var(--bg)] py-16 sm:py-20 lg:py-28 border-t border-white/[0.06]"
+      className="bg-[var(--bg)] py-16 sm:py-20 lg:py-28 border-t border-fg/[0.06]"
     >
       <div className="section-shell">
         <div className="mb-9 sm:mb-12 lg:mb-14">
           <span className="section-eyebrow mb-4">
             {t('blog_title')}
           </span>
-          <h2 className="text-display text-white text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
+          <h2 className="text-display text-fg text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
             {t('blog_subtitle')}
           </h2>
         </div>
@@ -118,17 +118,17 @@ export default function Blog() {
                 <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/15 text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
                   {post.tag}
                 </span>
-                <span className="text-[11px] font-semibold tracking-[0.12em] text-white/45" aria-hidden="true">
+                <span className="text-[11px] font-semibold tracking-[0.12em] text-fg/45" aria-hidden="true">
                   0{index + 1}
                 </span>
               </div>
-              <h3 className="text-[19px] sm:text-[21px] leading-snug font-semibold text-white mb-3">
+              <h3 className="text-[19px] sm:text-[21px] leading-snug font-semibold text-fg mb-3">
                 {post.title}
               </h3>
-              <p className="text-[14px] text-white/65 leading-relaxed mb-6">
+              <p className="text-[14px] text-fg/65 leading-relaxed mb-6">
                 {post.excerpt}
               </p>
-              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-white/50">
+              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-fg/50">
                 {t('coming_soon')}
               </span>
             </article>
