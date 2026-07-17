@@ -6,25 +6,44 @@ import { useTheme } from '../hooks/useTheme'
 const anchorLinkClass =
   'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-[var(--text-secondary)] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
 
-function ThemeToggle({ onToggle, isDark, label, className = '' }: { onToggle: () => void; isDark: boolean; label: string; className?: string }) {
+const tireTreadAngles = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330] as const
+
+function ThemeToggle({ onToggle, isDark, label }: { onToggle: () => void; isDark: boolean; label: string }) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className={`w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
+      className="theme-toggle"
       aria-label={label}
+      aria-pressed={isDark}
       title={label}
     >
-      {isDark ? (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-        </svg>
-      ) : (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      )}
+      <svg className="theme-toggle__wheel" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+        <g className="theme-toggle__rubber">
+          <circle className="theme-toggle__tyre" cx="22" cy="22" r="16" />
+          <g className="theme-toggle__grooves">
+            {tireTreadAngles.map((angle) => (
+              <path
+                key={angle}
+                d="M19.5 5.7 23 10.4"
+                transform={`rotate(${angle} 22 22)`}
+              />
+            ))}
+          </g>
+          <circle className="theme-toggle__rim" cx="22" cy="22" r="10.5" />
+          <circle className="theme-toggle__valve" cx="29.4" cy="14.6" r="1.25" />
+        </g>
+
+        <circle className="theme-toggle__hub" cx="22" cy="22" r="7.25" />
+        {isDark ? (
+          <g className="theme-toggle__mode">
+            <circle cx="22" cy="22" r="2.65" />
+            <path d="M22 15.3v2M22 26.7v2M15.3 22h2M26.7 22h2M17.3 17.3l1.4 1.4M25.3 25.3l1.4 1.4M17.3 26.7l1.4-1.4M25.3 18.7l1.4-1.4" />
+          </g>
+        ) : (
+          <path className="theme-toggle__mode" d="M25.9 24.4a5.25 5.25 0 1 1-6.3-6.3 4.25 4.25 0 0 0 6.3 6.3Z" />
+        )}
+      </svg>
     </button>
   )
 }
@@ -177,7 +196,7 @@ export default function Navigation() {
 
           {/* Mobile: theme, language + menu */}
           <div className="md:hidden ml-auto flex items-center gap-1">
-            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="border-transparent" />
+            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <button
               type="button"
               onClick={toggleLang}
