@@ -11,6 +11,7 @@ export interface Product {
   /** Previous (pre-promo) price, rendered struck through next to `price` */
   originalPrice?: string
   image: string
+  galleryCount: number
   alt: string
   title: string
   titleBg: string
@@ -35,6 +36,7 @@ export const products: Product[] = [
     price: '€3,960.00',
     priceBgn: '7,745 лв.',
     image: '/images/kasta/mini-main.png',
+    galleryCount: 5,
     alt: 'E RIDE PRO Mini R 72V 2026 electric dirt bike',
     title: 'E RIDE PRO Mini R 72V Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO Mini R 72V електрически мотор България | Kasta Ventures',
@@ -72,6 +74,7 @@ export const products: Product[] = [
     price: '€7,499.00',
     priceBgn: '14,667 лв.',
     image: '/images/kasta/sr-offroad-main.png',
+    galleryCount: 15,
     alt: 'E RIDE PRO SR Off Road Fatty electric dirt bike',
     title: 'E RIDE PRO SR Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SR Off Road електрически мотор България | Kasta Ventures',
@@ -109,6 +112,7 @@ export const products: Product[] = [
     price: '€7,499.00',
     priceBgn: '14,667 лв.',
     image: '/images/kasta/sr-l1e-main.png',
+    galleryCount: 17,
     alt: 'E RIDE PRO SR L1e Road Legal electric dirt bike',
     title: 'E RIDE PRO SR L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SR L1e пътен електрически мотор България | Kasta Ventures',
@@ -146,6 +150,7 @@ export const products: Product[] = [
     price: '€6,399.00',
     priceBgn: '12,515 лв.',
     image: '/images/kasta/ss30-l1e-main.png',
+    galleryCount: 17,
     alt: 'E RIDE PRO SS 3.0 L1e Road Legal electric dirt bike',
     title: 'E RIDE PRO SS 3.0 L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SS 3.0 L1e пътен електрически мотор България | Kasta Ventures',
@@ -184,6 +189,7 @@ export const products: Product[] = [
     priceBgn: '9,582 лв.',
     originalPrice: '€5,390.00',
     image: '/images/kasta/ss25-l1e-main.png',
+    galleryCount: 18,
     alt: 'E RIDE PRO SS 2.5 L1e Road Legal electric dirt bike',
     title: 'E RIDE PRO SS 2.5 L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SS 2.5 L1e пътен електрически мотор България | Kasta Ventures',
@@ -220,6 +226,7 @@ export const products: Product[] = [
     price: '€5,390.00',
     priceBgn: '10,542 лв.',
     image: '/images/kasta/ss25-offroad-main.png',
+    galleryCount: 16,
     alt: 'E RIDE PRO SS 2.5 Off Road Fatty electric dirt bike',
     title: 'E RIDE PRO SS 2.5 Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SS 2.5 Off Road електрически мотор България | Kasta Ventures',
@@ -257,6 +264,7 @@ export const products: Product[] = [
     price: '€6,399.00',
     priceBgn: '12,515 лв.',
     image: '/images/kasta/ss30-offroad-main.png',
+    galleryCount: 16,
     alt: 'E RIDE PRO SS 3.0 Off Road Fatty electric dirt bike',
     title: 'E RIDE PRO SS 3.0 Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
     titleBg: 'E RIDE PRO SS 3.0 Off Road електрически мотор България | Kasta Ventures',
@@ -289,4 +297,11 @@ export const products: Product[] = [
 
 export function getProductBySlug(slug: string): Product | undefined {
   return products.find(p => p.slug === slug)
+}
+
+export function getProductGallery(product: Pick<Product, 'slug' | 'galleryCount'>): string[] {
+  return Array.from({ length: product.galleryCount }, (_, index) => {
+    const fileNumber = String(index + 1).padStart(2, '0')
+    return `/images/kasta/gallery/${product.slug}/${fileNumber}.webp`
+  })
 }
