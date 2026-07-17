@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react'
 import { useLang } from '../hooks/useLang'
-import { useTheme } from '../hooks/useTheme'
 import { Link, useLocation } from 'react-router'
 
 const footerLinkClass = 'min-h-11 inline-flex items-center text-[14px] text-[var(--text-secondary)] hover:text-fg transition-colors rounded-sm'
-const preferenceButtonClass = 'min-h-11 inline-flex items-center justify-center gap-2 rounded-full border border-fg/20 bg-fg/[0.04] px-4 text-[11px] font-bold uppercase tracking-[0.08em] text-[var(--text-secondary)] transition-colors duration-200 hover:border-[var(--accent)] hover:bg-[rgb(var(--accent-rgb)/0.1)] hover:text-fg'
 
 function NavItem({ to, hash, isHome, children }: { to?: string; hash?: string; isHome: boolean; children: ReactNode }) {
   if (hash && isHome) {
@@ -29,20 +27,13 @@ function NavItem({ to, hash, isHome, children }: { to?: string; hash?: string; i
 }
 
 export default function Footer() {
-  const { t, lang, setLang } = useLang()
-  const { theme, toggleTheme } = useTheme()
+  const { t, lang } = useLang()
   const location = useLocation()
   const isHome = location.pathname === '/'
   const isBg = lang === 'bg'
-  const isDark = theme === 'dark'
-  const themeActionLabel = isDark
-    ? (isBg ? 'Светла тема' : 'Light theme')
-    : (isBg ? 'Тъмна тема' : 'Dark theme')
-  const languageActionLabel = isBg ? 'English' : 'Български'
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
   const openCookieSettings = () => window.dispatchEvent(new Event('open-cookie-settings'))
-  const toggleLang = () => setLang(isBg ? 'en' : 'bg')
 
   return (
     <footer className="dark bg-[var(--bg-deep)] border-t border-fg/[0.08]">
@@ -131,40 +122,6 @@ export default function Footer() {
               </svg>
             </button>
 
-            <div className="mt-7 pt-6 border-t border-fg/10">
-              <h3 className="text-[10px] font-bold tracking-[0.14em] text-[var(--text-muted)] uppercase mb-3">
-                {isBg ? 'Изглед и език' : 'Display & language'}
-              </h3>
-              <div className="flex flex-wrap gap-2 sm:justify-end">
-                <button
-                  type="button"
-                  onClick={toggleTheme}
-                  className={preferenceButtonClass}
-                  aria-label={themeActionLabel}
-                >
-                  {isDark ? (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <circle cx="12" cy="12" r="4" />
-                      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-                    </svg>
-                  ) : (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                    </svg>
-                  )}
-                  <span>{themeActionLabel}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={toggleLang}
-                  className={preferenceButtonClass}
-                  aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
-                >
-                  <span className="text-[10px] text-[var(--accent-text)]" aria-hidden="true">{isBg ? 'EN' : 'BG'}</span>
-                  <span>{languageActionLabel}</span>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
