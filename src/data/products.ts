@@ -208,7 +208,6 @@ export const products: Product[] = [
     faq: [
       { q: 'Why is it on sale?', qBg: 'Защо е на промоция?', a: 'We are offering a limited-time promotional price to make electric mobility more accessible in Bulgaria.', aBg: 'Предлагаме ограничена по време промоционална цена, за да направим електрическата мобилност по-достъпна в България.' },
       { q: 'Is the warranty the same?', qBg: 'Гаранцията същата ли е?', a: 'Yes, full 2-year manufacturer warranty applies even at the promotional price.', aBg: 'Да, пълна 2-годишна производителна гаранция важи дори при промоционалната цена.' },
-      { q: 'How many are available?', qBg: 'Колко броя са налични?', a: 'Limited stock available at this price. Contact us to reserve yours today.', aBg: 'Ограничени наличности на тази цена. Свържете се с нас, за да запазите вашия днес.' },
     ],
     filters: ['all', 'ss-25', 'l1e', 'road-legal'],
   },

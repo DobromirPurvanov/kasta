@@ -27,7 +27,7 @@ function SkipLink() {
   return (
     <a
       href="#main"
-      className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-5 focus:py-3 focus:bg-[var(--accent)] focus:text-white focus:rounded-full focus:text-[13px] focus:font-semibold"
+      className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-5 focus:py-3 focus:bg-[var(--accent)] focus:text-[var(--accent-ink)] focus:rounded-full focus:text-[13px] focus:font-semibold"
     >
       {lang === 'bg' ? 'Към съдържанието' : 'Skip to content'}
     </a>

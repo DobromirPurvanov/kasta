@@ -4,14 +4,14 @@ import { useLang } from '../hooks/useLang'
 import { useTheme } from '../hooks/useTheme'
 
 const anchorLinkClass =
-  'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-fg/70 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
+  'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-[var(--text-secondary)] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
 
 function ThemeToggle({ onToggle, isDark, label, className = '' }: { onToggle: () => void; isDark: boolean; label: string; className?: string }) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className={`w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
+      className={`w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
       aria-label={label}
       title={label}
     >
@@ -126,7 +126,7 @@ export default function Navigation() {
               to="/models"
               className={({ isActive }) =>
                 `min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm ${
-                  isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-fg/70 hover:text-fg'
+                  isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-[var(--text-secondary)] hover:text-fg'
                 }`
               }
               aria-current={isModelsPage ? 'page' : undefined}
@@ -160,7 +160,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               to="/#contact"
-              className="hidden lg:inline-flex min-h-11 items-center gap-2 px-5 rounded-full bg-[var(--accent)] text-white text-[10px] font-bold tracking-[0.12em] uppercase hover:bg-[var(--accent-hover)] hover:-translate-y-0.5 transition-all duration-300"
+              className="btn-accent hidden lg:inline-flex !min-h-11 !w-auto !px-5 !py-2.5 !text-[10px] !tracking-[0.12em]"
             >
               {isBg ? 'Тестово каране' : 'Test ride'}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -170,7 +170,7 @@ export default function Navigation() {
               href="https://instagram.com/erideprobulgaria"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden xl:flex w-11 h-11 rounded-full border border-fg/20 items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="hidden xl:flex w-11 h-11 rounded-full border border-fg/20 items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label="Instagram"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -182,7 +182,7 @@ export default function Navigation() {
             <button
               type="button"
               onClick={toggleLang}
-              className="min-h-11 text-[11px] font-semibold tracking-wider text-fg/70 hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="min-h-11 text-[11px] font-semibold tracking-wider text-[var(--text-secondary)] hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
             >
               {lang === 'bg' ? 'EN' : 'BG'}
@@ -240,17 +240,17 @@ export default function Navigation() {
                 onClick={() => setMobileOpen(false)}
                 className="group min-h-[76px] flex items-center gap-4 border-b border-fg/10"
               >
-                <span className="text-[10px] font-bold tracking-[0.14em] text-fg/40">{item.number}</span>
+                <span className="text-[10px] font-bold tracking-[0.14em] text-[var(--text-muted)]">{item.number}</span>
                 <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-fg'}`}>
                   {item.label}
                 </span>
-                <svg className="ml-auto text-fg/35 group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                <svg className="ml-auto text-[var(--text-muted)] group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>
             ))}
           </nav>
 
           <div className="mt-auto pt-8">
-            <div className="flex flex-col gap-2 mb-6 text-[14px] text-fg/65">
+            <div className="flex flex-col gap-2 mb-6 text-[14px] text-[var(--text-secondary)]">
               <a href="tel:+359887773733" className="min-h-11 inline-flex items-center">+359 887 77 37 33</a>
               <a href="mailto:office@kastaventures.com" className="min-h-11 inline-flex items-center">office@kastaventures.com</a>
             </div>
@@ -259,7 +259,7 @@ export default function Navigation() {
                 href="https://instagram.com/erideprobulgaria"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-fg/60"
+                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] transition-colors hover:text-fg"
               >
                 Instagram
               </a>

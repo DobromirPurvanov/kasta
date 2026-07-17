@@ -84,7 +84,7 @@ const translations = {
 } as const
 
 const choiceButtonClass =
-  'min-h-12 w-full inline-flex items-center justify-center rounded-full border border-fg/25 bg-fg/[0.04] px-3 sm:px-5 text-[11px] sm:text-[12px] font-bold tracking-[0.04em] uppercase text-fg transition-colors duration-200 hover:border-fg/45 hover:bg-fg/[0.09] cursor-pointer'
+  'btn-outline !min-h-12 !w-full !px-3 sm:!px-5'
 
 function isCookiePreferences(value: unknown): value is CookiePreferences {
   if (typeof value !== 'object' || value === null) return false
@@ -373,20 +373,20 @@ export default function CookieConsent() {
                   </h2>
                   <p
                     id="cookie-banner-description"
-                    className="text-[13px] sm:text-[14px] text-fg/70 leading-relaxed max-w-[680px]"
+                    className="text-[13px] sm:text-[14px] text-[var(--text-secondary)] leading-relaxed max-w-[680px]"
                   >
                     {t.bannerDescription}
                   </p>
                   <div className="flex flex-wrap gap-x-5 mt-1">
                     <Link
                       to="/privacy-policy"
-                      className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline underline-offset-4"
+                      className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
                     >
                       {t.privacyLink}
                     </Link>
                     <Link
                       to="/cookie-policy"
-                      className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline underline-offset-4"
+                      className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
                     >
                       {t.cookiePolicy}
                     </Link>
@@ -399,14 +399,14 @@ export default function CookieConsent() {
                   <button type="button" onClick={rejectAll} className={choiceButtonClass}>
                     {t.rejectAll}
                   </button>
-                  <button type="button" onClick={acceptAll} className={choiceButtonClass}>
+                  <button type="button" onClick={acceptAll} className="btn-accent !min-h-12 !w-full !px-3 sm:!px-5">
                     {t.acceptAll}
                   </button>
                 </div>
                 <button
                   type="button"
                   onClick={openSettings}
-                  className="min-h-11 w-full inline-flex items-center justify-center gap-2 text-[12px] font-semibold text-fg/70 hover:text-fg transition-colors cursor-pointer"
+                  className="min-h-11 w-full inline-flex items-center justify-center gap-2 text-[12px] font-semibold text-[var(--text-secondary)] hover:text-fg transition-colors cursor-pointer"
                 >
                   <svg
                     width="15"
@@ -453,7 +453,7 @@ export default function CookieConsent() {
                   <h2 id="cookie-settings-title" className="text-[18px] sm:text-[20px] font-semibold text-fg mb-1.5">
                     {t.settingsTitle}
                   </h2>
-                  <p id="cookie-settings-description" className="text-[13px] sm:text-[14px] text-fg/70 leading-relaxed">
+                  <p id="cookie-settings-description" className="text-[13px] sm:text-[14px] text-[var(--text-secondary)] leading-relaxed">
                     {t.settingsDescription}
                   </p>
                 </div>
@@ -462,7 +462,7 @@ export default function CookieConsent() {
                 ref={closeButtonRef}
                 type="button"
                 onClick={closeSettings}
-                className="absolute top-4 right-4 w-11 h-11 rounded-full border border-fg/15 bg-fg/[0.04] flex items-center justify-center text-fg/65 hover:text-fg hover:border-fg/35 transition-colors cursor-pointer"
+                className="absolute top-4 right-4 w-11 h-11 rounded-full border border-fg/15 bg-fg/[0.04] flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/35 transition-colors cursor-pointer"
                 aria-label={t.closeSettings}
               >
                 <svg
@@ -490,7 +490,7 @@ export default function CookieConsent() {
                       {t.required}
                     </span>
                   </div>
-                  <p className="text-[12px] sm:text-[13px] text-fg/65 leading-relaxed mt-1">
+                  <p className="text-[12px] sm:text-[13px] text-[var(--text-secondary)] leading-relaxed mt-1">
                     {t.necessaryDesc}
                   </p>
                 </div>
@@ -504,7 +504,7 @@ export default function CookieConsent() {
                 />
                 <div className="flex-1 min-w-0 pt-1.5">
                   <span className="text-[14px] font-semibold text-fg">{t.analytics}</span>
-                  <p className="text-[12px] sm:text-[13px] text-fg/65 leading-relaxed mt-1">
+                  <p className="text-[12px] sm:text-[13px] text-[var(--text-secondary)] leading-relaxed mt-1">
                     {t.analyticsDesc}
                   </p>
                 </div>
@@ -518,7 +518,7 @@ export default function CookieConsent() {
                 />
                 <div className="flex-1 min-w-0 pt-1.5">
                   <span className="text-[14px] font-semibold text-fg">{t.marketing}</span>
-                  <p className="text-[12px] sm:text-[13px] text-fg/65 leading-relaxed mt-1">
+                  <p className="text-[12px] sm:text-[13px] text-[var(--text-secondary)] leading-relaxed mt-1">
                     {t.marketingDesc}
                   </p>
                 </div>
@@ -532,7 +532,7 @@ export default function CookieConsent() {
                 />
                 <div className="flex-1 min-w-0 pt-1.5">
                   <span className="text-[14px] font-semibold text-fg">{t.preferences}</span>
-                  <p className="text-[12px] sm:text-[13px] text-fg/65 leading-relaxed mt-1">
+                  <p className="text-[12px] sm:text-[13px] text-[var(--text-secondary)] leading-relaxed mt-1">
                     {t.preferencesDesc}
                   </p>
                 </div>
@@ -544,7 +544,7 @@ export default function CookieConsent() {
                 <button type="button" onClick={rejectAll} className={choiceButtonClass}>
                   {t.rejectAll}
                 </button>
-                <button type="button" onClick={acceptAll} className={choiceButtonClass}>
+                <button type="button" onClick={acceptAll} className="btn-accent !min-h-12 !w-full !px-3 sm:!px-5">
                   {t.acceptAll}
                 </button>
               </div>
@@ -555,14 +555,14 @@ export default function CookieConsent() {
                 <Link
                   to="/privacy-policy"
                   onClick={closeSettings}
-                  className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline underline-offset-4"
+                  className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
                 >
                   {t.privacyLink}
                 </Link>
                 <Link
                   to="/cookie-policy"
                   onClick={closeSettings}
-                  className="min-h-11 inline-flex items-center text-[12px] text-fg/65 hover:text-fg transition-colors underline underline-offset-4"
+                  className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
                 >
                   {t.cookiePolicy}
                 </Link>

@@ -18,7 +18,7 @@ export default function NotFound() {
           {isBg ? 'Грешка 404' : 'Error 404'}
         </p>
         <h1 className="text-display text-fg text-[64px] sm:text-[96px] leading-none mb-4">404</h1>
-        <p className="text-fg/60 text-[15px] mb-8 max-w-[400px] mx-auto">
+        <p className="text-[var(--text-secondary)] text-[15px] mb-8 max-w-[400px] mx-auto">
           {isBg
             ? 'Страницата, която търсиш, не съществува или е преместена.'
             : 'The page you are looking for does not exist or has been moved.'}

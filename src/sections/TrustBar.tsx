@@ -34,14 +34,14 @@ export default function TrustBar() {
               index < items.length - 1 ? 'border-b sm:border-b-0 sm:border-r' : ''
             } ${index === 1 ? 'sm:border-r-0 lg:border-r' : ''}`}
           >
-            <span className="w-11 h-11 shrink-0 rounded-2xl border border-white/10 bg-white/[0.04] flex items-center justify-center text-[var(--accent-text)] group-hover:bg-[var(--accent)] group-hover:text-white group-hover:border-[var(--accent)] transition-all duration-300">
+            <span className="w-11 h-11 shrink-0 rounded-2xl border border-white/10 bg-white/[0.04] flex items-center justify-center text-[var(--accent-text)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--accent)] transition-all duration-200">
               <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 {icons[index]}
               </svg>
             </span>
             <span>
-              <strong className="block text-[12px] font-bold tracking-[0.08em] uppercase text-white">{title}</strong>
-              <span className="block text-[12px] text-white/60 mt-1">{subtitle}</span>
+              <strong className="block text-[12px] font-bold tracking-[0.08em] uppercase text-fg">{title}</strong>
+              <span className="block text-[12px] text-[var(--text-secondary)] mt-1">{subtitle}</span>
             </span>
           </div>
         ))}

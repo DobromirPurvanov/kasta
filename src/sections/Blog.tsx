@@ -125,10 +125,10 @@ export default function Blog() {
               <h3 className="text-[19px] sm:text-[21px] leading-snug font-semibold text-fg mb-3">
                 {post.title}
               </h3>
-              <p className="text-[14px] text-fg/65 leading-relaxed mb-6">
+              <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed mb-6">
                 {post.excerpt}
               </p>
-              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-fg/50">
+              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
                 {t('coming_soon')}
               </span>
             </article>

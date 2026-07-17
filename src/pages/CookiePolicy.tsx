@@ -96,9 +96,9 @@ export default function CookiePolicy() {
       <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
           <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
-            <Link to="/" className="text-fg/65 hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <Link to="/" className="text-[var(--text-secondary)] hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
             <span className="text-fg/20">/</span>
-            <span className="text-fg/80 font-medium" aria-current="page">{isBg ? 'Бисквитки' : 'Cookies'}</span>
+            <span className="text-fg font-medium" aria-current="page">{isBg ? 'Бисквитки' : 'Cookies'}</span>
           </nav>
         </div>
       </div>
@@ -107,9 +107,9 @@ export default function CookiePolicy() {
         <h1 className="text-display text-fg mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
           {content.title}
         </h1>
-        <p className="text-[13px] text-fg/65 mb-10">{content.lastUpdated}</p>
+        <p className="text-[13px] text-[var(--text-muted)] mb-10">{content.lastUpdated}</p>
 
-        <p className="text-[15px] text-fg/70 leading-relaxed mb-12">{content.intro}</p>
+        <p className="text-[15px] text-[var(--text-secondary)] leading-relaxed mb-12">{content.intro}</p>
 
         <div className="space-y-10">
           {content.sections.map((section, i) => (
@@ -120,26 +120,26 @@ export default function CookiePolicy() {
                   <table className="w-full text-[13px]">
                     <thead>
                       <tr className="border-b border-fg/[0.08]">
-                        <th className="text-left py-3 pr-4 text-fg/70 font-medium">{isBg ? 'Категория' : 'Category'}</th>
-                        <th className="text-left py-3 pr-4 text-fg/70 font-medium">{isBg ? 'Цел' : 'Purpose'}</th>
-                        <th className="text-left py-3 pr-4 text-fg/70 font-medium">{isBg ? 'Примери' : 'Examples'}</th>
-                        <th className="text-left py-3 text-fg/70 font-medium">{isBg ? 'Валидност' : 'Duration'}</th>
+                        <th className="text-left py-3 pr-4 text-[var(--text-secondary)] font-medium">{isBg ? 'Категория' : 'Category'}</th>
+                        <th className="text-left py-3 pr-4 text-[var(--text-secondary)] font-medium">{isBg ? 'Цел' : 'Purpose'}</th>
+                        <th className="text-left py-3 pr-4 text-[var(--text-secondary)] font-medium">{isBg ? 'Примери' : 'Examples'}</th>
+                        <th className="text-left py-3 text-[var(--text-secondary)] font-medium">{isBg ? 'Валидност' : 'Duration'}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {section.table.map((row, j) => (
                         <tr key={j} className="border-b border-fg/[0.04]">
                           <td className="py-4 pr-4 text-fg font-medium align-top">{row.category}</td>
-                          <td className="py-4 pr-4 text-fg/60 align-top leading-relaxed">{row.purpose}</td>
-                          <td className="py-4 pr-4 text-fg/60 align-top">{row.examples}</td>
-                          <td className="py-4 text-fg/60 align-top whitespace-nowrap">{row.duration}</td>
+                          <td className="py-4 pr-4 text-[var(--text-secondary)] align-top leading-relaxed">{row.purpose}</td>
+                          <td className="py-4 pr-4 text-[var(--text-secondary)] align-top">{row.examples}</td>
+                          <td className="py-4 text-[var(--text-secondary)] align-top whitespace-nowrap">{row.duration}</td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
               ) : (
-                <div className="text-[16px] text-fg/70 leading-[1.85] whitespace-pre-line">
+                <div className="text-[16px] text-[var(--text-secondary)] leading-[1.85] whitespace-pre-line">
                   {section.content}
                 </div>
               )}
