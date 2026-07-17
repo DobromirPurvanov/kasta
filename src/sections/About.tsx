@@ -65,9 +65,9 @@ export default function About() {
               loading="lazy"
               width="1200"
               height="1006"
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-premium group-hover:scale-[1.045]"
+              className="absolute inset-0 w-full h-full object-cover brightness-[1.45] contrast-[1.08] saturate-[1.08] transition-transform duration-300 ease-premium group-hover:scale-[1.045]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-black/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
             <div className="technical-grid absolute inset-0 opacity-20" aria-hidden="true" />
             <div className="absolute inset-x-0 bottom-0 p-6 sm:p-9">
               <span className="inline-flex min-h-8 items-center px-3 rounded-full border border-white/15 bg-black/30 backdrop-blur-md text-[9px] font-bold tracking-[0.14em] uppercase text-[var(--text-secondary)]">

@@ -313,16 +313,37 @@
     filter: grayscale(100%) invert(92%) hue-rotate(180deg) contrast(85%);
   }
 
-  /* Kasta wordmark is white — ink it on light surfaces */
+  /* Paired brand marks — compensate for the transparent safe area baked into
+     the E RIDE PRO asset so both logos align by their visible artwork. */
+  .brand-lockup {
+    line-height: 0;
+  }
+  .brand-logo-eride {
+    flex: none;
+    object-fit: contain;
+    transform: scale(1.6);
+    transform-origin: center;
+  }
+  .brand-logo-kasta {
+    flex: none;
+    max-inline-size: 100%;
+    object-fit: contain;
+  }
+
+  /* Kasta wordmark is white — ink it on light surfaces while preserving the
+     original antialiasing and red detail in dark mode. */
   .logo-ink {
-    filter: brightness(0) opacity(0.88);
+    filter: brightness(0);
+    opacity: 0.88;
   }
   .dark .logo-ink {
-    filter: brightness(1.5) contrast(1.25);
+    filter: none;
+    opacity: 0.96;
   }
   .light-section.logo-ink,
   .light-section .logo-ink {
-    filter: brightness(0) opacity(0.9);
+    filter: brightness(0);
+    opacity: 0.9;
   }
 
   /* Solid nav background once scrolled / menu open */

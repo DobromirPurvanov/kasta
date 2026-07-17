@@ -60,18 +60,18 @@ export default function Footer() {
 
           {/* Column 2 - Logo */}
           <div className="order-first sm:col-span-2 lg:order-none lg:col-span-1 flex flex-col items-start lg:items-center lg:justify-center">
-            <div className="flex items-center gap-4 mb-5">
+            <div className="brand-lockup flex items-center gap-3.5 mb-5">
               <img
                 src="/images/eride-logo-small.png"
                 alt="E RIDE PRO"
-                className="w-14 h-14 object-contain rounded-xl"
+                className="brand-logo-eride w-12 h-12"
                 width="56"
                 height="56"
               />
               <img
                 src="/images/kasta-logo-small.png"
                 alt="Kasta Ventures"
-                className="h-12 object-contain logo-ink"
+                className="brand-logo-kasta h-9 w-auto logo-ink"
                 width="188"
                 height="48"
               />

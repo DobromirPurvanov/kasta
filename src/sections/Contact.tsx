@@ -51,9 +51,9 @@ export default function Contact() {
 
         <div className="grid lg:grid-cols-[minmax(320px,.78fr)_minmax(0,1.22fr)] gap-4 sm:gap-5 items-stretch">
           <div className="contact-reveal surface-card rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-7 lg:p-8 flex flex-col">
-            <div className="flex items-center gap-3 pb-6 border-b border-fg/10">
-              <img src="/images/eride-logo-small.png" alt="E RIDE PRO" width="48" height="48" className="w-12 h-12 rounded-xl object-contain" />
-              <img src="/images/kasta-logo-small.png" alt="Kasta Ventures" width="160" height="40" className="h-9 w-auto object-contain logo-ink" />
+            <div className="brand-lockup flex items-center gap-3.5 pb-6 border-b border-fg/10">
+              <img src="/images/eride-logo-small.png" alt="E RIDE PRO" width="48" height="48" className="brand-logo-eride w-11 h-11" />
+              <img src="/images/kasta-logo-small.png" alt="Kasta Ventures" width="160" height="40" className="brand-logo-kasta h-8 w-auto logo-ink" />
             </div>
 
             <div className="space-y-1 py-5">

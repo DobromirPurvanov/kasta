@@ -157,18 +157,18 @@ export default function Navigation() {
           </div>
 
           {/* Center logo */}
-          <Link to="/" className="absolute left-4 sm:left-1/2 sm:-translate-x-1/2 min-h-11 px-1 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
+          <Link to="/" className="brand-lockup absolute left-4 sm:left-1/2 sm:-translate-x-1/2 min-h-11 px-1 flex items-center gap-2.5 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
             <img
               src="/images/eride-logo-small.png"
               alt="E RIDE PRO"
-              className="h-7 w-7 sm:h-8 sm:w-8 object-contain rounded-md"
+              className="brand-logo-eride h-7 w-7 sm:h-8 sm:w-8"
               width="32"
               height="32"
             />
             <img
               src="/images/kasta-logo-small.png"
               alt="Kasta Ventures"
-              className="hidden min-[380px]:block h-6 sm:h-7 object-contain logo-ink"
+              className="brand-logo-kasta hidden min-[380px]:block h-6 sm:h-7 w-auto logo-ink"
               width="110"
               height="28"
             />
