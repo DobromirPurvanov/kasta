@@ -1,7 +1,8 @@
+import { useRef, useState, type KeyboardEvent, type TouchEvent } from 'react'
 import { Link, useParams } from 'react-router'
 import { useLang } from '../hooks/useLang'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { getProductBySlug, products, type Product } from '../data/products'
+import { getProductBySlug, getProductGallery, products, type Product } from '../data/products'
 
 const keySpecLabels = ['TOP SPEED', 'MOTOR POWER', 'RANGE', 'CHARGING TIME'] as const
 
@@ -54,6 +55,192 @@ function ModelTypeBadge({ product, isBg }: { product: Product; isBg: boolean }) 
         ? (isBg ? 'Пътно легален · L1e' : 'Road legal · L1e')
         : (isBg ? 'Офроуд модел' : 'Off-road model')}
     </span>
+  )
+}
+
+function ProductGallery({ product, isBg }: { product: Product; isBg: boolean }) {
+  const galleryImages = getProductGallery(product)
+  const images = galleryImages.length > 0 ? galleryImages : [product.image]
+  const [activeIndex, setActiveIndex] = useState(0)
+  const thumbnailStripRef = useRef<HTMLDivElement>(null)
+  const thumbnailRefs = useRef<Array<HTMLButtonElement | null>>([])
+  const swipeStartX = useRef<number | null>(null)
+  const lastIndex = images.length - 1
+  const activeImage = images[activeIndex] ?? images[0]
+
+  const revealThumbnail = (index: number) => {
+    const strip = thumbnailStripRef.current
+    const thumbnail = thumbnailRefs.current[index]
+    if (!strip || !thumbnail) return
+
+    const stripBounds = strip.getBoundingClientRect()
+    const thumbnailBounds = thumbnail.getBoundingClientRect()
+    if (thumbnailBounds.left < stripBounds.left) {
+      strip.scrollBy({ left: thumbnailBounds.left - stripBounds.left - 8 })
+    } else if (thumbnailBounds.right > stripBounds.right) {
+      strip.scrollBy({ left: thumbnailBounds.right - stripBounds.right + 8 })
+    }
+  }
+
+  const selectImage = (index: number, focusThumbnail = false) => {
+    const nextIndex = Math.min(Math.max(index, 0), lastIndex)
+    setActiveIndex(nextIndex)
+    revealThumbnail(nextIndex)
+    if (focusThumbnail) thumbnailRefs.current[nextIndex]?.focus()
+  }
+
+  const handleThumbnailKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    let nextIndex: number | null = null
+
+    if (event.key === 'ArrowLeft') nextIndex = Math.max(index - 1, 0)
+    if (event.key === 'ArrowRight') nextIndex = Math.min(index + 1, lastIndex)
+    if (event.key === 'Home') nextIndex = 0
+    if (event.key === 'End') nextIndex = lastIndex
+
+    if (nextIndex === null) return
+    event.preventDefault()
+    selectImage(nextIndex, true)
+  }
+
+  const handleTouchStart = (event: TouchEvent<HTMLElement>) => {
+    swipeStartX.current = event.changedTouches[0]?.clientX ?? null
+  }
+
+  const handleTouchEnd = (event: TouchEvent<HTMLElement>) => {
+    const startX = swipeStartX.current
+    const endX = event.changedTouches[0]?.clientX
+    swipeStartX.current = null
+    if (startX === null || endX === undefined) return
+
+    const distance = startX - endX
+    if (Math.abs(distance) < 48) return
+    selectImage(activeIndex + (distance > 0 ? 1 : -1))
+  }
+
+  return (
+    <div role="region" aria-label={isBg ? `Галерия на ${product.nameBg}` : `${product.name} gallery`}>
+      <figure
+        className="surface-card media-tile relative flex h-[340px] touch-pan-y items-center justify-center overflow-hidden rounded-[1.65rem] p-5 sm:h-[500px] sm:rounded-[2rem] sm:p-9 lg:h-[620px] xl:h-[690px] xl:p-12"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="technical-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
+        <span className="pointer-events-none absolute -right-5 top-5 text-[clamp(5rem,16vw,13rem)] font-extrabold leading-none tracking-[-0.09em] text-fg/[0.035]" aria-hidden="true">
+          {product.category}
+        </span>
+        <div className="absolute left-4 right-4 top-4 z-20 flex items-center justify-between gap-4 sm:left-6 sm:right-6 sm:top-6">
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+            {isBg ? 'Галерия' : 'Gallery'}
+          </span>
+          <span
+            className="inline-flex min-h-9 items-center rounded-full border border-fg/10 bg-[var(--glass)] px-3 text-[10px] font-bold tracking-[0.12em] text-[var(--text-secondary)] backdrop-blur-md"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {String(activeIndex + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}
+          </span>
+        </div>
+
+        <div className="pointer-events-none absolute inset-x-[18%] bottom-[12%] h-[26%] rounded-full bg-[rgb(var(--accent-rgb)/0.12)] blur-3xl" aria-hidden="true" />
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => selectImage(activeIndex - 1)}
+              disabled={activeIndex === 0}
+              className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-fg/15 bg-[var(--glass)] text-fg shadow-lg backdrop-blur-md transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent-text)] disabled:cursor-not-allowed disabled:opacity-35 sm:left-5"
+              aria-label={isBg ? 'Предишна снимка' : 'Previous image'}
+              aria-controls="product-gallery-image"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => selectImage(activeIndex + 1)}
+              disabled={activeIndex === lastIndex}
+              className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-fg/15 bg-[var(--glass)] text-fg shadow-lg backdrop-blur-md transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent-text)] disabled:cursor-not-allowed disabled:opacity-35 sm:right-5"
+              aria-label={isBg ? 'Следваща снимка' : 'Next image'}
+              aria-controls="product-gallery-image"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+            </button>
+          </>
+        )}
+
+        <img
+          key={activeImage}
+          id="product-gallery-image"
+          src={activeImage}
+          alt={`${product.alt} — ${isBg ? `снимка ${activeIndex + 1} от ${images.length}` : `image ${activeIndex + 1} of ${images.length}`}`}
+          width="2500"
+          height="2096"
+          fetchPriority="high"
+          draggable="false"
+          className="relative h-full w-full select-none object-contain drop-shadow-2xl dark:brightness-125 dark:contrast-125"
+          onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
+        />
+        <figcaption className="absolute bottom-4 left-4 z-10 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--text-muted)] sm:bottom-6 sm:left-6">
+          E RIDE PRO · {product.category}
+        </figcaption>
+      </figure>
+
+      {images.length > 1 && (
+        <div
+          ref={thumbnailStripRef}
+          className="scrollbar-hide mt-3 flex snap-x snap-mandatory gap-2.5 overflow-x-auto overscroll-x-contain pb-2 pt-1"
+          role="group"
+          aria-label={isBg ? 'Избор на снимка' : 'Choose an image'}
+        >
+          {images.map((image, index) => {
+            const isActive = index === activeIndex
+            const imageLabel = isBg
+              ? `${product.nameBg}, снимка ${index + 1} от ${images.length}`
+              : `${product.name}, image ${index + 1} of ${images.length}`
+
+            return (
+              <button
+                key={image}
+                ref={(element) => { thumbnailRefs.current[index] = element }}
+                type="button"
+                onClick={() => selectImage(index)}
+                onKeyDown={(event) => handleThumbnailKeyDown(event, index)}
+                className={`group relative h-[72px] w-[92px] shrink-0 snap-start overflow-hidden rounded-xl border p-1.5 transition-colors duration-200 sm:h-[82px] sm:w-[108px] sm:rounded-2xl ${
+                  isActive
+                    ? 'border-[var(--accent)] bg-[rgb(var(--accent-rgb)/0.1)]'
+                    : 'border-fg/10 bg-[var(--bg-card)] hover:border-fg/30'
+                }`}
+                aria-label={imageLabel}
+                aria-pressed={isActive}
+                aria-controls="product-gallery-image"
+                tabIndex={isActive ? 0 : -1}
+              >
+                <img
+                  src={image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  width="2500"
+                  height="2096"
+                  draggable="false"
+                  className="h-full w-full select-none object-contain opacity-80 transition-opacity duration-200 group-hover:opacity-100"
+                />
+                <span
+                  className={`absolute bottom-1 right-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[9px] font-extrabold ${
+                    isActive
+                      ? 'bg-[var(--accent)] text-[var(--accent-ink)]'
+                      : 'bg-[var(--glass)] text-[var(--text-secondary)] backdrop-blur-md'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -290,34 +477,7 @@ export default function ProductDetail() {
           </aside>
 
           <div className="order-2 min-w-0 lg:order-1">
-            {/* The source data contains one image, so this is deliberately a media stage—not a faux gallery. */}
-            <figure className="surface-card media-tile relative flex min-h-[340px] items-center justify-center overflow-hidden rounded-[1.65rem] p-5 sm:min-h-[500px] sm:rounded-[2rem] sm:p-9 lg:min-h-[620px] xl:min-h-[690px] xl:p-12">
-              <div className="technical-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden="true" />
-              <span className="pointer-events-none absolute -right-5 top-5 text-[clamp(5rem,16vw,13rem)] font-extrabold leading-none tracking-[-0.09em] text-fg/[0.035]" aria-hidden="true">
-                {product.category}
-              </span>
-              <div className="absolute left-4 right-4 top-4 z-10 flex items-center justify-between gap-4 sm:left-6 sm:right-6 sm:top-6">
-                <span className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--text-muted)]">
-                  {isBg ? 'Продуктов изглед' : 'Product view'}
-                </span>
-                <span className="inline-flex min-h-9 items-center rounded-full border border-fg/10 bg-[var(--glass)] px-3 text-[10px] font-bold tracking-[0.12em] text-[var(--text-secondary)] backdrop-blur-md">
-                  01 / 01
-                </span>
-              </div>
-              <div className="pointer-events-none absolute inset-x-[18%] bottom-[12%] h-[26%] rounded-full bg-[rgb(var(--accent-rgb)/0.12)] blur-3xl" aria-hidden="true" />
-              <img
-                src={product.image}
-                alt={product.alt}
-                width="1100"
-                height="922"
-                fetchPriority="high"
-                className="relative h-full max-h-[590px] w-full object-contain drop-shadow-2xl dark:brightness-125 dark:contrast-125"
-                onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
-              />
-              <figcaption className="absolute bottom-4 left-4 z-10 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--text-muted)] sm:bottom-6 sm:left-6">
-                E RIDE PRO · {product.category}
-              </figcaption>
-            </figure>
+            <ProductGallery key={product.slug} product={product} isBg={isBg} />
 
             <section className="py-16 sm:py-20 lg:py-24" aria-labelledby="product-story-title">
               <div className="grid gap-7 md:grid-cols-[180px_minmax(0,1fr)] md:gap-12">
