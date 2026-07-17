@@ -14,7 +14,7 @@
 .light-section {
   color-scheme: light;
 
-  /* Kasta performance editorial design system — warm alloy + electric orange */
+  /* Kasta performance editorial design system — warm alloy + signature red */
   --bg: #f4f1ec;
   --bg-rgb: 244 241 236;
   --bg-elevated: #fbfaf7;
@@ -25,12 +25,12 @@
   --text-secondary: #38383d;
   --text-muted: #55555d;
   --fg-rgb: 17 17 18;
-  --accent: #ff5a00;
-  --accent-hover: #ff6b16;
-  --accent-light: #ff7626;
-  --accent-text: #a63a00;
-  --accent-rgb: 255 90 0;
-  --accent-ink: #111112;
+  --accent: #d90429;
+  --accent-hover: #b80021;
+  --accent-light: #e31238;
+  --accent-text: #bd0022;
+  --accent-rgb: 217 4 41;
+  --accent-ink: #ffffff;
   --border: rgba(17, 17, 18, 0.13);
 
   --card-sheen: rgba(255, 255, 255, 0.74);
@@ -41,7 +41,7 @@
   --media-1: #ffffff;
   --media-2: #f1ede6;
   --media-3: #dcd5ca;
-  --hero-glow: rgba(255, 90, 0, 0.09);
+  --hero-glow: rgba(217, 4, 41, 0.09);
   --ease-premium: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --space-section: clamp(5rem, 9vw, 9rem);
@@ -59,13 +59,13 @@
   --secondary-foreground: 240 6% 10%;
   --muted: 240 5% 90%;
   --muted-foreground: 240 4% 40%;
-  --accent-hsl: 21 100% 50%;
-  --accent-foreground: 240 3% 7%;
+  --accent-hsl: 349 96% 43%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 50%;
   --destructive-foreground: 0 0% 100%;
   --border-hsl: 240 6% 10% / 0.1;
   --input: 240 6% 10% / 0.12;
-  --ring: 21 100% 50%;
+  --ring: 349 96% 43%;
   --radius: 0.75rem;
 }
 
@@ -82,12 +82,12 @@
   --text-secondary: #e7e7e5;
   --text-muted: #e5e5e5;
   --fg-rgb: 248 248 246;
-  --accent: #ff5a00;
-  --accent-hover: #ff6b16;
-  --accent-light: #ff7626;
-  --accent-text: #ff7626;
-  --accent-rgb: 255 90 0;
-  --accent-ink: #111112;
+  --accent: #df0a30;
+  --accent-hover: #b80021;
+  --accent-light: #e31238;
+  --accent-text: #ff607b;
+  --accent-rgb: 223 10 48;
+  --accent-ink: #ffffff;
   --border: rgba(255, 255, 255, 0.14);
 
   --card-sheen: rgba(255, 255, 255, 0.045);
@@ -98,7 +98,7 @@
   --media-1: #292d31;
   --media-2: #171a1d;
   --media-3: #0b0d0f;
-  --hero-glow: rgba(255, 90, 0, 0.13);
+  --hero-glow: rgba(223, 10, 48, 0.13);
 
   --background: 240 4% 5%;
   --foreground: 0 0% 100%;
@@ -112,13 +112,13 @@
   --secondary-foreground: 0 0% 100%;
   --muted: 0 0% 14%;
   --muted-foreground: 0 0% 60%;
-  --accent-hsl: 21 100% 50%;
-  --accent-foreground: 240 3% 7%;
+  --accent-hsl: 348 91% 46%;
+  --accent-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --border-hsl: 0 0% 100% / 0.1;
   --input: 0 0% 100% / 0.1;
-  --ring: 21 100% 50%;
+  --ring: 348 91% 46%;
 }
 
 @layer base {
