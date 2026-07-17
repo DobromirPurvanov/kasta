@@ -116,7 +116,7 @@ export default function Terms() {
       <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
           <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
-            <Link to="/" className="text-fg/50 hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <Link to="/" className="text-fg/65 hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
             <span className="text-fg/20">/</span>
             <span className="text-fg/80 font-medium" aria-current="page">{isBg ? 'Условия' : 'Terms'}</span>
           </nav>
@@ -127,7 +127,7 @@ export default function Terms() {
         <h1 className="text-display text-fg mb-2" style={{ fontSize: 'clamp(28px, 4vw, 48px)' }}>
           {content.title}
         </h1>
-        <p className="text-[13px] text-fg/50 mb-10">{content.lastUpdated}</p>
+        <p className="text-[13px] text-fg/65 mb-10">{content.lastUpdated}</p>
 
         <p className="text-[15px] text-fg/70 leading-relaxed mb-12">{content.intro}</p>
 
@@ -135,7 +135,7 @@ export default function Terms() {
           {content.sections.map((section, i) => (
             <div key={i} className="border-t border-fg/[0.06] pt-8">
               <h2 className="text-[18px] font-semibold text-fg mb-4">{section.title}</h2>
-              <div className="text-[14px] text-fg/60 leading-[1.85] whitespace-pre-line">
+              <div className="text-[16px] text-fg/70 leading-[1.85] whitespace-pre-line">
                 {section.content}
               </div>
             </div>

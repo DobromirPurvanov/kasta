@@ -115,7 +115,7 @@ export default function Blog() {
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
               <div className="flex items-center justify-between gap-4 mb-8">
-                <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/15 text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
+                <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[rgb(var(--accent-rgb)/0.1)] border border-[rgb(var(--accent-rgb)/0.15)] text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
                   {post.tag}
                 </span>
                 <span className="text-[11px] font-semibold tracking-[0.12em] text-fg/45" aria-hidden="true">

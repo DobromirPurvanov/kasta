@@ -60,8 +60,10 @@ export function LangProvider({ children }: { children: ReactNode }) {
       // URL wins over the stored preference so shared ?lang= links always work
       const urlLang = new URLSearchParams(window.location.search).get('lang')
       if (urlLang === 'en' || urlLang === 'bg') return urlLang
-      const saved = localStorage.getItem('kasta_lang')
-      if (saved === 'en' || saved === 'bg') return saved
+      try {
+        const saved = localStorage.getItem('kasta_lang')
+        if (saved === 'en' || saved === 'bg') return saved
+      } catch { /* storage can be blocked in privacy-restricted contexts */ }
     }
     return 'bg'
   })
@@ -75,7 +77,9 @@ export function LangProvider({ children }: { children: ReactNode }) {
       lang,
       setLang: (newLang: Lang) => {
         setLang(newLang)
-        localStorage.setItem('kasta_lang', newLang)
+        try {
+          localStorage.setItem('kasta_lang', newLang)
+        } catch { /* the language still changes for the current session */ }
       },
       t: (key: TKey) => translations[lang][key],
     }),

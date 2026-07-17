@@ -33,10 +33,17 @@ export default function Footer() {
   const isBg = lang === 'bg'
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+  const openCookieSettings = () => window.dispatchEvent(new Event('open-cookie-settings'))
 
   return (
-    <footer className="bg-[var(--bg-deep)] border-t border-fg/[0.08]">
+    <footer className="dark bg-[var(--bg-deep)] border-t border-fg/[0.08]">
       <div className="section-shell py-12 sm:py-16 lg:py-20">
+        <div className="flex items-end justify-between gap-6 pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-fg/10 overflow-hidden">
+          <p className="text-display uppercase text-fg text-[clamp(3rem,8vw,7.5rem)]">
+            {isBg ? <>Карай <span className="text-fg/30">електрически.</span></> : <>Ride <span className="text-fg/30">electric.</span></>}
+          </p>
+          <span className="hidden sm:block w-3 h-3 rounded-full bg-[var(--accent)] mb-2 status-pulse" aria-hidden="true" />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
           {/* Column 1 - Navigation */}
           <div>
@@ -48,9 +55,6 @@ export default function Footer() {
               <NavItem to="/models" isHome={isHome}>{t('nav_models')}</NavItem>
               <NavItem hash="#about" isHome={isHome}>{t('nav_about')}</NavItem>
               <NavItem hash="#contact" isHome={isHome}>{t('nav_contact')}</NavItem>
-              <NavItem to="/privacy-policy" isHome={isHome}>{isBg ? 'Поверителност' : 'Privacy Policy'}</NavItem>
-              <NavItem to="/terms" isHome={isHome}>{isBg ? 'Условия за ползване' : 'Terms of Service'}</NavItem>
-              <NavItem to="/cookie-policy" isHome={isHome}>{isBg ? 'Политика за бисквитки' : 'Cookie Policy'}</NavItem>
             </nav>
           </div>
 
@@ -129,6 +133,9 @@ export default function Footer() {
             <Link to="/privacy-policy" className="min-h-11 inline-flex items-center hover:text-fg/80 transition-colors">{isBg ? 'Поверителност' : 'Privacy'}</Link>
             <Link to="/terms" className="min-h-11 inline-flex items-center hover:text-fg/80 transition-colors">{isBg ? 'Условия' : 'Terms'}</Link>
             <Link to="/cookie-policy" className="min-h-11 inline-flex items-center hover:text-fg/80 transition-colors">{isBg ? 'Бисквитки' : 'Cookies'}</Link>
+            <button type="button" onClick={openCookieSettings} className="min-h-11 inline-flex items-center hover:text-fg/80 transition-colors">
+              {isBg ? 'Настройки' : 'Settings'}
+            </button>
           </nav>
         </div>
       </div>

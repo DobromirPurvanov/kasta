@@ -4,14 +4,14 @@ import { useLang } from '../hooks/useLang'
 import { useTheme } from '../hooks/useTheme'
 
 const anchorLinkClass =
-  'text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-fg/70 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
+  'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-fg/70 hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
 
 function ThemeToggle({ onToggle, isDark, label, className = '' }: { onToggle: () => void; isDark: boolean; label: string; className?: string }) {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className={`w-10 h-10 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
+      className={`w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
       aria-label={label}
       title={label}
     >
@@ -35,13 +35,28 @@ export default function Navigation() {
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
   const burgerRef = useRef<HTMLButtonElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50)
+    let frame = 0
+    const updateScrollState = () => {
+      frame = 0
+      setScrolled(window.scrollY > 40)
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      setScrollProgress(maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0)
+    }
+    const onScroll = () => {
+      if (frame) return
+      frame = window.requestAnimationFrame(updateScrollState)
+    }
+    updateScrollState()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.cancelAnimationFrame(frame)
+    }
   }, [])
 
   // Mobile menu: lock body scroll, close on Escape, move focus in and back out
@@ -86,7 +101,7 @@ export default function Navigation() {
   const isHome = location.pathname === '/'
   // Over the hero video the nav sits on dark imagery regardless of theme —
   // force the dark scope so text/icons stay light until the page is scrolled.
-  const overHero = isHome && !scrolled && !mobileOpen
+  const overHero = (isHome || isModelsPage) && !scrolled && !mobileOpen
   const themeLabel = isDark
     ? (isBg ? 'Светла тема' : 'Switch to light theme')
     : (isBg ? 'Тъмна тема' : 'Switch to dark theme')
@@ -94,14 +109,14 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${overHero ? 'dark' : ''} ${
+        className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${overHero ? 'dark' : ''} ${
           scrolled || mobileOpen
             ? 'nav-solid backdrop-blur-md border-b border-fg/[0.08]'
             : 'bg-transparent'
         }`}
         aria-label="Main navigation"
       >
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 h-[64px] sm:h-[72px] flex items-center justify-between">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 h-[64px] sm:h-[76px] flex items-center justify-between">
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
             <Link to="/#about" className={anchorLinkClass}>
@@ -110,7 +125,7 @@ export default function Navigation() {
             <NavLink
               to="/models"
               className={({ isActive }) =>
-                `text-[12px] font-medium tracking-[0.12em] uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm ${
+                `min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm ${
                   isActive ? 'text-[var(--accent-text)] font-semibold' : 'text-fg/70 hover:text-fg'
                 }`
               }
@@ -124,7 +139,7 @@ export default function Navigation() {
           </div>
 
           {/* Center logo */}
-          <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
+          <Link to="/" className="absolute left-1/2 -translate-x-1/2 min-h-11 px-1 flex items-center gap-2 sm:gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-lg">
             <img
               src="/images/eride-logo-small.png"
               alt="E RIDE PRO"
@@ -135,7 +150,7 @@ export default function Navigation() {
             <img
               src="/images/kasta-logo-small.png"
               alt="Kasta Ventures"
-              className="h-6 sm:h-7 object-contain logo-ink"
+              className="hidden min-[380px]:block h-6 sm:h-7 object-contain logo-ink"
               width="110"
               height="28"
             />
@@ -143,12 +158,19 @@ export default function Navigation() {
 
           {/* Right */}
           <div className="hidden md:flex items-center gap-3">
+            <Link
+              to="/#contact"
+              className="hidden lg:inline-flex min-h-11 items-center gap-2 px-5 rounded-full bg-[var(--accent)] text-white text-[10px] font-bold tracking-[0.12em] uppercase hover:bg-[var(--accent-hover)] hover:-translate-y-0.5 transition-all duration-300"
+            >
+              {isBg ? 'Тестово каране' : 'Test ride'}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </Link>
             <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <a
               href="https://instagram.com/erideprobulgaria"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full border border-fg/20 flex items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="hidden xl:flex w-11 h-11 rounded-full border border-fg/20 items-center justify-center text-fg/70 hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label="Instagram"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -160,7 +182,7 @@ export default function Navigation() {
             <button
               type="button"
               onClick={toggleLang}
-              className="text-[11px] font-semibold tracking-wider text-fg/70 hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="min-h-11 text-[11px] font-semibold tracking-wider text-fg/70 hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
               aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
             >
               {lang === 'bg' ? 'EN' : 'BG'}
@@ -168,7 +190,7 @@ export default function Navigation() {
           </div>
 
           {/* Mobile: theme toggle + hamburger */}
-          <div className="md:hidden flex items-center gap-1">
+          <div className="md:hidden ml-auto flex items-center gap-1">
             <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="border-transparent" />
             <button
               ref={burgerRef}
@@ -184,17 +206,25 @@ export default function Navigation() {
             </button>
           </div>
         </div>
+        <span
+          className="absolute inset-x-0 bottom-0 h-px bg-[var(--accent)] origin-left will-change-transform"
+          style={{ transform: `scaleX(${scrollProgress})` }}
+          aria-hidden="true"
+        />
       </nav>
 
       {/* Mobile overlay */}
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`fixed inset-0 z-[99] bg-[var(--bg)] transition-all duration-300 md:hidden ${
+        className={`fixed inset-0 z-30 bg-[var(--bg)] transition-all duration-300 md:hidden ${
           mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         aria-hidden={!mobileOpen}
         inert={!mobileOpen}
+        role="dialog"
+        aria-modal="true"
+        aria-label={isBg ? 'Мобилно меню' : 'Mobile menu'}
       >
         <div className="section-shell h-full pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] flex flex-col">
           <p className="section-eyebrow mb-7">{isBg ? 'Меню' : 'Menu'}</p>

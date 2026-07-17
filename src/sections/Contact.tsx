@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLang } from '../hooks/useLang'
@@ -8,188 +8,137 @@ gsap.registerPlugin(ScrollTrigger)
 export default function Contact() {
   const { t, lang } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
+  const [mapLoaded, setMapLoaded] = useState(false)
   const isBg = lang === 'bg'
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
     if (prefersReducedMotion || !sectionRef.current) return
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        '.contact-card',
-        { opacity: 0, y: 24 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 70%' },
-        }
-      )
-      gsap.fromTo(
-        '.contact-stat',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: '.contact-stats-row', start: 'top 90%' },
-        }
-      )
+      gsap.from('.contact-reveal', {
+        opacity: 0,
+        y: 22,
+        duration: 0.5,
+        stagger: 0.07,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+      })
     }, sectionRef)
     return () => ctx.revert()
   }, [prefersReducedMotion])
 
+  const directionsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('ул. Даскал Стоян Попандреев 28, София')
+
   return (
-    <section id="contact" ref={sectionRef} className="bg-[var(--bg)] pt-16 sm:pt-20 lg:pt-28">
-      <div className="section-shell mb-9 sm:mb-12">
-        <span className="section-eyebrow mb-4">
-          {t('contact_title')}
-        </span>
-        <h2 className="text-display text-fg text-[32px] sm:text-[40px] md:text-[clamp(42px,5vw,64px)]">
-          {isBg ? 'СВЪРЖИ СЕ С НАС' : 'GET IN TOUCH'}
-        </h2>
-      </div>
+    <section id="contact" ref={sectionRef} className="dark relative overflow-hidden bg-[var(--bg)] text-white section-pad">
+      <div className="technical-grid absolute inset-0 opacity-55" aria-hidden="true" />
+      <div className="accent-orb absolute -right-44 -bottom-52 w-[42rem] h-[42rem] opacity-55" aria-hidden="true" />
 
-      <div className="relative w-full flex flex-col gap-4 md:block">
-        <div className="contact-overlay relative z-10 mx-4 sm:mx-6 md:mx-0 md:absolute md:left-10 md:top-1/2 md:-translate-y-1/2">
-          <div className="contact-card surface-card bg-[var(--bg-elevated)]/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-5 sm:p-7 max-w-full md:max-w-[380px] shadow-2xl" style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-[var(--accent)] rounded-lg flex items-center justify-center">
-                <span className="text-white font-extrabold text-[7px] tracking-wider leading-tight text-center">
-                  E
-                  <br />
-                  RIDE
-                  <br />
-                  PRO
+      <div className="section-shell relative">
+        <div className="contact-reveal grid lg:grid-cols-[minmax(0,1fr)_minmax(300px,470px)] gap-6 lg:gap-16 items-end mb-10 sm:mb-14">
+          <div>
+            <span className="section-eyebrow mb-5">{isBg ? 'Свържи се с нас' : 'Get in touch'}</span>
+            <h2 className="text-display uppercase text-white text-[clamp(3.05rem,7vw,6.75rem)]">
+              {isBg ? <>Следващото<br /><span className="text-white/35">каране започва тук.</span></> : <>Your next ride<br /><span className="text-white/35">starts here.</span></>}
+            </h2>
+          </div>
+          <p className="text-[15px] sm:text-[17px] text-white/65 leading-[1.75] lg:pb-2">
+            {isBg
+              ? 'Избери модел, запази тестово каране или ни попитай за регистрация, сервиз и доставка. Ще ти помогнем да намериш правилната машина.'
+              : 'Choose a model, book a test ride or ask about registration, service and delivery. We will help you find the right machine.'}
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-[minmax(320px,.78fr)_minmax(0,1.22fr)] gap-4 sm:gap-5 items-stretch">
+          <div className="contact-reveal glass-panel rounded-[1.5rem] sm:rounded-[2rem] p-5 sm:p-7 lg:p-8 flex flex-col">
+            <div className="flex items-center gap-3 pb-6 border-b border-white/10">
+              <img src="/images/eride-logo-small.png" alt="E RIDE PRO" width="48" height="48" className="w-12 h-12 rounded-xl object-contain" />
+              <img src="/images/kasta-logo-small.png" alt="Kasta Ventures" width="160" height="40" className="h-9 w-auto object-contain logo-ink" />
+            </div>
+
+            <div className="space-y-1 py-5">
+              <a href="tel:+359887773733" className="group min-h-[72px] flex items-center gap-4 border-b border-white/10">
+                <span className="w-11 h-11 shrink-0 rounded-2xl border border-white/10 bg-white/[0.045] flex items-center justify-center text-[var(--accent-text)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-300">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                 </span>
+                <span>
+                  <small className="block text-[9px] font-bold tracking-[0.14em] uppercase text-white/55">{t('contact_phone_label')}</small>
+                  <strong className="block text-[16px] font-semibold text-white mt-1">+359 887 77 37 33</strong>
+                </span>
+                <svg className="ml-auto text-white/35 group-hover:text-white group-hover:translate-x-1 transition-all" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+
+              <a href="mailto:office@kastaventures.com" className="group min-h-[72px] flex items-center gap-4 border-b border-white/10">
+                <span className="w-11 h-11 shrink-0 rounded-2xl border border-white/10 bg-white/[0.045] flex items-center justify-center text-[var(--accent-text)] group-hover:bg-[var(--accent)] group-hover:text-white transition-all duration-300">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z" /><path d="m4 6 8 6 8-6" /></svg>
+                </span>
+                <span className="min-w-0">
+                  <small className="block text-[9px] font-bold tracking-[0.14em] uppercase text-white/55">{t('contact_email_label')}</small>
+                  <strong className="block text-[14px] sm:text-[16px] font-semibold text-white mt-1 break-all">office@kastaventures.com</strong>
+                </span>
+                <svg className="ml-auto shrink-0 text-white/35 group-hover:text-white group-hover:translate-x-1 transition-all" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </div>
+
+            <div className="mt-auto grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                <span className="block text-[9px] font-bold tracking-[0.13em] uppercase text-white/50">{isBg ? 'Работно време' : 'Opening hours'}</span>
+                <strong className="block text-[13px] text-white mt-2">{isBg ? 'Пон–Пет' : 'Mon–Fri'}</strong>
+                <span className="block text-[12px] text-white/60 mt-0.5">09:00–18:00</span>
               </div>
-              <div>
-                <span className="text-[16px] font-bold text-fg">KaSta</span>
-                <span className="text-[10px] font-bold text-fg/40 ml-1">
-                  VENTURES
-                </span>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+                <span className="block text-[9px] font-bold tracking-[0.13em] uppercase text-white/50">{isBg ? 'Локация' : 'Location'}</span>
+                <strong className="block text-[13px] text-white mt-2">Sofia</strong>
+                <span className="block text-[12px] text-white/60 mt-0.5">Bulgaria</span>
               </div>
             </div>
 
-            <div className="space-y-5">
-              <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--accent)"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
-                    {t('location_title')}
-                  </p>
-                  <p className="text-[14px] text-fg/80">{t('location_address')}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--accent)"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M22 17H2a3 3 0 003-3V9a7 7 0 0114 0v5a3 3 0 003 3zm-8.5 4h-3a1.5 1.5 0 00-1.5 1.5V23h6v-.5A1.5 1.5 0 0013.5 21z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
-                    {t('contact_email_label')}
-                  </p>
-                  <a
-                    href="mailto:office@kastaventures.com"
-                    className="text-[14px] text-fg/80 hover:text-fg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
-                  >
-                    office@kastaventures.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-full bg-fg/[0.05] border border-fg/[0.06] flex items-center justify-center flex-shrink-0">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="var(--accent)"
-                    strokeWidth="1.5"
-                  >
-                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-[11px] tracking-[0.1em] text-fg/60 uppercase font-semibold">
-                    {t('contact_phone_label')}
-                  </p>
-                  <a
-                    href="tel:+359887773733"
-                    className="text-[14px] text-fg/80 hover:text-fg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm"
-                  >
-                    +359 887 77 37 33
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <a
-              href="mailto:office@kastaventures.com"
-              className="btn-accent w-full mt-7"
-            >
-              {t('make_inquiry')}
+            <a href="mailto:office@kastaventures.com?subject=E%20RIDE%20PRO%20test%20ride" className="btn-accent w-full mt-5">
+              {isBg ? 'Запази тестово каране' : 'Book a test ride'}
             </a>
           </div>
-        </div>
 
-        <div className="h-[340px] sm:h-[420px] md:h-[clamp(480px,56vh,620px)] overflow-hidden border-y border-fg/[0.08]">
-          <iframe
-            title={isBg ? 'Местоположение на Kasta Ventures' : 'Kasta Ventures location'}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.0!2d23.27323!3d42.648462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM4JzU0LjUiTiAyM8KwMTYnMjMuNiJF!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg"
-            width="100%"
-            height="100%"
-            className="map-frame"
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
-
-      <div className="contact-stats-row bg-[var(--bg-deep)]">
-        <div className="section-shell py-5 sm:py-7">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {[
-              { num: '2', label: isBg ? 'год. гаранция' : 'year warranty' },
-              { num: '7', label: isBg ? 'модела' : 'models' },
-              { num: '77', label: isBg ? 'км/ч макс.' : 'km/h top' },
-              { num: '2', label: isBg ? 'часа зареждане' : 'hours charging' },
-            ].map((s, i) => (
-              <div key={i} className={`contact-stat text-center px-2 py-5 sm:py-6 ${i % 2 === 0 ? 'border-r border-fg/10' : ''} ${i < 2 ? 'border-b border-fg/10 md:border-b-0' : ''} ${i === 1 ? 'md:border-r' : ''}`} style={{ opacity: prefersReducedMotion ? 1 : 0 }}>
-                <div className="text-[30px] sm:text-[38px] lg:text-[46px] font-extrabold text-fg leading-none tracking-[-0.05em]">
-                  {s.num}
-                </div>
-                <div className="text-[10px] sm:text-[11px] text-fg/60 tracking-[0.14em] uppercase mt-2 font-semibold">
-                  {s.label}
+          <div className="contact-reveal relative min-h-[430px] lg:min-h-[620px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-white/10 bg-[#101013]">
+            {mapLoaded ? (
+              <iframe
+                title={isBg ? 'Местоположение на Kasta Ventures' : 'Kasta Ventures location'}
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2933.0!2d23.27323!3d42.648462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDM4JzU0LjUiTiAyM8KwMTYnMjMuNiJF!5e0!3m2!1sen!2sbg!4v1700000000000!5m2!1sen!2sbg"
+                width="100%"
+                height="100%"
+                className="map-frame absolute inset-0"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                <div className="technical-grid absolute inset-0 opacity-70" aria-hidden="true" />
+                <div className="absolute w-72 h-72 rounded-full bg-[rgb(var(--accent-rgb)/0.12)] blur-[80px]" aria-hidden="true" />
+                <div className="relative max-w-[390px]">
+                  <span className="mx-auto w-16 h-16 rounded-[1.4rem] border border-white/10 bg-white/[0.045] flex items-center justify-center text-[var(--accent-text)]">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                  </span>
+                  <h3 className="text-[24px] sm:text-[30px] font-bold tracking-[-0.045em] text-white mt-6">{isBg ? 'Посети ни в София' : 'Visit us in Sofia'}</h3>
+                  <p className="text-[14px] text-white/60 leading-relaxed mt-3">{t('location_address')}</p>
+                  <button type="button" onClick={() => setMapLoaded(true)} className="btn-outline !text-white !border-white/20 mt-6 mx-auto sm:w-auto">
+                    {isBg ? 'Покажи картата' : 'Load the map'}
+                  </button>
+                  <p className="text-[10px] text-white/45 leading-relaxed mt-4">
+                    {isBg ? 'Картата се зарежда от Google само след твоя избор.' : 'Google Maps loads only after you choose to view it.'}
+                  </p>
                 </div>
               </div>
-            ))}
+            )}
+
+            <a
+              href={directionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-panel absolute left-4 right-4 sm:left-auto sm:right-5 bottom-5 min-h-12 px-5 rounded-full inline-flex items-center justify-center gap-2 text-[10px] font-bold tracking-[0.12em] uppercase text-white hover:bg-white/10 transition-colors"
+            >
+              {isBg ? 'Отвори упътвания' : 'Open directions'}
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
+            </a>
           </div>
         </div>
       </div>

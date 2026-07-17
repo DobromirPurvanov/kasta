@@ -8,15 +8,22 @@ export default function ScrollManager() {
 
   useEffect(() => {
     if (hash) {
-      const el = document.getElementById(hash.slice(1))
-      if (el) {
-        // Instant: a CSS smooth scroll gets cancelled by ScrollTrigger.refresh()
-        // (fired on image load) and strands the user between sections.
-        el.scrollIntoView({ behavior: 'instant', block: 'start' })
-        return
+      let attempts = 0
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const findTarget = () => {
+        const el = document.getElementById(hash.slice(1))
+        if (el) {
+          el.scrollIntoView({ behavior: 'auto', block: 'start' })
+          return
+        }
+        attempts += 1
+        if (attempts < 10) timer = setTimeout(findTarget, 60)
+        else window.scrollTo({ top: 0, behavior: 'auto' })
       }
+      findTarget()
+      return () => clearTimeout(timer)
     }
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }, [pathname, hash])
 
   return null
