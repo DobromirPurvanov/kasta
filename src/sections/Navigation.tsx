@@ -1,37 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useLang } from '../hooks/useLang'
-import { useTheme } from '../hooks/useTheme'
 
 const anchorLinkClass =
   'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-[var(--text-secondary)] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
 
-function ThemeToggle({ onToggle, isDark, label, className = '' }: { onToggle: () => void; isDark: boolean; label: string; className?: string }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className={`w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] ${className}`}
-      aria-label={label}
-      title={label}
-    >
-      {isDark ? (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
-        </svg>
-      ) : (
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-        </svg>
-      )}
-    </button>
-  )
-}
-
 export default function Navigation() {
-  const { lang, setLang, t } = useLang()
-  const { theme, toggleTheme } = useTheme()
+  const { lang, t } = useLang()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
@@ -94,18 +69,12 @@ export default function Navigation() {
     }
   }, [mobileOpen])
 
-  const toggleLang = () => setLang(lang === 'bg' ? 'en' : 'bg')
   const isBg = lang === 'bg'
-  const isDark = theme === 'dark'
   const isModelsPage = location.pathname === '/models'
   const isHome = location.pathname === '/'
   // Over the hero video the nav sits on dark imagery regardless of theme —
   // force the dark scope so text/icons stay light until the page is scrolled.
   const overHero = (isHome || isModelsPage) && !scrolled && !mobileOpen
-  const themeLabel = isDark
-    ? (isBg ? 'Светла тема' : 'Switch to light theme')
-    : (isBg ? 'Тъмна тема' : 'Switch to dark theme')
-
   return (
     <>
       <nav
@@ -157,41 +126,18 @@ export default function Navigation() {
           </Link>
 
           {/* Right */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden lg:flex items-center">
             <Link
               to="/#contact"
-              className="btn-accent hidden lg:inline-flex !min-h-11 !w-auto !px-5 !py-2.5 !text-[10px] !tracking-[0.12em]"
+              className="btn-accent !min-h-11 !w-auto !px-5 !py-2.5 !text-[10px] !tracking-[0.12em]"
             >
               {isBg ? 'Тестово каране' : 'Test ride'}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </Link>
-            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
-            <a
-              href="https://instagram.com/erideprobulgaria"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden xl:flex w-11 h-11 rounded-full border border-fg/20 items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-              aria-label="Instagram"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5"/>
-                <circle cx="12" cy="12" r="5"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-              </svg>
-            </a>
-            <button
-              type="button"
-              onClick={toggleLang}
-              className="min-h-11 text-[11px] font-semibold tracking-wider text-[var(--text-secondary)] hover:text-fg px-4 py-2.5 rounded-full hover:bg-fg/10 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-              aria-label={isBg ? 'Switch to English' : 'Превключи на български'}
-            >
-              {lang === 'bg' ? 'EN' : 'BG'}
-            </button>
           </div>
 
-          {/* Mobile: theme toggle + hamburger */}
+          {/* Mobile menu */}
           <div className="md:hidden ml-auto flex items-center gap-1">
-            <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="border-transparent" />
             <button
               ref={burgerRef}
               type="button"
@@ -250,29 +196,9 @@ export default function Navigation() {
           </nav>
 
           <div className="mt-auto pt-8">
-            <div className="flex flex-col gap-2 mb-6 text-[14px] text-[var(--text-secondary)]">
+            <div className="flex flex-col gap-2 text-[14px] text-[var(--text-secondary)]">
               <a href="tel:+359887773733" className="min-h-11 inline-flex items-center">+359 887 77 37 33</a>
               <a href="mailto:office@kastaventures.com" className="min-h-11 inline-flex items-center">office@kastaventures.com</a>
-            </div>
-            <div className="flex items-center justify-between gap-4 pt-5 border-t border-fg/10">
-              <a
-                href="https://instagram.com/erideprobulgaria"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-h-11 inline-flex items-center text-[12px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)] transition-colors hover:text-fg"
-              >
-                Instagram
-              </a>
-              <div className="flex items-center gap-2">
-                <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} className="!w-11 !h-11 border-fg/15" />
-                <button
-                  type="button"
-                  onClick={() => { toggleLang(); setMobileOpen(false) }}
-                  className="min-h-11 px-4 rounded-full border border-fg/15 text-[12px] font-bold tracking-[0.12em] uppercase text-fg"
-                >
-                  {lang === 'bg' ? 'EN' : 'BG'}
-                </button>
-              </div>
             </div>
           </div>
         </div>
