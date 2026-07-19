@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 export type Theme = 'light' | 'dark'
 
 const THEME_COLORS: Record<Theme, string> = {
-  light: '#f3f3f1',
-  dark: '#070708',
+  light: '#f4f1ec',
+  dark: '#08090a',
 }
 
 function getInitialTheme(): Theme {
