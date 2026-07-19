@@ -79,11 +79,11 @@
   --bg-hover: #1c2024;
   --bg-deep: #030405;
   --text: #f8f8f6;
-  --text-secondary: #e7e7e5;
-  --text-muted: #e5e5e5;
+  --text-secondary: #bcbcc3;
+  --text-muted: #92929b;
   --fg-rgb: 248 248 246;
   --accent: #df0a30;
-  --accent-hover: #b80021;
+  --accent-hover: #e8123a;
   --accent-light: #e31238;
   --accent-text: #ff607b;
   --accent-rgb: 223 10 48;
@@ -114,7 +114,7 @@
   --muted-foreground: 0 0% 60%;
   --accent-hsl: 348 91% 46%;
   --accent-foreground: 0 0% 100%;
-  --destructive: 0 84% 60%;
+  --destructive: 0 70% 48%;
   --destructive-foreground: 0 0% 100%;
   --border-hsl: 0 0% 100% / 0.1;
   --input: 0 0% 100% / 0.1;

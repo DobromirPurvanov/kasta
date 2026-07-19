@@ -35,7 +35,7 @@ This document is the visual source of truth for the redesigned E RIDE PRO Bulgar
 | Secondary text | `#BCBCC3` | Supporting copy |
 | Muted text | `#92929B` | Metadata |
 | Accent | `#DF0A30` | Primary actions |
-| Accent hover | `#FF2148` | Hover emphasis |
+| Accent hover | `#E8123A` | Hover emphasis; lightens on dark, keeps AA with the white label |
 | Accent text | `#FF607B` | Small labels on dark surfaces |
 
 Borders use 10% foreground; glass borders use 11% white in dark mode and 72% white in light mode. Red is reserved for actions, status and short labels—not large reading surfaces.
