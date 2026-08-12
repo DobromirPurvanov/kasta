@@ -82,16 +82,27 @@ export default function Footer() {
             {/* Social */}
             <div className="flex gap-3 mt-6">
               <a
-                href="https://instagram.com/erideprobulgaria"
+                href="https://www.instagram.com/eridepro.bulgaria/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all"
-                aria-label="Instagram"
+                aria-label={isBg ? 'E RIDE PRO България в Instagram' : 'E RIDE PRO Bulgaria on Instagram'}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                   <rect x="2" y="2" width="20" height="20" rx="5"/>
                   <circle cx="12" cy="12" r="5"/>
                   <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+                </svg>
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61585425194429"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full border border-fg/20 flex items-center justify-center text-[var(--text-secondary)] hover:text-fg hover:border-fg/40 transition-all"
+                aria-label={isBg ? 'E RIDE PRO България във Facebook' : 'E RIDE PRO Bulgaria on Facebook'}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <path d="M15 3h-2.5A3.5 3.5 0 0 0 9 6.5V9H7v3h2v9h3v-9h2.5l.5-3h-3V6.5a1 1 0 0 1 1-1H15V3Z" />
                 </svg>
               </a>
             </div>

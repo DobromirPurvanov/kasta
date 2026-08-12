@@ -6,6 +6,8 @@
 
 Сайт: https://kastaventures.com
 Контакт: office@kastaventures.com
+Instagram: https://www.instagram.com/eridepro.bulgaria/
+Facebook: https://www.facebook.com/profile.php?id=61585425194429
 Езици: български (основен), английски
 
 Този сайт е едностранично приложение (React). Съдържанието се изгражда от
