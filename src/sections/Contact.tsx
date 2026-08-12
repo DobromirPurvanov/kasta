@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLang } from '../hooks/useLang'
+import ContactForm from '../components/ContactForm'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -93,7 +94,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <a href="mailto:office@kastaventures.com?subject=E%20RIDE%20PRO%20test%20ride" className="btn-accent w-full mt-5">
+            <a href="#contact-form" className="btn-accent w-full mt-5">
               {isBg ? 'Запази тестово каране' : 'Book a test ride'}
             </a>
           </div>
@@ -140,6 +141,10 @@ export default function Contact() {
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg>
             </a>
           </div>
+        </div>
+
+        <div id="contact-form" className="contact-reveal scroll-mt-28 mt-4 sm:mt-5">
+          <ContactForm />
         </div>
       </div>
     </section>
