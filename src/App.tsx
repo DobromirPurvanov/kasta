@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router'
 import { LangProvider, useLang } from './hooks/useLang'
 import ScrollManager from './components/ScrollManager'
+import ScrollTriggerRefresh from './components/ScrollTriggerRefresh'
 import Navigation from './sections/Navigation'
 import Home from './pages/Home'
 import Footer from './sections/Footer'
@@ -40,6 +41,7 @@ export default function App() {
       <div className="min-h-screen bg-[var(--bg)] text-fg">
         <SkipLink />
         <ScrollManager />
+        <ScrollTriggerRefresh />
         <Navigation />
         <main id="main" tabIndex={-1}>
           <Suspense fallback={<RouteFallback />}>
