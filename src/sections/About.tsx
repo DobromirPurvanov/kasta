@@ -73,7 +73,9 @@ export default function About() {
               <span className="inline-flex min-h-8 items-center px-3 rounded-full border border-white/15 bg-black/30 backdrop-blur-md text-[9px] font-bold tracking-[0.14em] uppercase text-[var(--text-secondary)]">
                 E RIDE PRO // {isBg ? 'Създаден за контрол' : 'Engineered for control'}
               </span>
-              <h3 className="text-display text-fg uppercase text-[clamp(2.1rem,4vw,4rem)] mt-5 max-w-[600px]">
+              {/* „Производителност,“ е една дума, по-широка от кутията на телефон —
+                  затова не се пренасяше, а се режеше. По-ниска долна граница + пренос. */}
+              <h3 className="text-display text-fg uppercase text-[clamp(1.5rem,4vw,4rem)] mt-5 max-w-[600px] [overflow-wrap:anywhere] [hyphens:auto]">
                 {isBg ? 'Производителност, която усещаш веднага.' : 'Performance you feel instantly.'}
               </h3>
             </div>
