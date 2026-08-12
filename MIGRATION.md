@@ -78,6 +78,24 @@ PerplexityBot. Managed robots.txt да си остане изключен.
 При създаването му Cloudflare предупреждава, че `www` уж не е проксиран — фалшива
 тревога, записът е на Pages; избира се „Ignore and deploy rule anyway".
 
+## Деплой — автоматичен от GitHub (12.08.2026)
+
+Pages проектът `kasta` е вързан за `DobromirPurvanov/kasta`, клон `main`.
+Всяко пушване тръгва само:
+
+| | |
+|---|---|
+| Build command | `npm run build` (дърпа и `prebuild` → sitemap-а) |
+| Build output | `dist` |
+| Production branch | `main` |
+| Automatic deployments | Enabled |
+
+`.node-version` фиксира Node 22, защото Vite 7 иска `^20.19 \|\| >=22.12`, а
+подразбирането на Cloudflare се мени във времето.
+
+Ръчният път остава валиден, ако потрябва:
+`npx wrangler pages deploy dist --project-name kasta`
+
 ## Поща — одит и поправки (12.08.2026)
 
 Сайтът няма сървърна форма, само `mailto:office@kastaventures.com`, тоест цялата
