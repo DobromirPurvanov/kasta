@@ -185,7 +185,6 @@ export default function Models({ showHeader = true }: ModelsProps) {
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                       {product.originalPrice && <span className="text-[12px] text-[var(--text-muted)] line-through">{product.originalPrice}</span>}
                       <span className="text-[21px] font-extrabold tracking-[-0.04em] text-fg">{product.price}</span>
-                      <span className="text-[11px] text-[var(--text-muted)]">{product.priceBgn}</span>
                     </div>
                     <span className="w-11 h-11 shrink-0 rounded-full bg-fg/[0.06] border border-fg/10 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--accent)] transition-all duration-200 group-hover:rotate-[-35deg]" aria-hidden="true">
                       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>

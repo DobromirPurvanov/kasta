@@ -34,7 +34,7 @@ const translations = {
   bg: {
     bannerTitle: 'Вашата поверителност',
     bannerDescription:
-      'Използваме необходими технологии за основните функции на сайта. Допълнителните категории се включват само с вашето съгласие.',
+      'Използваме само необходимото за работата на сайта. Останалото — с ваше съгласие.',
     settingsTitle: 'Настройки за поверителност',
     settingsDescription:
       'Изберете кои допълнителни категории разрешавате. Можете да промените решението си по всяко време.',
@@ -59,7 +59,7 @@ const translations = {
   en: {
     bannerTitle: 'Your privacy',
     bannerDescription:
-      'We use necessary technologies for the site’s core functions. Optional categories are enabled only with your consent.',
+      'We only use what the site needs to work. Anything else — with your consent.',
     settingsTitle: 'Privacy settings',
     settingsDescription:
       'Choose which optional categories you allow. You can change your decision at any time.',
@@ -356,41 +356,33 @@ export default function CookieConsent() {
           ].join(' ')}
         >
           <section
-            className="pointer-events-auto surface-card bg-[var(--bg-card)] backdrop-blur-xl max-w-[1120px] mx-auto rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl"
+            className="pointer-events-auto surface-card bg-[var(--bg-card)] backdrop-blur-xl max-w-[1120px] mx-auto rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 shadow-2xl"
             role="region"
             aria-live="polite"
             aria-labelledby="cookie-banner-title"
             aria-describedby="cookie-banner-description"
           >
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
+            {/* На телефон банерът беше 325px — 38% от екрана — и покриваше телефона,
+                имейла и двата бутона в hero-то. Иконата и трите отделни реда с
+                връзки паднаха; остава заглавие, един ред текст, бутоните и една
+                лента с връзки. Равнопоставеността на „Отхвърли“ и „Приеми“ се пази. */}
+            <div className="grid gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
               <div className="flex items-start gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[rgb(var(--accent-rgb)/0.1)] text-[var(--accent-text)] flex items-center justify-center flex-shrink-0">
+                <div className="hidden sm:flex w-11 h-11 rounded-xl bg-[rgb(var(--accent-rgb)/0.1)] text-[var(--accent-text)] items-center justify-center flex-shrink-0">
                   <CookieIcon className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
-                  <h2 id="cookie-banner-title" className="text-[15px] sm:text-[16px] font-semibold text-fg mb-1">
+                  {/* На телефон текстът сам си обяснява — заглавието остава само
+                      за екранните четци, за да не яде цял ред от малкия екран. */}
+                  <h2 id="cookie-banner-title" className="sr-only sm:not-sr-only sm:text-[16px] sm:font-semibold sm:text-fg sm:mb-0.5">
                     {t.bannerTitle}
                   </h2>
                   <p
                     id="cookie-banner-description"
-                    className="text-[13px] sm:text-[14px] text-[var(--text-secondary)] leading-relaxed max-w-[680px]"
+                    className="text-[13px] sm:text-[14px] text-[var(--text-secondary)] leading-snug sm:leading-relaxed max-w-[680px]"
                   >
                     {t.bannerDescription}
                   </p>
-                  <div className="flex flex-wrap gap-x-5 mt-1">
-                    <Link
-                      to="/privacy-policy"
-                      className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
-                    >
-                      {t.privacyLink}
-                    </Link>
-                    <Link
-                      to="/cookie-policy"
-                      className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
-                    >
-                      {t.cookiePolicy}
-                    </Link>
-                  </div>
                 </div>
               </div>
 
@@ -403,26 +395,40 @@ export default function CookieConsent() {
                     {t.acceptAll}
                   </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={openSettings}
-                  className="min-h-11 w-full inline-flex items-center justify-center gap-2 text-[12px] font-semibold text-[var(--text-secondary)] hover:text-fg transition-colors cursor-pointer"
-                >
-                  <svg
-                    width="15"
-                    height="15"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.7"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+                <div className="flex items-center justify-center flex-wrap gap-x-4">
+                  <button
+                    type="button"
+                    onClick={openSettings}
+                    className="min-h-11 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[var(--text-secondary)] hover:text-fg transition-colors cursor-pointer"
                   >
-                    <path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M10 14v6" />
-                  </svg>
-                  {t.customize}
-                </button>
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M10 14v6" />
+                    </svg>
+                    {t.customize}
+                  </button>
+                  <Link
+                    to="/privacy-policy"
+                    className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
+                  >
+                    {t.privacyLink}
+                  </Link>
+                  <Link
+                    to="/cookie-policy"
+                    className="min-h-11 inline-flex items-center text-[12px] text-[var(--text-secondary)] hover:text-fg transition-colors underline underline-offset-4"
+                  >
+                    {t.cookiePolicy}
+                  </Link>
+                </div>
               </div>
             </div>
           </section>

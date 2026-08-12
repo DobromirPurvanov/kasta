@@ -31,7 +31,7 @@ export default function Terms() {
         },
         {
           title: '4. Продукти и цени',
-          content: 'Цялата информация за продуктите, включително спецификации, цени и наличност, е предмет на промяна без предизвестие. Ние полагаме разумни усилия за осигуряване на точността на информацията, но не гарантираме, че описанията на продуктите или друго съдържание са точни, пълни, надеждни или без грешки.\n\nЦените са посочени в евро (EUR) и български лева (BGN) и може да не включват доставка, данъци или други такси, освен ако не е изрично посочено друго.',
+          content: 'Цялата информация за продуктите, включително спецификации, цени и наличност, е предмет на промяна без предизвестие. Ние полагаме разумни усилия за осигуряване на точността на информацията, но не гарантираме, че описанията на продуктите или друго съдържание са точни, пълни, надеждни или без грешки.\n\nЦените са посочени в евро (EUR) и може да не включват доставка, данъци или други такси, освен ако не е изрично посочено друго.',
         },
         {
           title: '5. Гаранция',
@@ -78,7 +78,7 @@ export default function Terms() {
         },
         {
           title: '4. Products and Pricing',
-          content: 'All product information, including specifications, prices, and availability, is subject to change without notice. We make reasonable efforts to ensure the accuracy of information, but do not guarantee that product descriptions or other content are accurate, complete, reliable, or error-free.\n\nPrices are listed in euros (EUR) and Bulgarian lev (BGN) and may not include shipping, taxes, or other fees unless expressly stated otherwise.',
+          content: 'All product information, including specifications, prices, and availability, is subject to change without notice. We make reasonable efforts to ensure the accuracy of information, but do not guarantee that product descriptions or other content are accurate, complete, reliable, or error-free.\n\nPrices are listed in euros (EUR) and may not include shipping, taxes, or other fees unless expressly stated otherwise.',
         },
         {
           title: '5. Warranty',

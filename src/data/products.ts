@@ -7,7 +7,6 @@ export interface Product {
   nameBg: string
   category: string
   price: string
-  priceBgn: string
   /** Previous (pre-promo) price, rendered struck through next to `price` */
   originalPrice?: string
   image: string
@@ -34,7 +33,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro - Mini R - 72V 2026',
     category: 'Mini',
     price: '€3,960.00',
-    priceBgn: '7,745 лв.',
     image: '/images/kasta/mini-main.png',
     galleryCount: 5,
     alt: 'E RIDE PRO Mini R 72V 2026 electric dirt bike',
@@ -72,7 +70,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SR - Off Road Fatty',
     category: 'SR',
     price: '€7,499.00',
-    priceBgn: '14,667 лв.',
     image: '/images/kasta/sr-offroad-main.png',
     galleryCount: 15,
     alt: 'E RIDE PRO SR Off Road Fatty electric dirt bike',
@@ -110,7 +107,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SR - L1e - Road Legal',
     category: 'SR',
     price: '€7,499.00',
-    priceBgn: '14,667 лв.',
     image: '/images/kasta/sr-l1e-main.png',
     galleryCount: 17,
     alt: 'E RIDE PRO SR L1e Road Legal electric dirt bike',
@@ -148,7 +144,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SS 3.0 - L1e - Road Legal',
     category: 'SS 3.0',
     price: '€6,399.00',
-    priceBgn: '12,515 лв.',
     image: '/images/kasta/ss30-l1e-main.png',
     galleryCount: 17,
     alt: 'E RIDE PRO SS 3.0 L1e Road Legal electric dirt bike',
@@ -186,7 +181,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SS 2.5 - L1e - Road Legal',
     category: 'SS 2.5',
     price: '€4,899.00',
-    priceBgn: '9,582 лв.',
     originalPrice: '€5,390.00',
     image: '/images/kasta/ss25-l1e-main.png',
     galleryCount: 18,
@@ -224,7 +218,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SS 2.5 - Off Road Fatty',
     category: 'SS 2.5',
     price: '€5,390.00',
-    priceBgn: '10,542 лв.',
     image: '/images/kasta/ss25-offroad-main.png',
     galleryCount: 16,
     alt: 'E RIDE PRO SS 2.5 Off Road Fatty electric dirt bike',
@@ -262,7 +255,6 @@ export const products: Product[] = [
     nameBg: 'E Ride Pro SS 3.0 - Off Road Fatty',
     category: 'SS 3.0',
     price: '€6,399.00',
-    priceBgn: '12,515 лв.',
     image: '/images/kasta/ss30-offroad-main.png',
     galleryCount: 16,
     alt: 'E RIDE PRO SS 3.0 Off Road Fatty electric dirt bike',

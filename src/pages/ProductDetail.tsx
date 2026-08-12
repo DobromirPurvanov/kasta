@@ -331,7 +331,6 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                       {product.originalPrice && <span className="text-[12px] text-[var(--text-secondary)] line-through">{product.originalPrice}</span>}
                       <span className="text-[21px] font-extrabold tracking-[-0.04em] text-fg">{product.price}</span>
-                      <span className="text-[11px] text-[var(--text-secondary)]">{product.priceBgn}</span>
                     </div>
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-fg/10 bg-fg/[0.06] text-[var(--text-secondary)] transition-all duration-300 group-hover:rotate-[-35deg] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)]" aria-hidden="true">
                       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -435,7 +434,6 @@ export default function ProductDetail() {
                 <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   {product.originalPrice && <span className="text-[15px] text-[var(--text-secondary)] line-through">{product.originalPrice}</span>}
                   <span className="text-[30px] font-extrabold tracking-[-0.045em] text-fg sm:text-[34px]">{product.price}</span>
-                  <span className="text-[13px] font-medium text-[var(--text-secondary)]">{product.priceBgn}</span>
                 </div>
               </div>
 

@@ -107,8 +107,9 @@ export default function Hero() {
 
             {/* Долната граница на clamp беше 3.05rem и печелеше под ~690px ширина —
                 при 390px „ЕЛЕКТРИЧЕСКИ“ искаше 375px в кутия от 295px и се режеше.
-                Над 485px нищо не се променя, тоест десктопът е непокътнат. */}
-            <h1 className="hero-reveal text-display uppercase max-w-[940px]" style={{ fontSize: 'clamp(2.15rem, 7.1vw, 7rem)' }}>
+                1.9rem побира най-тесния екран (320px). Над 430px нищо не се
+                променя спрямо vw частта, тоест десктопът е непокътнат. */}
+            <h1 className="hero-reveal text-display uppercase max-w-[940px]" style={{ fontSize: 'clamp(1.9rem, 7.1vw, 7rem)' }}>
               <span className="block text-fg">{isBg ? 'Електрически' : 'Electric dirt'}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--accent-light)] to-[var(--accent)]">
                 {isBg ? 'мотокрос.' : 'bikes.'}
