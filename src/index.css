@@ -139,7 +139,7 @@
       radial-gradient(circle at 12% -10%, var(--hero-glow), transparent 30rem),
       radial-gradient(circle at 88% 22%, rgb(var(--fg-rgb) / 0.025), transparent 26rem),
       var(--bg);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     text-rendering: optimizeLegibility;

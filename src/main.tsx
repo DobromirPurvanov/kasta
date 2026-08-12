@@ -1,12 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
-// Self-hosted Inter (latin + cyrillic subsets ship automatically per weight)
-import '@fontsource/inter/400.css'
-import '@fontsource/inter/500.css'
-import '@fontsource/inter/600.css'
-import '@fontsource/inter/700.css'
-import '@fontsource/inter/800.css'
+// Вариативен Inter: един файл покрива тегла 100–900. Петте статични тегла
+// теглеха 10 файла и 157KB (кирилица + латиница на всяко тегло); вариативният
+// е 65KB в 2 файла. Забележимо на телефон.
+import '@fontsource-variable/inter/wght.css'
 import './index.css'
 import App from './App.tsx'
 

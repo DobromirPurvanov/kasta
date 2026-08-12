@@ -51,8 +51,10 @@ const copy = {
   },
 } as const
 
+// 16px е задължителен минимум: под него iOS Safari зумва страницата при фокус
+// в полето и потребителят остава с увеличен изглед насред формата.
 const fieldClass =
-  'w-full min-h-12 rounded-2xl border border-fg/15 bg-[var(--bg-elevated)] px-4 py-3 text-[15px] text-fg ' +
+  'w-full min-h-12 rounded-2xl border border-fg/15 bg-[var(--bg-elevated)] px-4 py-3 text-[16px] text-fg ' +
   'placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] ' +
   'focus:ring-2 focus:ring-[rgb(var(--accent-rgb)/0.25)] transition-colors'
 
