@@ -7,6 +7,9 @@ import { BrowserRouter } from 'react-router'
 import '@fontsource-variable/inter/wght.css'
 import './index.css'
 import App from './App.tsx'
+import { initAnalytics } from './lib/analytics'
+
+initAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
