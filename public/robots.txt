@@ -2,12 +2,23 @@
 # https://kastaventures.com
 
 User-agent: *
+# search      — обхождане за класически резултати в търсачките
+# ai-input    — ползване на съдържанието за отговори на ИИ асистенти (искаме го)
+# ai-train    — ползване за обучение на модели (не го даваме)
+Content-Signal: search=yes, ai-input=yes, ai-train=no
 Allow: /
 
 Sitemap: https://kastaventures.com/sitemap.xml
 
+# Кратко описание на бизнеса и моделите в чист текст, за четене без JavaScript
+# Plain-text summary for agents that do not execute JavaScript
+# https://kastaventures.com/llms.txt
+
 # AI crawlers - allowed
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User
@@ -16,7 +27,28 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
 User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
 Allow: /
 
 # Blocked crawlers

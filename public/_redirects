@@ -1,0 +1,4 @@
+# www → apex НЕ се прави тук: Pages match-ва само път, не хост.
+# Пренасочването е Redirect Rule на ниво зона в Cloudflare.
+
+/* /index.html 200

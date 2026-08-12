@@ -1,0 +1,72 @@
+# Kasta Ventures — E RIDE PRO България
+
+> Официален вносител и дистрибутор на електрически мотоциклети E RIDE PRO за
+> България. Продажба, гаранция и сервиз на място. Official E RIDE PRO importer
+> and distributor for Bulgaria — sales, warranty and local service.
+
+Сайт: https://kastaventures.com
+Контакт: office@kastaventures.com
+Езици: български (основен), английски
+
+Този сайт е едностранично приложение (React). Съдържанието се изгражда от
+JavaScript, затова тук е изнесено в чист текст за автоматично четене.
+This site is a client-rendered React SPA; the content below is provided as plain
+text so it can be read without executing JavaScript.
+
+## Какво предлагаме / What we offer
+
+Електрически мотоциклети (електрически мотокрос и dirt bike) на марката
+E RIDE PRO. Част от моделите са с одобрение L1e и са допустими за движение по
+пътищата в България; останалите са за извънпътна употреба (off-road).
+Всички модели се предлагат с гаранция и сервизна поддръжка в страната.
+
+## Модели / Models
+
+Всяка цена е официалната обявена на сайта. Категорията L1e означава
+регистрируем за път; „Off Road Fatty" означава извънпътен модел с широки гуми.
+
+- **E Ride Pro — Mini R — 72V 2026** (категория Mini) — 3 960,00 €
+  Компактен модел за начинаещи и млади каращи.
+  https://kastaventures.com/product/mini-r-72v
+
+- **E Ride Pro SS 2.5 — L1e — Road Legal** (категория SS 2.5) — 4 899,00 €
+  Най-продаваният регистрируем модел.
+  https://kastaventures.com/product/ss-25-l1e
+
+- **E Ride Pro SS 2.5 — Off Road Fatty** (категория SS 2.5) — 5 390,00 €
+  Извънпътен вариант с широки гуми.
+  https://kastaventures.com/product/ss-25-off-road
+
+- **E Ride Pro SS 3.0 — L1e — Road Legal** (категория SS 3.0) — 6 399,00 €
+  Регистрируем модел от по-висок клас.
+  https://kastaventures.com/product/ss-30-l1e
+
+- **E Ride Pro SS 3.0 — Off Road Fatty** (категория SS 3.0) — 6 399,00 €
+  Флагманският извънпътен модел.
+  https://kastaventures.com/product/ss-30-off-road
+
+- **E Ride Pro SR — L1e — Road Legal** (категория SR) — 7 499,00 €
+  Регистрируем модел от най-високия клас.
+  https://kastaventures.com/product/sr-l1e
+
+- **E Ride Pro SR — Off Road Fatty** (категория SR) — 7 499,00 €
+  Най-мощният извънпътен модел.
+  https://kastaventures.com/product/sr-off-road
+
+## Страници / Pages
+
+- https://kastaventures.com/ — начална страница
+- https://kastaventures.com/models — всички модели със сравнение и филтри
+- https://kastaventures.com/privacy-policy — политика за поверителност
+- https://kastaventures.com/cookie-policy — политика за бисквитки
+- https://kastaventures.com/terms — общи условия
+- https://kastaventures.com/sitemap.xml — карта на сайта
+
+## Бележки за точност / Accuracy notes
+
+- Цените се обновяват на сайта; при разминаване меродавна е продуктовата
+  страница, а не този файл.
+- Пълните технически спецификации и въпроси-отговори за всеки модел се намират
+  на съответната продуктова страница.
+- Kasta Ventures е вносителят за България; E RIDE PRO е марката на
+  производителя.
