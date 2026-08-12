@@ -96,6 +96,24 @@ Pages проектът `kasta` е вързан за `DobromirPurvanov/kasta`, к
 Ръчният път остава валиден, ако потрябва:
 `npx wrangler pages deploy dist --project-name kasta`
 
+## Search Console (12.08.2026)
+
+Домейн собственост `sc-domain:kastaventures.com` под **workdobromirjustpablo@**
+(`/u/6/`). Верификацията е през **ръчен TXT запис**, не през OAuth към
+Cloudflare — Google предлагаше автоматичния път, но той иска достъп до целия
+DNS профил, а записът се слага и на ръка:
+
+```
+@  TXT  google-site-verification=KT-p7CQGYmzgsH3GHtWg-b4iNkh7SYoTJrV1yuHn-A0
+```
+
+Стои **до** SPF записа, не вместо него — двата TXT съжителстват на apex.
+Този запис не бива да се трие, иначе собствеността пада.
+
+`sitemap.xml` е подаден и прочетен: **Успех, 12 намерени страници**. Веднага
+след подаването статусът беше „Не можа да се извлече" — моментно, при
+опресняване мина.
+
 ## Поща — одит и поправки (12.08.2026)
 
 Сайтът няма сървърна форма, само `mailto:office@kastaventures.com`, тоест цялата
