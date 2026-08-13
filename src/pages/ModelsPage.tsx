@@ -46,7 +46,7 @@ export default function ModelsPage() {
             <span className="absolute text-[clamp(9rem,22vw,20rem)] leading-none font-extrabold tracking-[-0.1em] text-fg/[0.025]" aria-hidden="true">07</span>
             <div className="absolute inset-x-[12%] bottom-[18%] h-[30%] bg-[rgb(var(--accent-rgb)/0.2)] blur-[70px] rounded-full" aria-hidden="true" />
             <img
-              src="/images/kasta/ss30-offroad-main.webp"
+              src="/images/kasta/ss30-offroad-main-v2.webp"
               alt={isBg ? 'E RIDE PRO SS 3.0 офроуд електрически мотокрос' : 'E RIDE PRO SS 3.0 off-road electric dirt bike'}
               width="1600"
               height="1200"

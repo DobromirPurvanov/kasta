@@ -185,7 +185,7 @@ export default function Hero() {
 
             <div className="relative flex-1 flex items-center justify-center py-4">
               <img
-                src="/images/kasta/sr-offroad-main.webp"
+                src="/images/kasta/sr-offroad-main-v2.webp"
                 alt=""
                 width="1600"
                 height="1200"
