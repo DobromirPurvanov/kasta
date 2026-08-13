@@ -1,4 +1,5 @@
 import Models from '../sections/Models'
+import { scrollToSection } from '../lib/scrollToSection'
 import { publishedProducts } from '../data/products'
 import { useLang } from '../hooks/useLang'
 import { usePageMeta } from '../hooks/usePageMeta'
@@ -35,10 +36,10 @@ export default function ModelsPage() {
                 ? 'Три модела, всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Сравни ги по мощност, скорост и обхват — всеки идва с локален сервиз, части и 2 години гаранция.'
                 : 'Three models, each in three versions: off-road, L1e moped and L3e light motorcycle. Compare them by power, speed and range — every one comes with local service, parts and a 2-year warranty.'}
             </p>
-            <a href="#models" className="btn-accent mt-7 sm:w-auto">
+            <button type="button" onClick={() => scrollToSection('models')} className="btn-accent mt-7 sm:w-auto">
               {isBg ? 'Към моделите' : 'Browse the lineup'}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
-            </a>
+            </button>
           </div>
 
           <div className="relative min-h-[270px] sm:min-h-[380px] lg:min-h-[470px] flex items-center justify-center">

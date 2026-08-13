@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import SectionLink from '../components/SectionLink'
 import { useLang } from '../hooks/useLang'
 import ContactForm from '../components/ContactForm'
 
@@ -94,9 +95,9 @@ export default function Contact() {
               </div>
             </div>
 
-            <a href="#contact-form" className="btn-accent w-full mt-5">
+            <SectionLink section="contact-form" className="btn-accent w-full mt-5">
               {isBg ? 'Запази тестово каране' : 'Book a test ride'}
-            </a>
+            </SectionLink>
           </div>
 
           <div className="contact-reveal dark relative min-h-[430px] lg:min-h-[620px] rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-white/10 bg-[var(--bg-card)] shadow-[var(--card-shadow)]">

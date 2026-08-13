@@ -1,22 +1,17 @@
 import type { ReactNode } from 'react'
 import { useLang } from '../hooks/useLang'
-import { Link, useLocation } from 'react-router'
+import { Link } from 'react-router'
+import SectionLink from '../components/SectionLink'
 
 const footerLinkClass = 'min-h-11 inline-flex items-center text-[14px] text-[var(--text-secondary)] hover:text-fg transition-colors rounded-sm'
 
-function NavItem({ to, hash, isHome, children }: { to?: string; hash?: string; isHome: boolean; children: ReactNode }) {
-  if (hash && isHome) {
+function NavItem({ to, section, children }: { to?: string; section?: string; children: ReactNode }) {
+  // Секциите минават през SectionLink, за да не се пълни адресът с „#“.
+  if (section) {
     return (
-      <a href={hash} className={footerLinkClass}>
+      <SectionLink section={section} className={footerLinkClass}>
         {children}
-      </a>
-    )
-  }
-  if (hash && !isHome) {
-    return (
-      <Link to={`/${hash}`} className={footerLinkClass}>
-        {children}
-      </Link>
+      </SectionLink>
     )
   }
   return (
@@ -28,8 +23,6 @@ function NavItem({ to, hash, isHome, children }: { to?: string; hash?: string; i
 
 export default function Footer() {
   const { t, lang } = useLang()
-  const location = useLocation()
-  const isHome = location.pathname === '/'
   const isBg = lang === 'bg'
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -53,10 +46,10 @@ export default function Footer() {
               {isBg ? 'НАВИГАЦИЯ' : 'NAVIGATION'}
             </h2>
             <nav className="grid grid-cols-2 sm:grid-cols-1 gap-x-5" aria-label="Footer navigation">
-              <NavItem to="/" isHome={isHome}>{isBg ? 'Начало' : 'Home'}</NavItem>
-              <NavItem to="/models" isHome={isHome}>{t('nav_models')}</NavItem>
-              <NavItem hash="#about" isHome={isHome}>{t('nav_about')}</NavItem>
-              <NavItem hash="#contact" isHome={isHome}>{t('nav_contact')}</NavItem>
+              <NavItem to="/">{isBg ? 'Начало' : 'Home'}</NavItem>
+              <NavItem to="/models">{t('nav_models')}</NavItem>
+              <NavItem section="about">{t('nav_about')}</NavItem>
+              <NavItem section="contact">{t('nav_contact')}</NavItem>
             </nav>
           </div>
 

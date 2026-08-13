@@ -20,8 +20,13 @@ export default function ScrollTriggerRefresh() {
   const { pathname } = useLocation()
 
   // Смяна на маршрут: изчакваме браузъра да нарисува новото съдържание.
+  // Паметта за скрола се трие първо — иначе `refresh()` връща позицията от
+  // предишната страница и новата се отваря по средата.
   useEffect(() => {
-    const id = window.requestAnimationFrame(() => ScrollTrigger.refresh())
+    const id = window.requestAnimationFrame(() => {
+      ScrollTrigger.clearScrollMemory()
+      ScrollTrigger.refresh()
+    })
     return () => window.cancelAnimationFrame(id)
   }, [pathname])
 

@@ -28,6 +28,15 @@ function SkipLink() {
   return (
     <a
       href="#main"
+      onClick={(event) => {
+        // Връзката трябва да си остане връзка заради екранните четци, но „#main“
+        // няма работа в адреса — местим фокуса и скролваме сами.
+        event.preventDefault()
+        const main = document.getElementById('main')
+        if (!main) return
+        main.focus({ preventScroll: true })
+        main.scrollIntoView({ behavior: 'auto', block: 'start' })
+      }}
       className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-5 focus:py-3 focus:bg-[var(--accent)] focus:text-[var(--accent-ink)] focus:rounded-full focus:text-[13px] focus:font-semibold"
     >
       {lang === 'bg' ? 'Към съдържанието' : 'Skip to content'}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import gsap from 'gsap'
+import SectionLink from '../components/SectionLink'
 import { useLang } from '../hooks/useLang'
 import { findSpec, getProductBySlug } from '../data/products'
 
@@ -144,9 +145,9 @@ export default function Hero() {
                 {isBg ? 'Разгледай моделите' : 'Explore models'}
                 <svg className="transition-transform duration-300 group-hover:translate-x-1" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>
-              <a href="#contact" className="btn-outline sm:w-auto">
+              <SectionLink section="contact" className="btn-outline sm:w-auto">
                 {isBg ? 'Запази тестово каране' : 'Book a test ride'}
-              </a>
+              </SectionLink>
             </div>
 
             <div className="hero-reveal max-w-[690px] mt-8 sm:mt-11">

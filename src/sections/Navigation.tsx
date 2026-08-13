@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
+import SectionLink from '../components/SectionLink'
 import { useLang } from '../hooks/useLang'
 import { useTheme } from '../hooks/useTheme'
 
@@ -137,9 +138,9 @@ export default function Navigation() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-10 h-[64px] sm:h-[76px] flex items-center justify-between">
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
-            <Link to="/#about" className={anchorLinkClass}>
+            <SectionLink section="about" className={anchorLinkClass}>
               {t('nav_about')}
-            </Link>
+            </SectionLink>
             <NavLink
               to="/models"
               className={({ isActive }) =>
@@ -151,9 +152,9 @@ export default function Navigation() {
             >
               {t('nav_models')}
             </NavLink>
-            <Link to="/#contact" className={anchorLinkClass}>
+            <SectionLink section="contact" className={anchorLinkClass}>
               {t('nav_contact')}
-            </Link>
+            </SectionLink>
           </div>
 
           {/* Center logo */}
@@ -176,13 +177,13 @@ export default function Navigation() {
 
           {/* Right */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              to="/#contact"
+            <SectionLink
+              section="contact"
               className="btn-accent hidden lg:inline-flex !min-h-11 !w-auto !px-5 !py-2.5 !text-[10px] !tracking-[0.12em]"
             >
               {isBg ? 'Тестово каране' : 'Test ride'}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-            </Link>
+            </SectionLink>
             <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <button
               type="button"
@@ -247,36 +248,44 @@ export default function Navigation() {
           <p className="section-eyebrow mb-7">{isBg ? 'Меню' : 'Menu'}</p>
           <nav className="border-t border-fg/10" aria-label={isBg ? 'Мобилна навигация' : 'Mobile navigation'}>
             {[
-              { to: '/#about', number: '01', label: t('nav_about'), active: false },
-              { to: '/models', number: '02', label: t('nav_models'), active: isModelsPage },
-              { to: '/#contact', number: '03', label: t('nav_contact'), active: false },
-            ].map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                onClick={() => setMobileOpen(false)}
-                className="group min-h-[76px] flex items-center gap-4 border-b border-fg/10"
-              >
-                <span className="text-[10px] font-bold tracking-[0.14em] text-[var(--text-muted)]">{item.number}</span>
-                <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-fg'}`}>
-                  {item.label}
-                </span>
-                <svg className="ml-auto text-[var(--text-muted)] group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </Link>
-            ))}
+              { key: 'about', section: 'about', number: '01', label: t('nav_about'), active: false },
+              { key: 'models', to: '/models', number: '02', label: t('nav_models'), active: isModelsPage },
+              { key: 'contact', section: 'contact', number: '03', label: t('nav_contact'), active: false },
+            ].map((item) => {
+              const rowClass = 'group min-h-[76px] flex w-full items-center gap-4 border-b border-fg/10 text-left'
+              const body = (
+                <>
+                  <span className="text-[10px] font-bold tracking-[0.14em] text-[var(--text-muted)]">{item.number}</span>
+                  <span className={`text-[clamp(1.55rem,8vw,2.15rem)] leading-none font-semibold tracking-[-0.035em] ${item.active ? 'text-[var(--accent-text)]' : 'text-fg'}`}>
+                    {item.label}
+                  </span>
+                  <svg className="ml-auto text-[var(--text-muted)] group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </>
+              )
+
+              return item.section ? (
+                <SectionLink key={item.key} section={item.section} onNavigate={() => setMobileOpen(false)} className={rowClass}>
+                  {body}
+                </SectionLink>
+              ) : (
+                <Link key={item.key} to={item.to!} onClick={() => setMobileOpen(false)} className={rowClass}>
+                  {body}
+                </Link>
+              )
+            })}
           </nav>
 
           {/* Бутонът „Тестово каране“ в лентата е скрит под md, а в менюто го
               нямаше изобщо — на телефон главното действие просто липсваше.
               Обаждането също беше обикновен текст най-долу. */}
           <div className="mt-auto pt-8">
-            <Link
-              to="/#contact-form"
-              onClick={() => setMobileOpen(false)}
+            <SectionLink
+              section="contact-form"
+              onNavigate={() => setMobileOpen(false)}
               className="btn-accent w-full"
             >
               {isBg ? 'Запази тестово каране' : 'Book a test ride'}
-            </Link>
+            </SectionLink>
             <a href="tel:+359887773733" className="btn-outline w-full mt-2.5">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="mr-2">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
