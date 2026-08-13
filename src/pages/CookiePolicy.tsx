@@ -26,7 +26,7 @@ export default function CookiePolicy() {
           content: '',
           table: [
             { category: 'Необходими', purpose: 'Задължителни са за правилното функциониране на уебсайта. В момента сайтът не поставя бисквитки — запазваме само три стойности в локалното хранилище на браузъра ви, които не напускат устройството и не се използват за проследяване.', examples: 'cookie_consent (вашият избор тук), kasta_lang (език), theme (светла или тъмна тема)', duration: 'До изтриване от браузъра' },
-            { category: 'Аналитични', purpose: 'Тези бисквитки биха ни помогнали да разберем как посетителите взаимодействат с уебсайта. Понастоящем не използваме аналитични инструменти — ако това се промени, те ще се активират само след вашето изрично съгласие.', examples: 'Google Analytics, Plausible (не се използват в момента)', duration: 'До 26 месеца' },
+            { category: 'Аналитични', purpose: 'Помагат ни да разберем как посетителите използват уебсайта, за да го подобряваме. Използваме Google Analytics 4, но той се зарежда единствено ако разрешите тази категория — при отказ към Google не се изпраща нищо. IP адресът се анонимизира и не събираме рекламни данни.', examples: 'Google Analytics 4 (_ga, _ga_*)', duration: 'До 26 месеца' },
             { category: 'Предпочитания', purpose: 'Тези бисквитки позволяват на уебсайта да запомни изборите, които правите (като език или регион), и да предостави подобрени, по-персонализирани функции.', examples: 'Езикови настройки, тема, потребителски предпочитания', duration: 'До 1 година' },
             { category: 'Маркетингови', purpose: 'Тези бисквитки биха се използвали за показване на релевантни реклами. Понастоящем не използваме маркетингови инструменти за проследяване — ако това се промени, те ще се активират само след вашето изрично съгласие.', examples: 'Facebook Pixel, Google Ads (не се използват в момента)', duration: 'До 2 години' },
           ],
@@ -63,7 +63,7 @@ export default function CookiePolicy() {
           content: '',
           table: [
             { category: 'Necessary', purpose: 'Required for the website to work correctly. The site currently sets no cookies at all — we only keep three values in your browser’s local storage. They never leave your device and are not used for tracking.', examples: 'cookie_consent (your choice here), kasta_lang (language), theme (light or dark)', duration: 'Until cleared in your browser' },
-            { category: 'Analytics', purpose: 'These cookies would help us understand how visitors interact with the website. We currently do not use any analytics tools — if this changes, they will only be activated after your explicit consent.', examples: 'Google Analytics, Plausible (not currently in use)', duration: 'Up to 26 months' },
+            { category: 'Analytics', purpose: 'Help us understand how visitors use the website so we can improve it. We use Google Analytics 4, but it loads only if you allow this category — if you decline, nothing is sent to Google. IP addresses are anonymised and we collect no advertising data.', examples: 'Google Analytics 4 (_ga, _ga_*)', duration: 'Up to 26 months' },
             { category: 'Preferences', purpose: 'These cookies allow the website to remember choices you make (such as language or region) and provide enhanced, more personalized features.', examples: 'Language settings, theme, user preferences', duration: 'Up to 1 year' },
             { category: 'Marketing', purpose: 'These cookies would be used to display relevant ads. We currently do not use any marketing tracking tools — if this changes, they will only be activated after your explicit consent.', examples: 'Facebook Pixel, Google Ads (not currently in use)', duration: 'Up to 2 years' },
           ],
@@ -96,7 +96,7 @@ export default function CookiePolicy() {
       <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
           <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
-            <Link to="/" className="text-[var(--text-secondary)] hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <Link to="/" className="min-h-11 inline-flex items-center text-[var(--text-secondary)] hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
             <span className="text-fg/20">/</span>
             <span className="text-fg font-medium" aria-current="page">{isBg ? 'Бисквитки' : 'Cookies'}</span>
           </nav>

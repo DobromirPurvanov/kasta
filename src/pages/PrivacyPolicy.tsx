@@ -124,7 +124,7 @@ export default function PrivacyPolicy() {
       <div className="border-b border-fg/[0.06]">
         <div className="max-w-[1200px] mx-auto px-6 md:px-10 py-3">
           <nav className="flex items-center gap-2 text-[12px]" aria-label="Breadcrumb">
-            <Link to="/" className="text-[var(--text-secondary)] hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
+            <Link to="/" className="min-h-11 inline-flex items-center text-[var(--text-secondary)] hover:text-fg transition-colors">{isBg ? 'Начало' : 'Home'}</Link>
             <span className="text-fg/20">/</span>
             <span className="text-fg font-medium" aria-current="page">{isBg ? 'Поверителност' : 'Privacy'}</span>
           </nav>

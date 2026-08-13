@@ -88,7 +88,9 @@ export default function Models({ showHeader = true }: ModelsProps) {
                   ? 'От първото офроуд преживяване до пътно легална ежедневна мобилност — намери точния баланс между мощност, обхват и контрол.'
                   : 'From your first off-road experience to road-legal everyday mobility — find the right balance of power, range and control.'}
               </p>
-              <Link to="/models" className="group inline-flex items-center gap-2 mt-5 text-[11px] font-bold tracking-[0.13em] uppercase text-[var(--accent-text)]">
+              {/* Беше 18px висока — под минимума за палец. Видът не се мени,
+                  зоната за докосване става 44px. */}
+              <Link to="/models" className="group inline-flex items-center gap-2 mt-3 min-h-11 text-[11px] font-bold tracking-[0.13em] uppercase text-[var(--accent-text)]">
                 {isBg ? 'Сравни цялата гама' : 'Compare the full range'}
                 <svg className="transition-transform duration-300 group-hover:translate-x-1" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </Link>

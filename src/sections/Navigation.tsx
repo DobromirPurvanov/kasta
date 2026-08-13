@@ -195,7 +195,9 @@ export default function Navigation() {
           </div>
 
           {/* Mobile: theme, language + menu */}
-          <div className="md:hidden ml-auto flex items-center gap-1">
+          {/* Трите бутона по 44px плюс отстоянията преливаха с 4px на 320px —
+              на най-тесните екрани отстоянието пада, самите цели остават 44px. */}
+          <div className="md:hidden ml-auto flex items-center gap-0 min-[360px]:gap-1">
             <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <button
               type="button"

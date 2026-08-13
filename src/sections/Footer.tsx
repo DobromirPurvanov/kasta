@@ -39,7 +39,9 @@ export default function Footer() {
     <footer className="dark bg-[var(--bg-deep)] border-t border-fg/[0.08]">
       <div className="section-shell py-12 sm:py-16 lg:py-20">
         <div className="flex items-end justify-between gap-6 pb-10 sm:pb-14 mb-10 sm:mb-14 border-b border-fg/10 overflow-hidden">
-          <p className="text-display uppercase text-fg text-[clamp(2rem,8vw,7.5rem)]">
+          {/* „електрически.“ е дълга дума — на 320px редът преливаше с 15px.
+              По-ниска долна граница плюс пренос, за да не се реже. */}
+          <p className="text-display uppercase text-fg text-[clamp(1.6rem,8vw,7.5rem)] [overflow-wrap:anywhere]">
             {isBg ? <>Карай <span className="text-[var(--accent-text)]">електрически.</span></> : <>Ride <span className="text-[var(--accent-text)]">electric.</span></>}
           </p>
           <span className="hidden sm:block w-3 h-3 rounded-full bg-[var(--accent)] mb-2 status-pulse" aria-hidden="true" />
