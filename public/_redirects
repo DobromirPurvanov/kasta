@@ -5,8 +5,11 @@
 # catch-all-а отдолу. Иначе Pages връща index.html със статус 200, правилото
 # `/images/*` в `_headers` му слага седемдневен кеш, и адресът на снимка
 # остава закеширан с HTML за цяла седмица.
-/images/*  /404.html  404
-/videos/*  /404.html  404
-/assets/*  /404.html  404
+#
+# Страницата НЕ бива да се казва 404.html: Pages я сервира автоматично за
+# всеки непознат път и така изяжда catch-all-а, тоест целият SPA рутинг умира.
+/images/*  /asset-missing.html  404
+/videos/*  /asset-missing.html  404
+/assets/*  /asset-missing.html  404
 
 /* /index.html 200
