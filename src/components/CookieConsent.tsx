@@ -545,7 +545,10 @@ export default function CookieConsent() {
               </div>
             </div>
 
-            <div className="p-5 sm:p-6 pt-4 border-t border-fg/[0.08] pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            {/* На нисък телефон „Запази“ падаше на 955px при екран от 568px —
+                диалогът скролва, но действията трябваше да се търсят. Залепени
+                долу са винаги под палеца. */}
+            <div className="sticky bottom-0 bg-[var(--bg-card)] p-5 sm:p-6 pt-4 border-t border-fg/[0.08] pb-[max(1.25rem,env(safe-area-inset-bottom))]">
               <div className="grid grid-cols-2 gap-2">
                 <button type="button" onClick={rejectAll} className={choiceButtonClass}>
                   {t.rejectAll}

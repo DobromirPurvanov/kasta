@@ -262,11 +262,29 @@ export default function Navigation() {
             ))}
           </nav>
 
+          {/* Бутонът „Тестово каране“ в лентата е скрит под md, а в менюто го
+              нямаше изобщо — на телефон главното действие просто липсваше.
+              Обаждането също беше обикновен текст най-долу. */}
           <div className="mt-auto pt-8">
-            <div className="flex flex-col gap-2 mb-6 text-[14px] text-[var(--text-secondary)]">
-              <a href="tel:+359887773733" className="min-h-11 inline-flex items-center">+359 887 77 37 33</a>
-              <a href="mailto:office@kastaventures.com" className="min-h-11 inline-flex items-center">office@kastaventures.com</a>
-            </div>
+            <Link
+              to="/#contact-form"
+              onClick={() => setMobileOpen(false)}
+              className="btn-accent w-full"
+            >
+              {isBg ? 'Запази тестово каране' : 'Book a test ride'}
+            </Link>
+            <a href="tel:+359887773733" className="btn-outline w-full mt-2.5">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="mr-2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              +359 887 77 37 33
+            </a>
+            <a
+              href="mailto:office@kastaventures.com"
+              className="min-h-11 mt-3 flex items-center justify-center text-[13px] text-[var(--text-secondary)] hover:text-fg transition-colors"
+            >
+              office@kastaventures.com
+            </a>
           </div>
         </div>
       </div>
