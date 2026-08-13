@@ -229,19 +229,34 @@ const SS30_DIMENSIONS: SpecGroup = {
  * SS 2.5
  * ------------------------------------------------------------------ */
 
+/**
+ * Производителят публикува мощност за 2.5 само по хомологация, тоест числото
+ * важи за L1e и L3e. Пиковата на офроуд версията я няма никъде и не си я
+ * измисляме — затова редът се добавя само на пътните версии.
+ */
+const SS25_HOMOLOGATED_POWER: SpecRow = {
+  label: 'Power',
+  labelBg: 'Мощност',
+  value: '3.7 kW homologated',
+  valueBg: '3,7 kW хомологирана',
+}
+
 const SS25_POWERTRAIN: SpecGroup = {
   title: POWERTRAIN,
   titleBg: POWERTRAIN_BG,
   rows: [
     { label: 'Rated voltage', labelBg: 'Напрежение', value: '72 V' },
-    // Производителят публикува само хомологираната мощност за 2.5 — пиковата
-    // на офроуд версията я няма никъде, затова не си я измисляме.
-    { label: 'Power', labelBg: 'Мощност', value: '3.7 kW homologated', valueBg: '3,7 kW хомологирана' },
     { label: 'Battery', labelBg: 'Батерия', value: '72V 40Ah · 2880 Wh Samsung', valueBg: '72V 40Ah · 2880 Wh Samsung' },
     { label: '0–45 km/h', labelBg: '0–45 km/h', value: '2.5 s', valueBg: '2,5 сек.' },
     { label: 'Range', labelBg: 'Обхват', value: 'up to 100 km', valueBg: 'до 100 km' },
     { label: 'Charging 20–80%', labelBg: 'Зареждане 20–80%', value: '1.5 h', valueBg: '1,5 часа' },
   ],
+}
+
+/** Пътните версии на 2.5 носят и хомологираната мощност. */
+const SS25_ROAD_POWERTRAIN: SpecGroup = {
+  ...SS25_POWERTRAIN,
+  rows: [SS25_POWERTRAIN.rows[0], SS25_HOMOLOGATED_POWER, ...SS25_POWERTRAIN.rows.slice(1)],
 }
 
 const SS25_CHASSIS: SpecGroup = {
@@ -425,7 +440,7 @@ export const products: Product[] = [
     descriptionBg: `SS 2.5 L1e е същият мотор като офроуд версията, хомологиран като мопед L1e: светлини, огледала, мигачи, поставка за номер и dual sport гуми, ограничен до 45 km/h.\n\nТова означава книжка AM от 16 г. и лесна регистрация в КАТ — документите се предоставят. За ежедневно каране из София е тих, евтин за поддръжка и почти не иска сервиз.\n\nТова е моделът, който продаваме най-много, и в момента е на промоция.`,
     specs: [
       homologationGroup({ topSpeed: '45 km/h', ...L1E_LABELS, ...SS25_ROAD_TYRES }),
-      SS25_POWERTRAIN,
+      SS25_ROAD_POWERTRAIN,
       SS25_CHASSIS,
       SS25_DIMENSIONS,
     ],
@@ -457,7 +472,7 @@ export const products: Product[] = [
     descriptionBg: `SS 2.5 L3e е хомологиран като лек мотоциклет, а не като мопед. Моторът е същият — разликата е в сертификата и в ограничителя, който е на 80 km/h вместо на 45.\n\nТова иска книжка A1, а в замяна отваря пътища, по които мопедът няма работа.`,
     specs: [
       homologationGroup({ topSpeed: '80 km/h', ...L3E_LABELS, ...SS25_ROAD_TYRES }),
-      SS25_POWERTRAIN,
+      SS25_ROAD_POWERTRAIN,
       SS25_CHASSIS,
       SS25_DIMENSIONS,
     ],
