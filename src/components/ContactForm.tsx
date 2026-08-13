@@ -140,6 +140,7 @@ export default function ContactForm() {
           <label className={labelClass} htmlFor={`${uid}-name`}>{t.name} *</label>
           <input
             id={`${uid}-name`} name="name" type="text" autoComplete="name" required
+            enterKeyHint="next"
             className={fieldClass}
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? `${uid}-name-err` : undefined}
@@ -151,6 +152,7 @@ export default function ContactForm() {
           <label className={labelClass} htmlFor={`${uid}-email`}>{t.email} *</label>
           <input
             id={`${uid}-email`} name="email" type="email" autoComplete="email" required
+            enterKeyHint="next"
             className={fieldClass}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? `${uid}-email-err` : undefined}
@@ -162,7 +164,7 @@ export default function ContactForm() {
           <label className={labelClass} htmlFor={`${uid}-phone`}>
             {t.phone} <span className="normal-case tracking-normal font-medium">({t.phoneHint})</span>
           </label>
-          <input id={`${uid}-phone`} name="phone" type="tel" autoComplete="tel" className={fieldClass} />
+          <input id={`${uid}-phone`} name="phone" type="tel" autoComplete="tel" enterKeyHint="next" className={fieldClass} />
         </div>
 
         <div>
@@ -180,6 +182,7 @@ export default function ContactForm() {
         <label className={labelClass} htmlFor={`${uid}-message`}>{t.message} *</label>
         <textarea
           id={`${uid}-message`} name="message" rows={5} required
+          enterKeyHint="send"
           placeholder={t.messagePlaceholder}
           className={`${fieldClass} resize-y min-h-[132px]`}
           aria-invalid={Boolean(errors.message)}

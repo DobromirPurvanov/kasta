@@ -195,9 +195,11 @@ export default function Navigation() {
           </div>
 
           {/* Mobile: theme, language + menu */}
-          {/* Трите бутона по 44px плюс отстоянията преливаха с 4px на 320px —
-              на най-тесните екрани отстоянието пада, самите цели остават 44px. */}
-          <div className="md:hidden ml-auto flex items-center gap-0 min-[360px]:gap-1">
+          {/* Тема, EN и меню стоят един до друг. При 4px (и 0px под 360px, както
+              бях сложил) палецът лесно улучва „EN“ вместо менюто, а това сменя
+              езика на целия сайт. 8px е минимумът, който ги разделя надеждно —
+              трите цели по 44px плюс отстоянията се събират и на 320px. */}
+          <div className="md:hidden ml-auto flex items-center gap-2">
             <ThemeToggle onToggle={toggleTheme} isDark={isDark} label={themeLabel} />
             <button
               type="button"

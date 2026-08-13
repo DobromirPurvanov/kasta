@@ -387,7 +387,7 @@ export default function CookieConsent() {
               </div>
 
               <div>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   <button type="button" onClick={rejectAll} className={choiceButtonClass}>
                     {t.rejectAll}
                   </button>
@@ -395,7 +395,10 @@ export default function CookieConsent() {
                     {t.acceptAll}
                   </button>
                 </div>
-                <div className="flex items-center justify-center flex-wrap gap-x-4">
+                {/* Редът с връзките опираше бутоните отгоре — 0px между „Приеми
+                    всички“ и „Поверителност“. Леко нисък допир отваряше страница
+                    вместо да приеме. Същото и между пренесените връзки. */}
+                <div className="mt-1.5 flex items-center justify-center flex-wrap gap-x-4 gap-y-1.5">
                   <button
                     type="button"
                     onClick={openSettings}
@@ -549,7 +552,7 @@ export default function CookieConsent() {
                 диалогът скролва, но действията трябваше да се търсят. Залепени
                 долу са винаги под палеца. */}
             <div className="sticky bottom-0 bg-[var(--bg-card)] p-5 sm:p-6 pt-4 border-t border-fg/[0.08] pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 <button type="button" onClick={rejectAll} className={choiceButtonClass}>
                   {t.rejectAll}
                 </button>
