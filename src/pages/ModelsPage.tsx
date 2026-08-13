@@ -33,8 +33,8 @@ export default function ModelsPage() {
             </h1>
             <p className="text-[15px] sm:text-[17px] text-[var(--text-secondary)] leading-[1.75] max-w-[600px] mt-6 sm:mt-8">
               {isBg
-                ? 'Три модела, всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Сравни ги по мощност, скорост и обхват — всеки идва с локален сервиз, части и 2 години гаранция.'
-                : 'Three models, each in three versions: off-road, L1e moped and L3e light motorcycle. Compare them by power, speed and range — every one comes with local service, parts and a 2-year warranty.'}
+                ? 'Три модела, всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Сравни ги по мощност, скорост и обхват. Всеки идва с 2 години гаранция и сервиз в София.'
+                : 'Three models, each in three versions: off-road, L1e moped and L3e light motorcycle. Compare them by power, speed and range. Every one comes with a 2-year warranty and service in Sofia.'}
             </p>
             <button type="button" onClick={() => scrollToSection('models')} className="btn-accent mt-7 sm:w-auto">
               {isBg ? 'Към моделите' : 'Browse the lineup'}
@@ -46,10 +46,10 @@ export default function ModelsPage() {
             <span className="absolute text-[clamp(9rem,22vw,20rem)] leading-none font-extrabold tracking-[-0.1em] text-fg/[0.025]" aria-hidden="true">07</span>
             <div className="absolute inset-x-[12%] bottom-[18%] h-[30%] bg-[rgb(var(--accent-rgb)/0.2)] blur-[70px] rounded-full" aria-hidden="true" />
             <img
-              src="/images/kasta/ss30-offroad-main.png"
+              src="/images/kasta/ss30-offroad-main.webp"
               alt={isBg ? 'E RIDE PRO SS 3.0 офроуд електрически мотокрос' : 'E RIDE PRO SS 3.0 off-road electric dirt bike'}
-              width="1100"
-              height="922"
+              width="1600"
+              height="1200"
               className="relative w-full max-h-[470px] object-contain drop-shadow-2xl dark:brightness-125 dark:contrast-125"
             />
             <div className="glass-panel absolute right-0 sm:right-3 bottom-0 rounded-2xl p-4 min-w-[150px]">

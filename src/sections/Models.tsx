@@ -28,12 +28,13 @@ const filters: { key: FilterKey; label: string; labelBg: string }[] = [
 ]
 
 /**
- * Редовете, които всяка карта показва — същите за всички модели, за да се
- * сравняват. SS 2.5 носи „Power“ вместо „Peak power“, затова търсим по списък.
+ * Редовете, които всяка карта показва, еднакви за всички модели, за да могат
+ * да се сравняват. За 2.5 е публикувана само номиналната мощност, затова
+ * търсим по списък и взимаме първото, което го има.
  */
 const cardSpecs = [
   { labels: ['Top speed'], short: 'Speed', shortBg: 'Скорост' },
-  { labels: ['Peak power', 'Power'], short: 'Power', shortBg: 'Мощност' },
+  { labels: ['Peak power', 'Rated power'], short: 'Power', shortBg: 'Мощност' },
   { labels: ['Range'], short: 'Range', shortBg: 'Обхват' },
   { labels: ['Battery'], short: 'Battery', shortBg: 'Батерия' },
 ] as const
@@ -45,20 +46,20 @@ function short(value: string) {
 
 const familyBlurb: Record<FamilyKey, { bg: string; en: string }> = {
   'ss-25': {
-    bg: 'Входът в гамата. Най-лек и най-прощаващ, на същата 72V архитектура.',
-    en: 'The entry into the range. Lightest and most forgiving, on the same 72V architecture.',
+    bg: 'Най-лекият в гамата и най-прощаващият. Същата 72V система като на големите.',
+    en: 'The lightest in the range and the most forgiving. Same 72V system as the big ones.',
   },
   'ss-30': {
-    bg: 'Средният брат с голямата батерия и шасито на SR. Моделът, на който повечето се спират.',
-    en: 'The middle brother with the big battery and the SR chassis. The one most riders settle on.',
+    bg: 'Голямата батерия и шасито на SR, на по-достъпна цена. Повечето хора се спират на него.',
+    en: 'The big battery and the SR chassis for less money. Most people end up here.',
   },
   sr: {
-    bg: 'Флагманът. 25 kW пикова мощност, 630 Nm на колелото и 0–48 km/h за 1,8 секунди.',
-    en: 'The flagship. 25 kW peak, 630 Nm at the wheel and 0–48 km/h in 1.8 seconds.',
+    bg: 'Най-мощният. 25 kW пик, 630 Nm на колелото, от място до 48 km/h за 1,8 секунди.',
+    en: 'The most powerful one. 25 kW peak, 630 Nm at the wheel, 0 to 48 km/h in 1.8 seconds.',
   },
   mini: {
-    bg: 'Компактният. Настройваема мощност, за да расте заедно с ездача. Само офроуд.',
-    en: 'The compact one. Adjustable power so it grows with the rider. Off-road only.',
+    bg: 'Пит байк за възрастни и първи мотор за деца. Мощността се настройва. Само офроуд.',
+    en: 'A pit bike for adults and a first bike for kids. The power is adjustable. Off-road only.',
   },
 }
 
@@ -81,8 +82,8 @@ function ProductCard({ product, isBg }: { product: Product; isBg: boolean }) {
           src={product.image}
           alt={product.alt}
           loading="lazy"
-          width="1100"
-          height="922"
+          width="1600"
+          height="1200"
           className="relative h-full w-full object-contain drop-shadow-2xl transition-transform duration-300 ease-premium group-hover:-translate-y-1 group-hover:scale-[1.055]"
           onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
         />
@@ -218,8 +219,8 @@ export default function Models({ showHeader = true }: ModelsProps) {
             <div className="lg:pb-1">
               <p className="text-[15px] sm:text-[16px] text-[var(--text-secondary)] leading-[1.75] max-w-[52ch]">
                 {isBg
-                  ? 'Три модела — SS 2.5, SS 3.0 и SR — всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Mini се предлага само офроуд.'
-                  : 'Three models — SS 2.5, SS 3.0 and SR — each in three versions: off-road, L1e moped and L3e light motorcycle. The Mini is off-road only.'}
+                  ? 'Три модела: SS 2.5, SS 3.0 и SR. Всеки идва в три версии — офроуд, L1e като мопед и L3e като лек мотоциклет. Mini е само офроуд.'
+                  : 'Three models: SS 2.5, SS 3.0 and SR. Each comes in three versions, off-road, L1e as a moped and L3e as a light motorcycle. The Mini is off-road only.'}
               </p>
               {/* Беше 18px висока — под минимума за палец. Видът не се мени,
                   зоната за докосване става 44px. */}

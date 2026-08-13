@@ -131,8 +131,8 @@ export default function Hero() {
             <div className="hero-reveal mt-5 sm:mt-7 flex flex-col md:flex-row md:items-end gap-6 md:gap-10">
               <p className="max-w-[600px] text-[15px] sm:text-[17px] leading-[1.7] text-[var(--text-secondary)]">
                 {isBg
-                  ? 'Мигновен въртящ момент, нулеви компромиси. Пълната E RIDE PRO гама с локален сервиз, части и 2 години гаранция.'
-                  : 'Instant torque, zero compromise. The complete E RIDE PRO range with local service, parts and a 2-year warranty.'}
+                  ? 'Цялата гама E RIDE PRO, с 2 години гаранция и сервиз в София. Частите ги имаме на място, не се чакат по месец.'
+                  : 'The full E RIDE PRO range, with a 2-year warranty and service in Sofia. We keep parts in stock, so you are not waiting a month for them.'}
               </p>
               <span className="hidden md:block w-px h-12 bg-white/15" aria-hidden="true" />
               <p className="hidden md:block shrink-0 text-[10px] font-bold tracking-[0.18em] uppercase text-[var(--text-muted)] leading-loose">
@@ -185,10 +185,10 @@ export default function Hero() {
 
             <div className="relative flex-1 flex items-center justify-center py-4">
               <img
-                src="/images/kasta/sr-offroad-main.png"
+                src="/images/kasta/sr-offroad-main.webp"
                 alt=""
-                width="1000"
-                height="838"
+                width="1600"
+                height="1200"
                 className="w-full object-contain drop-shadow-2xl transition-transform duration-300 ease-premium group-hover:scale-[1.07] group-hover:-translate-y-2"
               />
             </div>

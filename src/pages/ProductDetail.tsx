@@ -312,8 +312,8 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
                     src={product.image}
                     alt={product.alt}
                     loading="lazy"
-                    width="1100"
-                    height="922"
+                    width="1600"
+                    height="1200"
                     className="relative h-full w-full object-contain drop-shadow-2xl transition-transform duration-300 ease-premium group-hover:-translate-y-1 group-hover:scale-[1.055] dark:brightness-125 dark:contrast-125"
                     onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
                   />
