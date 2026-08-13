@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { sendPageView } from '../lib/analytics'
 import { scrollToSection } from '../lib/scrollToSection'
+
+/** Колко дълго пазим позицията, преди да оставим страницата на посетителя. */
+const GUARD_MS = 2000
 
 // React Router's pushState navigation neither scrolls to section targets
 // nor resets the scroll position — this component does both globally.
@@ -22,8 +26,8 @@ export default function ScrollManager() {
     const target = (state as { scrollTo?: string } | null)?.scrollTo ?? (hash ? hash.slice(1) : null)
 
     let cancelled = false
+    let released = false
     const timers: ReturnType<typeof setTimeout>[] = []
-    const frames: number[] = []
 
     const apply = () => {
       if (cancelled) return
@@ -34,26 +38,38 @@ export default function ScrollManager() {
       scrollToSection(target, 'auto')
     }
 
-    // ScrollTrigger освежава позициите си на следващия кадър и при това връща
-    // скрола, който помни — заради него продуктовата страница се отваряше по
-    // средата, а секциите не се достигаха. Затова не скролваме веднъж, а
-    // настояваме и през следващите два кадъра, тоест и след неговия refresh.
+    /**
+     * ScrollTrigger помни скрола и го връща след всеки свой `refresh()`, а
+     * refresh се пуска и при всяка доуредена снимка. След смяна на маршрут
+     * запомненото е позицията от предишната страница — точно заради това
+     * продуктовата страница се отваряше по средата на списъка.
+     *
+     * Затова заставаме след него: докато посетителят не превърти сам (или до
+     * `GUARD_MS`), всеки refresh се последва от нашата позиция.
+     */
+    const release = () => {
+      released = true
+    }
+    const afterRefresh = () => {
+      if (!released) apply()
+    }
+
     apply()
-    frames.push(
-      window.requestAnimationFrame(() => {
-        apply()
-        frames.push(window.requestAnimationFrame(apply))
-      })
-    )
+    ScrollTrigger.addEventListener('refresh', afterRefresh)
+    window.addEventListener('wheel', release, { passive: true })
+    window.addEventListener('touchmove', release, { passive: true })
+    window.addEventListener('keydown', release)
+    // Влаченето на скролбара не праща wheel — затова пускаме и при докосване.
+    window.addEventListener('pointerdown', release, { passive: true })
+    timers.push(setTimeout(release, GUARD_MS))
 
     // Секцията може още да не е в DOM-а, ако маршрутът се зарежда мързеливо.
     if (target) {
       let attempts = 0
       const retry = () => {
-        if (cancelled) return
-        if (scrollToSection(target, 'auto')) return
+        if (cancelled || scrollToSection(target, 'auto')) return
         attempts += 1
-        if (attempts < 10) timers.push(setTimeout(retry, 60))
+        if (attempts < 12) timers.push(setTimeout(retry, 60))
         else window.scrollTo({ top: 0, behavior: 'auto' })
       }
       timers.push(setTimeout(retry, 60))
@@ -62,7 +78,11 @@ export default function ScrollManager() {
     return () => {
       cancelled = true
       timers.forEach(clearTimeout)
-      frames.forEach(window.cancelAnimationFrame)
+      ScrollTrigger.removeEventListener('refresh', afterRefresh)
+      window.removeEventListener('wheel', release)
+      window.removeEventListener('touchmove', release)
+      window.removeEventListener('keydown', release)
+      window.removeEventListener('pointerdown', release)
     }
   }, [pathname, hash, state])
 
