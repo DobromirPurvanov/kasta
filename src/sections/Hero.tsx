@@ -80,7 +80,7 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover scale-[1.015]"
-          poster="/images/kasta/hero-poster-sr-trail.jpg"
+          poster="/images/kasta/hero-poster-sr-ride.jpg"
           preload="metadata"
           tabIndex={-1}
         >
