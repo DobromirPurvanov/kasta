@@ -1,15 +1,54 @@
-export type FilterKey = 'all' | 'mini' | 'road-legal' | 'ss-25' | 'ss-30' | 'sr' | 'l1e' | 'off-road-fatty'
+/**
+ * Продуктови данни за E RIDE PRO България.
+ *
+ * Гамата е три модела — SS 2.5, SS 3.0 и SR — и всеки от тях се предлага в три
+ * версии: офроуд (без регистрация), L1e (мопед) и L3e (лек мотоциклет).
+ * Mini се предлага само в офроуд версия.
+ *
+ * Техническите параметри идват от официалните сайтове на производителя:
+ * eridepro.nu (мощност, скорост, обхват, батерия, тегла), eridepros.co.uk
+ * (шаси, табло, размери) и официалния наръчник за L1e версията.
+ *
+ * ВАЖНО: L3e версиите чакат цени от вносителя — виж `published` по-долу.
+ */
+
+export type FamilyKey = 'mini' | 'ss-25' | 'ss-30' | 'sr'
+export type VersionKey = 'off-road' | 'l1e' | 'l3e'
+export type FilterKey = 'all' | FamilyKey | VersionKey
+
+export interface SpecRow {
+  label: string
+  labelBg: string
+  value: string
+  /** Само когато стойността съдържа думи, които се превеждат. */
+  valueBg?: string
+}
+
+export interface SpecGroup {
+  title: string
+  titleBg: string
+  rows: SpecRow[]
+}
 
 export interface Product {
   id: string
   slug: string
+  family: FamilyKey
+  /** Показва се като етикет над името — „SR", „SS 3.0"... */
+  familyLabel: string
+  version: VersionKey
   name: string
   nameBg: string
   category: string
-  price: string
-  /** Previous (pre-promo) price, rendered struck through next to `price` */
+  /** Липсва, докато вносителят не потвърди цена — тогава се показва „по запитване". */
+  price?: string
+  /** Предишна цена, зачертана до `price`. */
   originalPrice?: string
+  /** Скрива продукта от сайта, без да губим данните му. */
+  published: boolean
   image: string
+  /** Галерията, която да се ползва, ако моделът няма собствена. */
+  gallerySlug?: string
   galleryCount: number
   alt: string
   title: string
@@ -20,280 +59,676 @@ export interface Product {
   taglineBg: string
   description: string
   descriptionBg: string
-  specs: { label: string; labelBg: string; value: string }[]
+  specs: SpecGroup[]
   faq: { q: string; qBg: string; a: string; aBg: string }[]
   filters: FilterKey[]
 }
 
+/* ------------------------------------------------------------------ *
+ * Общи блокове
+ * ------------------------------------------------------------------ */
+
+const HOMOLOGATION = 'Homologation'
+const HOMOLOGATION_BG = 'Хомологация'
+const POWERTRAIN = 'Powertrain'
+const POWERTRAIN_BG = 'Задвижване'
+const CHASSIS = 'Chassis'
+const CHASSIS_BG = 'Шаси'
+const DIMENSIONS = 'Dimensions & weight'
+const DIMENSIONS_BG = 'Размери и тегла'
+
+interface VersionProfile {
+  /** Скорост, ограничена от хомологацията. */
+  topSpeed: string
+  category: string
+  categoryBg: string
+  licence: string
+  licenceBg: string
+  registration: string
+  registrationBg: string
+  tyres: string
+  tyresBg: string
+}
+
+const OFF_ROAD_LABELS = {
+  category: 'Off-road (not road legal)',
+  categoryBg: 'Офроуд (без регистрация)',
+  licence: 'Not required on private land',
+  licenceBg: 'Не се изисква на частен терен',
+  registration: 'Not registered',
+  registrationBg: 'Не се регистрира',
+}
+
+const L1E_LABELS = {
+  category: 'L1e (moped)',
+  categoryBg: 'L1e (мопед)',
+  licence: 'AM category, from 16',
+  licenceBg: 'Категория AM, от 16 г.',
+  registration: 'Registered at KAT',
+  registrationBg: 'Регистрира се в КАТ',
+}
+
+const L3E_LABELS = {
+  category: 'L3e (light motorcycle)',
+  categoryBg: 'L3e (лек мотоциклет)',
+  licence: 'A1 category, from 16',
+  licenceBg: 'Категория A1, от 16 г.',
+  registration: 'Registered at KAT',
+  registrationBg: 'Регистрира се в КАТ',
+}
+
+function homologationGroup(profile: VersionProfile): SpecGroup {
+  return {
+    title: HOMOLOGATION,
+    titleBg: HOMOLOGATION_BG,
+    rows: [
+      { label: 'Category', labelBg: 'Категория', value: profile.category, valueBg: profile.categoryBg },
+      { label: 'Top speed', labelBg: 'Макс. скорост', value: profile.topSpeed },
+      { label: 'Licence', labelBg: 'Книжка', value: profile.licence, valueBg: profile.licenceBg },
+      { label: 'Registration', labelBg: 'Регистрация', value: profile.registration, valueBg: profile.registrationBg },
+      { label: 'Tyres', labelBg: 'Гуми', value: profile.tyres, valueBg: profile.tyresBg },
+    ],
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * SR
+ * ------------------------------------------------------------------ */
+
+const SR_POWERTRAIN: SpecGroup = {
+  title: POWERTRAIN,
+  titleBg: POWERTRAIN_BG,
+  rows: [
+    { label: 'Rated voltage', labelBg: 'Напрежение', value: '72 V' },
+    { label: 'Rated power', labelBg: 'Номинална мощност', value: '10 kW' },
+    { label: 'Peak power', labelBg: 'Пикова мощност', value: '25 kW' },
+    { label: 'Motor peak torque', labelBg: 'Въртящ момент (двигател)', value: '70 Nm' },
+    { label: 'Wheel peak torque', labelBg: 'Въртящ момент (колело)', value: '630 Nm' },
+    { label: 'Battery', labelBg: 'Батерия', value: '72V 50Ah · 3600 Wh Samsung 50S, swappable', valueBg: '72V 50Ah · 3600 Wh Samsung 50S, сменяема' },
+    { label: '0–48 km/h', labelBg: '0–48 km/h', value: '1.8 s', valueBg: '1,8 сек.' },
+    { label: 'Range', labelBg: 'Обхват', value: '100+ km at 40 km/h · 150+ km at 24 km/h', valueBg: '100+ km при 40 km/h · 150+ km при 24 km/h' },
+    { label: 'Charging 20–90%', labelBg: 'Зареждане 20–90%', value: '3.5 h', valueBg: '3,5 часа' },
+  ],
+}
+
+const SR_CHASSIS: SpecGroup = {
+  title: CHASSIS,
+  titleBg: CHASSIS_BG,
+  rows: [
+    { label: 'Front fork', labelBg: 'Предна вилка', value: 'FASTACE adjustable · 775 mm, 220 mm travel', valueBg: 'FASTACE регулируема · 775 mm, ход 220 mm' },
+    { label: 'Rear shock', labelBg: 'Заден амортисьор', value: 'FASTACE adjustable · 265 mm, 75 mm travel', valueBg: 'FASTACE регулируем · 265 mm, ход 75 mm' },
+    { label: 'Brakes', labelBg: 'Спирачки', value: 'DOT4 hydraulic · 220 mm discs front and rear', valueBg: 'DOT4 хидравлични · дискове 220 mm отпред и отзад' },
+    { label: 'Regenerative braking', labelBg: 'Рекуперация', value: 'Multilevel adjustable', valueBg: 'Многостепенно регулируема' },
+    { label: 'Chain', labelBg: 'Верига', value: 'RK 428 · 114 links', valueBg: 'RK 428 · 114 звена' },
+    { label: 'Sprocket', labelBg: 'Зъбно колело', value: '428 58T · 7075 CNC aluminium', valueBg: '428 58T · CNC алуминий 7075' },
+    { label: 'Display', labelBg: 'Табло', value: 'Colour TFT', valueBg: 'Цветен TFT' },
+  ],
+}
+
+const SR_DIMENSIONS: SpecGroup = {
+  title: DIMENSIONS,
+  titleBg: DIMENSIONS_BG,
+  rows: [
+    { label: 'Seat height', labelBg: 'Височина на седалката', value: '830 mm' },
+    { label: 'Wheelbase', labelBg: 'Междуосие', value: '1260 mm' },
+    { label: 'Handlebar width', labelBg: 'Ширина на кормилото', value: '780 mm' },
+    { label: 'Ground clearance', labelBg: 'Просвет', value: '280 mm' },
+    { label: 'Weight', labelBg: 'Тегло', value: '83 kg' },
+    { label: 'Max load', labelBg: 'Макс. натоварване', value: '137 kg' },
+  ],
+}
+
+/* ------------------------------------------------------------------ *
+ * SS 3.0
+ * ------------------------------------------------------------------ */
+
+const SS30_POWERTRAIN: SpecGroup = {
+  title: POWERTRAIN,
+  titleBg: POWERTRAIN_BG,
+  rows: [
+    { label: 'Rated voltage', labelBg: 'Напрежение', value: '72 V' },
+    { label: 'Rated power', labelBg: 'Номинална мощност', value: '6 kW' },
+    { label: 'Peak power', labelBg: 'Пикова мощност', value: '15.6 kW', valueBg: '15,6 kW' },
+    { label: 'Motor peak torque', labelBg: 'Въртящ момент (двигател)', value: '58 Nm' },
+    { label: 'Wheel peak torque', labelBg: 'Въртящ момент (колело)', value: '520 Nm' },
+    { label: 'Battery', labelBg: 'Батерия', value: '72V 50Ah · 3600 Wh, swappable lithium', valueBg: '72V 50Ah · 3600 Wh, сменяема литиева' },
+    { label: '0–50 km/h', labelBg: '0–50 km/h', value: '2 s', valueBg: '2 сек.' },
+    { label: 'Range', labelBg: 'Обхват', value: '103+ km at 40 km/h · 161+ km at 24 km/h', valueBg: '103+ km при 40 km/h · 161+ km при 24 km/h' },
+    { label: 'Charging 20–90%', labelBg: 'Зареждане 20–90%', value: '3.5 h', valueBg: '3,5 часа' },
+  ],
+}
+
+const SS30_CHASSIS: SpecGroup = {
+  title: CHASSIS,
+  titleBg: CHASSIS_BG,
+  rows: [
+    { label: 'Front fork', labelBg: 'Предна вилка', value: 'FASTACE adjustable', valueBg: 'FASTACE регулируема' },
+    { label: 'Rear shock', labelBg: 'Заден амортисьор', value: 'FASTACE adjustable', valueBg: 'FASTACE регулируем' },
+    { label: 'Brakes', labelBg: 'Спирачки', value: 'DOT4 hydraulic', valueBg: 'DOT4 хидравлични' },
+    { label: 'Regenerative braking', labelBg: 'Рекуперация', value: 'Multilevel adjustable', valueBg: 'Многостепенно регулируема' },
+    { label: 'Chain', labelBg: 'Верига', value: '428 · 114 links', valueBg: '428 · 114 звена' },
+    { label: 'Sprocket', labelBg: 'Зъбно колело', value: '428 58T' },
+    { label: 'Display', labelBg: 'Табло', value: 'Colour TFT · Bluetooth', valueBg: 'Цветен TFT · Bluetooth' },
+  ],
+}
+
+const SS30_DIMENSIONS: SpecGroup = {
+  title: DIMENSIONS,
+  titleBg: DIMENSIONS_BG,
+  rows: [
+    { label: 'Seat height', labelBg: 'Височина на седалката', value: '830 mm' },
+    { label: 'Wheelbase', labelBg: 'Междуосие', value: '1260 mm' },
+    { label: 'Handlebar width', labelBg: 'Ширина на кормилото', value: '780 mm' },
+    { label: 'Ground clearance', labelBg: 'Просвет', value: '280 mm' },
+    { label: 'Weight', labelBg: 'Тегло', value: '76 kg' },
+    { label: 'Max load', labelBg: 'Макс. натоварване', value: '137 kg' },
+  ],
+}
+
+/* ------------------------------------------------------------------ *
+ * SS 2.5
+ * ------------------------------------------------------------------ */
+
+const SS25_POWERTRAIN: SpecGroup = {
+  title: POWERTRAIN,
+  titleBg: POWERTRAIN_BG,
+  rows: [
+    { label: 'Rated voltage', labelBg: 'Напрежение', value: '72 V' },
+    // Производителят публикува само хомологираната мощност за 2.5 — пиковата
+    // на офроуд версията я няма никъде, затова не си я измисляме.
+    { label: 'Power', labelBg: 'Мощност', value: '3.7 kW homologated', valueBg: '3,7 kW хомологирана' },
+    { label: 'Battery', labelBg: 'Батерия', value: '72V 40Ah · 2880 Wh Samsung', valueBg: '72V 40Ah · 2880 Wh Samsung' },
+    { label: '0–45 km/h', labelBg: '0–45 km/h', value: '2.5 s', valueBg: '2,5 сек.' },
+    { label: 'Range', labelBg: 'Обхват', value: 'up to 100 km', valueBg: 'до 100 km' },
+    { label: 'Charging 20–80%', labelBg: 'Зареждане 20–80%', value: '1.5 h', valueBg: '1,5 часа' },
+  ],
+}
+
+const SS25_CHASSIS: SpecGroup = {
+  title: CHASSIS,
+  titleBg: CHASSIS_BG,
+  rows: [
+    { label: 'Front fork', labelBg: 'Предна вилка', value: 'FASTACE twin-crown · 200 mm travel, compression and rebound adjustable', valueBg: 'FASTACE двумостова · ход 200 mm, регулируема на натиск и отскок' },
+    { label: 'Rear shock', labelBg: 'Заден амортисьор', value: 'Steel spring, adjustable', valueBg: 'Стоманена пружина, регулируем' },
+    { label: 'Brakes', labelBg: 'Спирачки', value: 'Hydraulic discs, motorcycle standard', valueBg: 'Хидравлични дискови, мотоциклетен стандарт' },
+    { label: 'Regenerative braking', labelBg: 'Рекуперация', value: 'Adjustable', valueBg: 'Регулируема' },
+  ],
+}
+
+const SS25_DIMENSIONS: SpecGroup = {
+  title: DIMENSIONS,
+  titleBg: DIMENSIONS_BG,
+  rows: [
+    { label: 'Seat height', labelBg: 'Височина на седалката', value: '860 mm' },
+    { label: 'Overall length', labelBg: 'Обща дължина', value: '1950 mm' },
+    { label: 'Wheelbase', labelBg: 'Междуосие', value: '1280 mm' },
+    { label: 'Handlebar width', labelBg: 'Ширина на кормилото', value: '800 mm' },
+    { label: 'Weight', labelBg: 'Тегло', value: '69 kg with battery · 53 kg without', valueBg: '69 kg с батерия · 53 kg без' },
+    { label: 'Max load', labelBg: 'Макс. натоварване', value: '137 kg' },
+  ],
+}
+
+/* ------------------------------------------------------------------ *
+ * Mini
+ * ------------------------------------------------------------------ */
+
+const MINI_SPECS: SpecGroup[] = [
+  homologationGroup({
+    topSpeed: '75 km/h',
+    ...OFF_ROAD_LABELS,
+    tyres: 'Front 60/100-14 · Rear 80/100-12',
+    tyresBg: 'Предна 60/100-14 · Задна 80/100-12',
+  }),
+  {
+    title: POWERTRAIN,
+    titleBg: POWERTRAIN_BG,
+    rows: [
+      { label: 'Rated voltage', labelBg: 'Напрежение', value: '72 V' },
+      { label: 'Rated power', labelBg: 'Номинална мощност', value: '3 kW' },
+      { label: 'Peak power', labelBg: 'Пикова мощност', value: '8 kW' },
+      { label: 'Motor peak torque', labelBg: 'Въртящ момент (двигател)', value: '38 Nm' },
+      { label: 'Wheel peak torque', labelBg: 'Въртящ момент (колело)', value: '270 Nm' },
+      { label: 'Battery', labelBg: 'Батерия', value: '72V 30Ah · 2160 Wh, swappable lithium', valueBg: '72V 30Ah · 2160 Wh, сменяема литиева' },
+      { label: '0–48 km/h', labelBg: '0–48 km/h', value: '3 s', valueBg: '3 сек.' },
+      { label: 'Range', labelBg: 'Обхват', value: '60+ km at 32 km/h', valueBg: '60+ km при 32 km/h' },
+      { label: 'Charging 20–90%', labelBg: 'Зареждане 20–90%', value: '2 h', valueBg: '2 часа' },
+    ],
+  },
+  {
+    title: CHASSIS,
+    titleBg: CHASSIS_BG,
+    rows: [
+      { label: 'Front fork', labelBg: 'Предна вилка', value: 'FASTACE adjustable', valueBg: 'FASTACE регулируема' },
+      { label: 'Rear shock', labelBg: 'Заден амортисьор', value: 'FASTACE adjustable', valueBg: 'FASTACE регулируем' },
+      { label: 'Brakes', labelBg: 'Спирачки', value: 'Mineral oil hydraulic + regen', valueBg: 'Хидравлични с минерално масло + рекуперация' },
+      { label: 'Chain', labelBg: 'Верига', value: '420 · 90 links', valueBg: '420 · 90 звена' },
+      { label: 'Sprocket', labelBg: 'Зъбно колело', value: '420 41T' },
+      { label: 'Display', labelBg: 'Табло', value: 'Colour LCD', valueBg: 'Цветен LCD' },
+    ],
+  },
+  {
+    title: DIMENSIONS,
+    titleBg: DIMENSIONS_BG,
+    rows: [
+      { label: 'Seat height', labelBg: 'Височина на седалката', value: '678 mm' },
+      { label: 'Wheelbase', labelBg: 'Междуосие', value: '1070 mm' },
+      { label: 'Handlebar width', labelBg: 'Ширина на кормилото', value: '710 mm' },
+      { label: 'Ground clearance', labelBg: 'Просвет', value: '270 mm' },
+      { label: 'Weight', labelBg: 'Тегло', value: '53.5 kg', valueBg: '53,5 kg' },
+      { label: 'Max load', labelBg: 'Макс. натоварване', value: '65 kg' },
+    ],
+  },
+]
+
+/* ------------------------------------------------------------------ *
+ * Гумите се менят с версията — офроуд кара Fatty, пътните dual sport.
+ * ------------------------------------------------------------------ */
+
+const FATTY_19_16 = { tyres: '19"/16" Fatty knobby', tyresBg: '19"/16" Fatty крос' }
+const DUAL_SPORT_19_18 = { tyres: '19"/18" dual sport', tyresBg: '19"/18" dual sport' }
+const SS25_ROAD_TYRES = { tyres: 'Front 2.75-19 · Rear 3.00-18', tyresBg: 'Предна 2.75-19 · Задна 3.00-18' }
+
+const FAQ_WARRANTY = {
+  q: 'Is there a warranty?',
+  qBg: 'Има ли гаранция?',
+  a: 'Yes — a 2-year manufacturer warranty, serviced by Kasta Ventures in Sofia.',
+  aBg: 'Да — 2-годишна производствена гаранция, обслужвана от Kasta Ventures в София.',
+}
+
+const FAQ_L1E_LICENCE = {
+  q: 'What licence do I need?',
+  qBg: 'Каква книжка ми трябва?',
+  a: 'The L1e version is a moped — an AM category licence is enough, available from 16.',
+  aBg: 'Версията L1e е мопед — стига книжка от категория AM, която се вади от 16 г.',
+}
+
+const FAQ_L3E_LICENCE = {
+  q: 'What licence do I need?',
+  qBg: 'Каква книжка ми трябва?',
+  a: 'The L3e version is a light motorcycle — it needs an A1 category licence, available from 16.',
+  aBg: 'Версията L3e е лек мотоциклет — иска книжка от категория A1, която се вади от 16 г.',
+}
+
+const FAQ_OFFROAD_WHERE = {
+  q: 'Where can I ride it?',
+  qBg: 'Къде мога да го карам?',
+  a: 'The off-road version is not registered, so it is ridden on private land and designated off-road trails.',
+  aBg: 'Офроуд версията не се регистрира, тоест се кара на частен терен и по обозначени офроуд трасета.',
+}
+
+const FAQ_REGISTRATION = {
+  q: 'Is it registered at KAT?',
+  qBg: 'Регистрира ли се в КАТ?',
+  a: 'Yes — it comes with full EU homologation documents, so registration is straightforward.',
+  aBg: 'Да — идва с пълна EU хомологационна документация, така че регистрацията минава лесно.',
+}
+
+/* ------------------------------------------------------------------ *
+ * Гамата
+ * ------------------------------------------------------------------ */
+
 export const products: Product[] = [
+  /* ---------------------------------------------------------------- SS 2.5 */
   {
-    id: 'mini-r-72v',
-    slug: 'mini-r-72v',
-    name: 'E Ride Pro - Mini R - 72V 2026',
-    nameBg: 'E Ride Pro - Mini R - 72V 2026',
-    category: 'Mini',
-    price: '€3,960.00',
-    image: '/images/kasta/mini-main.png',
-    galleryCount: 5,
-    alt: 'E RIDE PRO Mini R 72V 2026 electric dirt bike',
-    title: 'E RIDE PRO Mini R 72V Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO Mini R 72V електрически мотор България | Kasta Ventures',
-    metaDesc: 'Compact E RIDE PRO Mini R 72V electric dirt bike. Perfect for beginners. Official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'Компактен електрически мотор E RIDE PRO Mini R 72V. Перфектен за начинаещи. Официален вносител Kasta Ventures България.',
-    tagline: 'Built for young riders. Designed with care. Priced to be accessible.',
-    taglineBg: 'Създаден за млади ездачи. Проектиран с внимание. Достъпна цена.',
-    description: `The E Ride Pro Mini is created for young riders taking their first steps into the world of electric riding — offering a fun, confidence-building experience at an accessible price point.\n\nIt delivers smooth, predictable electric power that helps younger riders learn balance, throttle control, and riding technique in a natural and enjoyable way. The lightweight chassis and responsive handling make every ride feel intuitive and reassuring.\n\nQuiet operation and carefully tuned performance create a controlled learning environment, while the premium build quality ensures long-term reliability — giving parents confidence that they're making a smart, lasting investment.`,
-    descriptionBg: `E Ride Pro Mini е създаден за млади ездачи, които правят първите си стъпки в света на електрическото каране — предлагайки забавно, изграждащо увереност изживяване на достъпна цена.\n\nДоставя плавна, предсказуема електрическа мощност, която помага на по-младите ездачи да научат баланс, контрол на газта и техника на каране по естествен и приятен начин. Лекото шаси и отзивчивото управление правят всяко каране интуитивно и успокояващо.\n\nБезшумната работа и внимателно настроената производителност създават контролирана среда за учене, докато премиум качеството на изработка осигурява дългосрочна надеждност.`,
+    id: 'ss25-offroad',
+    slug: 'ss-25-off-road',
+    family: 'ss-25',
+    familyLabel: 'SS 2.5',
+    version: 'off-road',
+    name: 'E RIDE PRO SS 2.5 — Off Road',
+    nameBg: 'E RIDE PRO SS 2.5 — Офроуд',
+    category: 'SS 2.5',
+    price: '€5,390.00',
+    published: true,
+    image: '/images/kasta/ss25-offroad-main.png',
+    galleryCount: 16,
+    alt: 'E RIDE PRO SS 2.5 Off Road електрически мотор',
+    title: 'E RIDE PRO SS 2.5 Off Road | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 2.5 Офроуд | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 2.5 Off Road — the entry into the range, on Fatty knobby tyres. Official representative for Bulgaria, Kasta Ventures.',
+    metaDescBg: 'E RIDE PRO SS 2.5 Офроуд — входът в гамата, на Fatty крос гуми. Официален представител за България — Kasta Ventures.',
+    tagline: 'The entry into the range. Fatty tyres, no compromises off the tarmac.',
+    taglineBg: 'Входът в гамата. Fatty гуми и никакви компромиси извън асфалта.',
+    description: `The SS 2.5 Off Road is where the E RIDE PRO range begins. It keeps the same 72V architecture and swappable Samsung battery as the bigger models, in a lighter and more forgiving package.\n\nOn Fatty knobby tyres and a twin-crown FASTACE fork with 200 mm of travel, it is built for trails, fields and climbs rather than for the road. It is not registered, so it is ridden on private land and designated off-road trails.\n\nAt 69 kg with the battery in, it is easy to pick up, easy to load into a van and easy to trust while you are still learning what an electric dirt bike can do.`,
+    descriptionBg: `SS 2.5 Офроуд е мястото, откъдето започва гамата E RIDE PRO. Пази същата 72V архитектура и сменяемата Samsung батерия като по-големите модели, но в по-лек и по-прощаващ пакет.\n\nНа Fatty крос гуми и двумостова FASTACE вилка с ход 200 mm, е построен за пътеки, поляни и изкачвания, а не за асфалт. Не се регистрира, тоест се кара на частен терен и по обозначени офроуд трасета.\n\nС 69 kg с поставена батерия се вдига лесно, товари се лесно и се кара с доверие, докато още опознаваш какво може един електрически мотокрос.`,
     specs: [
-      { label: '0-50 km/h', labelBg: '0-50 km/h', value: '3 sec.' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '77 km/h' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V30AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km SUBJECT TO TERRAIN VARIATIONS' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'TIRE SIZE', labelBg: 'ГУМИ', value: 'Front - 14; Rear - 12' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'ADJUSTABLE SPORT SUSPENSION: FAST ACE' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '48 kg' },
+      homologationGroup({ topSpeed: '90 km/h', ...OFF_ROAD_LABELS, ...FATTY_19_16 }),
+      SS25_POWERTRAIN,
+      SS25_CHASSIS,
+      SS25_DIMENSIONS,
     ],
-    faq: [
-      { q: 'What license do I need?', qBg: 'Каква книжка ми е необходима?', a: 'In Bulgaria, the Mini R can be ridden with an AM category license for mopeds.', aBg: 'В България Mini R може да се кара с книжка от категория AM за мопеди.' },
-      { q: 'What is the charging time?', qBg: 'Какво е времето за зареждане?', a: 'Full charge takes approximately 2 hours (20%-90%) using a standard household outlet.', aBg: 'Пълно зареждане отнема приблизително 2 часа (20%-90%) със стандартен контакт.' },
-      { q: 'Is there a warranty?', qBg: 'Има ли гаранция?', a: 'Yes, all E RIDE PRO models come with a 2-year manufacturer warranty, serviced by Kasta Ventures in Bulgaria.', aBg: 'Да, всички модели E RIDE PRO идват с 2-годишна производителна гаранция, обслужвана от Kasta Ventures в България.' },
-    ],
-    filters: ['all', 'mini'],
-  },
-  {
-    id: 'sr-off-road',
-    slug: 'sr-off-road',
-    name: 'E Ride Pro SR - Off Road Fatty',
-    nameBg: 'E Ride Pro SR - Off Road Fatty',
-    category: 'SR',
-    price: '€7,499.00',
-    image: '/images/kasta/sr-offroad-main.png',
-    galleryCount: 15,
-    alt: 'E RIDE PRO SR Off Road Fatty electric dirt bike',
-    title: 'E RIDE PRO SR Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SR Off Road електрически мотор България | Kasta Ventures',
-    metaDesc: 'High-performance E RIDE PRO SR Off Road electric dirt bike. 75 km/h top speed, 80km range. Official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'Високопроизводителен електрически мотор E RIDE PRO SR Off Road. Официален вносител Kasta Ventures България.',
-    tagline: 'Power meets precision. Built for the wild.',
-    taglineBg: 'Мощност среща прецизност. Построен за дивото.',
-    description: `The E RIDE PRO SR Off Road Fatty is engineered for those who refuse to compromise. It combines raw electric torque with refined handling — delivering instant acceleration, responsive control, and a ride that adapts to your style, not the other way around.\n\nA long-range, high-performance battery gives you the freedom to explore further, push harder, and stay out longer. The advanced powertrain is designed for sustained output, not just short bursts — meaning consistent performance across all types of terrain.\n\nThe rugged frame, premium suspension, and balanced ergonomics are built to handle serious conditions while keeping the rider connected and in control. Whether it's dirt trails, open fields, or technical climbs — this machine performs.`,
-    descriptionBg: `E RIDE PRO SR Off Road Fatty е проектиран за тези, които отказват да правят компромис. Комбинира суров електрически въртящ момент с прецизно управление — доставяйки мигновено ускорение, отзивчив контрол и каране, което се адаптира към вашия стил.\n\nБатерия с дълъг обхват и висока производителност ви дава свободата да изследвате по-далеч, да натискате по-силно и да оставате навън по-дълго. Независимо дали става въпрос за пръстени пътеки, открити полета или технически изкачвания — тази машина се представя.`,
-    specs: [
-      { label: '0-50 km/h', labelBg: '0-50 km/h', value: '3 sec.' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '75 km/h' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V40AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'TIRE SIZE', labelBg: 'ГУМИ', value: 'Front - 19; Rear - 18' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'ADJUSTABLE SPORT SUSPENSION: FAST ACE' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '78 kg' },
-    ],
-    faq: [
-      { q: 'Can I ride this on public roads?', qBg: 'Мога ли да карам това на обществени пътища?', a: 'The SR Off Road is designed for private property and off-road trails. For road use, check the SR L1e Road Legal version.', aBg: 'SR Off Road е проектиран за частна собственост и офроуд пътеки. За пътна употреба вижте версията SR L1e Road Legal.' },
-      { q: 'How long does the battery last?', qBg: 'Колко издържа батерията?', a: 'The battery provides up to 80-120 km range depending on terrain, rider weight, and riding style.', aBg: 'Батерията осигурява до 80-120 км обхват в зависимост от терена и стила на каране.' },
-      { q: 'Where can I service it?', qBg: 'Къде мога да го сервизирам?', a: 'Kasta Ventures in Sofia provides full service and warranty support for all E RIDE PRO models.', aBg: 'Kasta Ventures в София предоставя пълен сервиз и гаранционна подкрепа за всички модели E RIDE PRO.' },
-    ],
-    filters: ['all', 'sr', 'off-road-fatty'],
-  },
-  {
-    id: 'sr-l1e',
-    slug: 'sr-l1e',
-    name: 'E Ride Pro SR - L1e - Road Legal',
-    nameBg: 'E Ride Pro SR - L1e - Road Legal',
-    category: 'SR',
-    price: '€7,499.00',
-    image: '/images/kasta/sr-l1e-main.png',
-    galleryCount: 17,
-    alt: 'E RIDE PRO SR L1e Road Legal electric dirt bike',
-    title: 'E RIDE PRO SR L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SR L1e пътен електрически мотор България | Kasta Ventures',
-    metaDesc: 'Road legal E RIDE PRO SR L1e electric dirt bike. EU homologated, mirrors, lights. Official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'Пътен електрически мотор E RIDE PRO SR L1e. EU хомологация. Официален вносител Kasta Ventures България.',
-    tagline: 'Road-legal freedom. Built for Bulgarian streets.',
-    taglineBg: 'Пътна свобода. Построен за българските улици.',
-    description: `The E RIDE PRO SR L1e Road Legal brings off-road DNA to the city streets. Fully homologated for EU roads including Bulgaria, this L1e category electric dirt bike requires only an AM moped license — making high-performance electric riding accessible to more riders than ever before.\n\nEquipped with all required road equipment — mirrors, turn signals, LED headlight, taillight, and license plate holder — the SR L1e is ready for registration at any KAT office in Bulgaria.\n\nWith a top speed of 45 km/h (electronically limited for L1e compliance) and a range of up to 80-120 km, it's the perfect daily commuter for Bulgarian urban environments — silent, emission-free, and incredibly cost-efficient compared to gas-powered alternatives.`,
-    descriptionBg: `E RIDE PRO SR L1e Road Legal донася офроуд ДНК на градските улици. Пълноценно хомологиран за пътищата на ЕС, включително България, този електрически мотор от категория L1e изисква само книжка AM за мопед.\n\nОборудван с всичко необходимо за пътна употреба — огледала, мигачи, LED фар, стоп и поставка за номер — SR L1e е готов за регистрация във всяко КАТ в България.\n\nС максимална скорост 45 км/ч (електронно ограничена за L1e) и обхват до 80-120 km, това е перфектният ежедневен commuter за българската градска среда.`,
-    specs: [
-      { label: 'CATEGORY', labelBg: 'КАТЕГОРИЯ', value: 'L1e (Moped)' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '45 km/h (limited)' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V40AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'LICENSE', labelBg: 'КНИЖКА', value: 'AM category' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'ADJUSTABLE SPORT SUSPENSION: FAST ACE' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '82 kg' },
-    ],
-    faq: [
-      { q: 'What license do I need?', qBg: 'Каква книжка ми е необходима?', a: 'The SR L1e requires only an AM category moped license, available from age 16 in Bulgaria.', aBg: 'SR L1e изисква само книжка от категория AM за мопед, достъпна от 16-годишна възраст в България.' },
-      { q: 'Is it registered at KAT?', qBg: 'Регистрира ли се в КАТ?', a: 'Yes, the SR L1e comes with full EU homologation documents for easy registration at any KAT office.', aBg: 'Да, SR L1e идва с пълна EU хомологационна документация за лесна регистрация във всяко КАТ.' },
-      { q: 'Does it have a warranty?', qBg: 'Има ли гаранция?', a: 'Yes, 2-year manufacturer warranty with service support at Kasta Ventures in Sofia.', aBg: 'Да, 2-годишна производителна гаранция със сервизна подкрепа от Kasta Ventures в София.' },
-    ],
-    filters: ['all', 'sr', 'l1e', 'road-legal'],
-  },
-  {
-    id: 'ss30-l1e',
-    slug: 'ss-30-l1e',
-    name: 'E Ride Pro SS 3.0 - L1e - Road Legal',
-    nameBg: 'E Ride Pro SS 3.0 - L1e - Road Legal',
-    category: 'SS 3.0',
-    price: '€6,399.00',
-    image: '/images/kasta/ss30-l1e-main.png',
-    galleryCount: 17,
-    alt: 'E RIDE PRO SS 3.0 L1e Road Legal electric dirt bike',
-    title: 'E RIDE PRO SS 3.0 L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SS 3.0 L1e пътен електрически мотор България | Kasta Ventures',
-    metaDesc: 'E RIDE PRO SS 3.0 L1e road legal electric dirt bike. EU certified, 45 km/h. Buy from official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'E RIDE PRO SS 3.0 L1e пътен електрически мотор. EU сертифициран. Купи от официален вносител Kasta Ventures България.',
-    tagline: 'Sleek design meets street-legal performance.',
-    taglineBg: 'Стилен дизайн среща пътна производителност.',
-    description: `The E RIDE PRO SS 3.0 L1e Road Legal combines sleek modern design with full road certification. As an L1e category vehicle, it is fully homologated for European roads including Bulgaria, requiring only an AM moped license to operate.\n\nThe SS 3.0 features a refined frame design with integrated LED lighting, digital display, and premium finish. The 72V powertrain delivers smooth, predictable acceleration up to the 45 km/h L1e limit, while providing a practical range of 80-120 km for daily urban commuting.\n\nStreet tires optimized for asphalt grip give you confidence in wet and dry conditions. The SS 3.0 L1e represents the perfect balance between style, performance, and legal compliance for the modern Bulgarian rider.`,
-    descriptionBg: `E RIDE PRO SS 3.0 L1e Road Legal комбинира модерен дизайн с пълна пътна сертификация. Като превозно средство от категория L1e, той е пълноценно хомологиран за европейските пътища, включително България.\n\nSS 3.0 разполага с изчистен дизайн на рамката с интегрирано LED осветление, дигитален дисплей и премиум покритие. Представлява перфектния баланс между стил, производителност и правна съвместимост.`,
-    specs: [
-      { label: 'CATEGORY', labelBg: 'КАТЕГОРИЯ', value: 'L1e (Moped)' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '45 km/h (limited)' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V35AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'LICENSE', labelBg: 'КНИЖКА', value: 'AM category' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'ADJUSTABLE SPORT SUSPENSION' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '75 kg' },
-    ],
-    faq: [
-      { q: 'How fast does it go?', qBg: 'С колко бързо върви?', a: 'The L1e version is electronically limited to 45 km/h to comply with moped regulations.', aBg: 'Версията L1e е електронно ограничена до 45 км/ч за съответствие с регламента за мопеди.' },
-      { q: 'Can two people ride?', qBg: 'Могат ли двама души да се возят?', a: 'Yes, the SS 3.0 L1e has a passenger seat with foot pegs for a second rider.', aBg: 'Да, SS 3.0 L1e има пътническа седалка със степенки за втори ездач.' },
-      { q: 'What is included?', qBg: 'Какво е включено?', a: 'The motorcycle, charger, user manual, EU homologation certificate, and 2-year warranty.', aBg: 'Мотоциклетът, зарядно устройство, ръководство за потребителя, EU хомологационен сертификат и 2-годишна гаранция.' },
-    ],
-    filters: ['all', 'ss-30', 'l1e', 'road-legal'],
+    faq: [FAQ_OFFROAD_WHERE, FAQ_WARRANTY],
+    filters: ['all', 'ss-25', 'off-road'],
   },
   {
     id: 'ss25-l1e',
     slug: 'ss-25-l1e',
-    name: 'E Ride Pro SS 2.5 - L1e - Road Legal',
-    nameBg: 'E Ride Pro SS 2.5 - L1e - Road Legal',
+    family: 'ss-25',
+    familyLabel: 'SS 2.5',
+    version: 'l1e',
+    name: 'E RIDE PRO SS 2.5 — L1e Road Legal',
+    nameBg: 'E RIDE PRO SS 2.5 — L1e пътен',
     category: 'SS 2.5',
     price: '€4,899.00',
     originalPrice: '€5,390.00',
+    published: true,
     image: '/images/kasta/ss25-l1e-main.png',
     galleryCount: 18,
-    alt: 'E RIDE PRO SS 2.5 L1e Road Legal electric dirt bike',
-    title: 'E RIDE PRO SS 2.5 L1e Road Legal Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SS 2.5 L1e пътен електрически мотор България | Kasta Ventures',
-    metaDesc: 'E RIDE PRO SS 2.5 L1e on SALE now! Road legal, 45 km/h, only €4,899. Official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'E RIDE PRO SS 2.5 L1e на ПРОМОЦИЯ! Пътен, 45 км/ч, само €4,899. Официален вносител Kasta Ventures България.',
-    tagline: 'Our best-selling road-legal model. Now on sale.',
+    alt: 'E RIDE PRO SS 2.5 L1e пътен електрически мотор',
+    title: 'E RIDE PRO SS 2.5 L1e — пътен мопед | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 2.5 L1e — пътен мопед | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 2.5 L1e — road legal moped, 45 km/h, AM licence. On promotion at Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SS 2.5 L1e — пътен мопед, 45 km/h, книжка AM. На промоция в Kasta Ventures — официален представител за България.',
+    tagline: 'Our best-selling road-legal model. Now on promotion.',
     taglineBg: 'Нашият най-продаван пътен модел. Сега на промоция.',
-    description: `The E RIDE PRO SS 2.5 L1e Road Legal is our best-selling road-legal model, now available at a special promotional price. This L1e certified electric dirt bike offers incredible value, combining reliable performance with full street legality.\n\nThe 72V system provides smooth acceleration to 45 km/h, making it ideal for city commuting and short highway sections in Bulgaria. With a practical range of 80-120 km, you can comfortably handle daily trips around Sofia or other major cities.\n\nThe SS 2.5 comes fully equipped with LED lighting, mirrors, turn signals, and everything needed for KAT registration. Its lightweight frame makes it easy to handle in traffic and simple to park. The sale price of €4,899 represents exceptional value.`,
-    descriptionBg: `E RIDE PRO SS 2.5 L1e Road Legal е нашият най-продаван пътен модел, сега на специална промоционална цена. Този L1e сертифициран електрически мотор предлага невероятна стойност.\n\nСистемата с 72V осигурява плавно ускорение до 45 км/ч, което го прави идеален за градско пътуване. Промоционалната цена от €4,899 представлява изключителна стойност.`,
+    description: `The SS 2.5 L1e is the same bike as the off-road version, homologated as an L1e moped: lights, mirrors, indicators, a plate holder and dual-sport tyres, limited to 45 km/h.\n\nThat means an AM licence from the age of 16 and straightforward registration at KAT — with the documents supplied. For a daily ride around Sofia it is quiet, cheap to run and needs almost no maintenance.\n\nIt is the model we sell most of, and it is currently on promotion.`,
+    descriptionBg: `SS 2.5 L1e е същият мотор като офроуд версията, хомологиран като мопед L1e: светлини, огледала, мигачи, поставка за номер и dual sport гуми, ограничен до 45 km/h.\n\nТова означава книжка AM от 16 г. и лесна регистрация в КАТ — документите се предоставят. За ежедневно каране из София е тих, евтин за поддръжка и почти не иска сервиз.\n\nТова е моделът, който продаваме най-много, и в момента е на промоция.`,
     specs: [
-      { label: 'CATEGORY', labelBg: 'КАТЕГОРИЯ', value: 'L1e (Moped)' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '45 km/h (limited)' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V32AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'LICENSE', labelBg: 'КНИЖКА', value: 'AM category' },
-      { label: 'FRAME', labelBg: 'РАМКА', value: 'Lightweight aluminum' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '68 kg' },
+      homologationGroup({ topSpeed: '45 km/h', ...L1E_LABELS, ...SS25_ROAD_TYRES }),
+      SS25_POWERTRAIN,
+      SS25_CHASSIS,
+      SS25_DIMENSIONS,
     ],
-    faq: [
-      { q: 'Why is it on sale?', qBg: 'Защо е на промоция?', a: 'We are offering a limited-time promotional price to make electric mobility more accessible in Bulgaria.', aBg: 'Предлагаме ограничена по време промоционална цена, за да направим електрическата мобилност по-достъпна в България.' },
-      { q: 'Is the warranty the same?', qBg: 'Гаранцията същата ли е?', a: 'Yes, full 2-year manufacturer warranty applies even at the promotional price.', aBg: 'Да, пълна 2-годишна производителна гаранция важи дори при промоционалната цена.' },
-    ],
-    filters: ['all', 'ss-25', 'l1e', 'road-legal'],
+    faq: [FAQ_L1E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'ss-25', 'l1e'],
   },
   {
-    id: 'ss25-offroad',
-    slug: 'ss-25-off-road',
-    name: 'E Ride Pro SS 2.5 - Off Road Fatty',
-    nameBg: 'E Ride Pro SS 2.5 - Off Road Fatty',
+    id: 'ss25-l3e',
+    slug: 'ss-25-l3e',
+    family: 'ss-25',
+    familyLabel: 'SS 2.5',
+    version: 'l3e',
+    name: 'E RIDE PRO SS 2.5 — L3e Road Legal',
+    nameBg: 'E RIDE PRO SS 2.5 — L3e пътен',
     category: 'SS 2.5',
-    price: '€5,390.00',
-    image: '/images/kasta/ss25-offroad-main.png',
-    galleryCount: 16,
-    alt: 'E RIDE PRO SS 2.5 Off Road Fatty electric dirt bike',
-    title: 'E RIDE PRO SS 2.5 Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SS 2.5 Off Road електрически мотор България | Kasta Ventures',
-    metaDesc: 'E RIDE PRO SS 2.5 Off Road Fatty - 65 km/h, 75km range. For off-road adventure. Buy from Kasta Ventures Bulgaria.',
-    metaDescBg: 'E RIDE PRO SS 2.5 Off Road Fatty - 65 км/ч, 75км обхват. За офроуд приключения. Купи от Kasta Ventures България.',
-    tagline: 'Off-road ready. Fat tires. Full control.',
-    taglineBg: 'Готов за офроуд. Дебели гуми. Пълен контрол.',
-    description: `The E RIDE PRO SS 2.5 Off Road Fatty is built for riders who crave adventure beyond the asphalt. This off-road specialist features thick, knobby tires that grip loose surfaces with confidence, a robust suspension system that soaks up the roughest terrain, and a powerful 72V drivetrain.\n\nWith a top speed of 65 km/h and a 75-120 km range, you can explore trails, hills, and open terrain without worrying about range anxiety. The minimalist, purpose-built frame sheds unnecessary weight while maintaining structural integrity for aggressive riding.`,
-    descriptionBg: `E RIDE PRO SS 2.5 Off Road Fatty е построен за ездачи, които жадуват за приключения извън асфалта. Този офроуд специалист разполага с дебели гуми с дълбок протектор, здрава суспензионна система и мощно задвижване с 72V.\n\nС максимална скорост 65 км/ч и обхват 75-120 км можете да изследвате пътеки и хълмове без притеснения.`,
+    // Цената чака потвърждение от вносителя.
+    published: false,
+    image: '/images/kasta/ss25-l3e-main.webp',
+    gallerySlug: 'ss-25-l1e',
+    galleryCount: 18,
+    alt: 'E RIDE PRO SS 2.5 L3e пътен електрически мотоциклет',
+    title: 'E RIDE PRO SS 2.5 L3e — лек мотоциклет | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 2.5 L3e — лек мотоциклет | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 2.5 L3e — light motorcycle homologation, 80 km/h, A1 licence. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SS 2.5 L3e — хомологация лек мотоциклет, 80 km/h, книжка A1. Kasta Ventures — официален представител за България.',
+    tagline: 'The same bike, homologated as a light motorcycle. 80 km/h.',
+    taglineBg: 'Същият мотор, хомологиран като лек мотоциклет. 80 km/h.',
+    description: `The SS 2.5 L3e is homologated as a light motorcycle rather than a moped. The bike is the same — the difference is the certificate and the limiter, which sits at 80 km/h instead of 45.\n\nThat asks for an A1 licence, and in return it opens up roads where a moped is out of place.`,
+    descriptionBg: `SS 2.5 L3e е хомологиран като лек мотоциклет, а не като мопед. Моторът е същият — разликата е в сертификата и в ограничителя, който е на 80 km/h вместо на 45.\n\nТова иска книжка A1, а в замяна отваря пътища, по които мопедът няма работа.`,
     specs: [
-      { label: '0-50 km/h', labelBg: '0-50 km/h', value: '3 sec.' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '65 km/h' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V35AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '75 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'TIRE SIZE', labelBg: 'ГУМИ', value: 'Fat off-road knobby' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'ADJUSTABLE SPORT SUSPENSION: FAST ACE' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '70 kg' },
+      homologationGroup({ topSpeed: '80 km/h', ...L3E_LABELS, ...SS25_ROAD_TYRES }),
+      SS25_POWERTRAIN,
+      SS25_CHASSIS,
+      SS25_DIMENSIONS,
     ],
-    faq: [
-      { q: 'Where can I ride off-road?', qBg: 'Къде мога да карам офроуд?', a: 'You can ride on private property, designated off-road trails, and many mountain areas in Bulgaria.', aBg: 'Можете да карате на частна собственост, обозначени офроуд пътеки и планински райони в България.' },
-      { q: 'How does it handle mud?', qBg: 'Как се справя с калта?', a: 'The fat knobby tires provide excellent mud clearance and grip. Just rinse after your ride.', aBg: 'Дебелите гуми с дълбок протектор осигуряват отличен просвет и сцепление в кал.' },
-      { q: 'Is there a warranty?', qBg: 'Има ли гаранция?', a: 'Yes, 2-year manufacturer warranty with full service support at Kasta Ventures.', aBg: 'Да, 2-годишна производителна гаранция с пълна сервизна подкрепа от Kasta Ventures.' },
-    ],
-    filters: ['all', 'ss-25', 'off-road-fatty'],
+    faq: [FAQ_L3E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'ss-25', 'l3e'],
   },
+
+  /* ---------------------------------------------------------------- SS 3.0 */
   {
     id: 'ss30-offroad',
     slug: 'ss-30-off-road',
-    name: 'E Ride Pro SS 3.0 - Off Road Fatty',
-    nameBg: 'E Ride Pro SS 3.0 - Off Road Fatty',
+    family: 'ss-30',
+    familyLabel: 'SS 3.0',
+    version: 'off-road',
+    name: 'E RIDE PRO SS 3.0 — Off Road',
+    nameBg: 'E RIDE PRO SS 3.0 — Офроуд',
     category: 'SS 3.0',
     price: '€6,399.00',
+    published: true,
     image: '/images/kasta/ss30-offroad-main.png',
     galleryCount: 16,
-    alt: 'E RIDE PRO SS 3.0 Off Road Fatty electric dirt bike',
-    title: 'E RIDE PRO SS 3.0 Off Road Electric Motorcycle Bulgaria | Kasta Ventures',
-    titleBg: 'E RIDE PRO SS 3.0 Off Road електрически мотор България | Kasta Ventures',
-    metaDesc: 'E RIDE PRO SS 3.0 Off Road Fatty - 75 km/h, 80km range, most powerful off-road model. Official importer Kasta Ventures Bulgaria.',
-    metaDescBg: 'E RIDE PRO SS 3.0 Off Road Fatty - 75 км/ч, 80км обхват, най-мощният офроуд модел. Официален вносител Kasta Ventures България.',
-    tagline: 'The flagship off-road model. Maximum performance.',
-    taglineBg: 'Флагманският офроуд модел. Максимална производителност.',
-    description: `The E RIDE PRO SS 3.0 Off Road Fatty is the flagship off-road model in the E RIDE PRO lineup, delivering the highest performance for the most demanding riders. With a top speed of 75 km/h and an unmatched range of 80-120 km, this is the electric dirt bike that serious off-road enthusiasts have been waiting for.\n\nThe aggressive frame geometry, combined with premium long-travel front and rear suspension, allows you to attack the toughest terrain with confidence. Massive fat tires with deep knobby treads provide extraordinary grip in mud, sand, rocks, and loose dirt. The high-output 72V powertrain with 8000W peak power delivers instant torque that makes steep climbs effortless.`,
-    descriptionBg: `E RIDE PRO SS 3.0 Off Road Fatty е флагманският офроуд модел в гамата на E RIDE PRO, доставящ най-високата производителност за най-взискателните ездачи. С максимална скорост 75 км/ч и безпрецедентния обхват от 80-120 км, това е електрическият мотор, който сериозните офроуд ентусиасти чакаха.\n\nАгресивната геометрия на рамката в комбинация с премиум дългоходово предно и задно окачване ви позволява да атакувате най-трудния терен с увереност.`,
+    alt: 'E RIDE PRO SS 3.0 Off Road електрически мотор',
+    title: 'E RIDE PRO SS 3.0 Off Road | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 3.0 Офроуд | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 3.0 Off Road — 15.6 kW peak, 100 km/h, 3600 Wh battery. Official representative for Bulgaria, Kasta Ventures.',
+    metaDescBg: 'E RIDE PRO SS 3.0 Офроуд — 15,6 kW пикова, 100 km/h, батерия 3600 Wh. Официален представител за България — Kasta Ventures.',
+    tagline: 'Twice the power of the 2.5, in the same chassis as the SR.',
+    taglineBg: 'Двойно повече мощност от 2.5, в същото шаси като SR.',
+    description: `The SS 3.0 sits between the 2.5 and the SR, and it is the model most riders end up on. It carries the big 3600 Wh battery and the full-size chassis, with 15.6 kW of peak power and 520 Nm at the wheel.\n\nThat is enough to make steep climbs feel flat and to keep going for over 100 km on a charge. The FASTACE suspension and DOT4 hydraulics are the same components the SR runs.\n\nThe off-road version is not registered and rides on Fatty knobby tyres.`,
+    descriptionBg: `SS 3.0 стои между 2.5 и SR и е моделът, на който повечето ездачи се спират. Носи голямата батерия от 3600 Wh и пълноразмерното шаси, с 15,6 kW пикова мощност и 520 Nm на колелото.\n\nТова стига стръмните изкачвания да изглеждат равни и да се карат над 100 km с едно зареждане. Окачването FASTACE и хидравликата DOT4 са същите компоненти, които върти и SR.\n\nОфроуд версията не се регистрира и е на Fatty крос гуми.`,
     specs: [
-      { label: '0-50 km/h', labelBg: '0-50 km/h', value: '3 sec.' },
-      { label: 'TOP SPEED', labelBg: 'МАКС. СКОРОСТ', value: '75 km/h' },
-      { label: 'MOTOR POWER', labelBg: 'МОЩНОСТ', value: '8 KW PEAK' },
-      { label: 'BATTERY', labelBg: 'БАТЕРИЯ', value: '72V40AH SAMSUNG REPLACEABLE LITHIUM' },
-      { label: 'RANGE', labelBg: 'ОБХВАТ', value: '80 - 120 km' },
-      { label: 'CHARGING TIME', labelBg: 'ВРЕМЕ ЗА ЗАРЕЖДАНЕ', value: '2 HOURS (20%-90%)' },
-      { label: 'TIRE SIZE', labelBg: 'ГУМИ', value: 'Fat off-road knobby' },
-      { label: 'SUSPENSION', labelBg: 'ОКАЧВАНЕ', value: 'LONG-TRAVEL FRONT & REAR: FAST ACE' },
-      { label: 'BRAKES', labelBg: 'СПИРАЧКИ', value: 'REGENERATIVE BRAKING' },
-      { label: 'WEIGHT', labelBg: 'ТЕГЛО', value: '76 kg' },
+      homologationGroup({ topSpeed: '100 km/h', ...OFF_ROAD_LABELS, ...FATTY_19_16 }),
+      SS30_POWERTRAIN,
+      SS30_CHASSIS,
+      SS30_DIMENSIONS,
     ],
+    faq: [FAQ_OFFROAD_WHERE, FAQ_WARRANTY],
+    filters: ['all', 'ss-30', 'off-road'],
+  },
+  {
+    id: 'ss30-l1e',
+    slug: 'ss-30-l1e',
+    family: 'ss-30',
+    familyLabel: 'SS 3.0',
+    version: 'l1e',
+    name: 'E RIDE PRO SS 3.0 — L1e Road Legal',
+    nameBg: 'E RIDE PRO SS 3.0 — L1e пътен',
+    category: 'SS 3.0',
+    price: '€6,399.00',
+    published: true,
+    image: '/images/kasta/ss30-l1e-main.webp',
+    galleryCount: 17,
+    alt: 'E RIDE PRO SS 3.0 L1e пътен електрически мотор',
+    title: 'E RIDE PRO SS 3.0 L1e — пътен мопед | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 3.0 L1e — пътен мопед | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 3.0 L1e — road legal moped, 45 km/h, AM licence, full EU homologation. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SS 3.0 L1e — пътен мопед, 45 km/h, книжка AM, пълна EU хомологация. Kasta Ventures — официален представител за България.',
+    tagline: 'The full-size chassis, homologated as a moped.',
+    taglineBg: 'Пълноразмерното шаси, хомологирано като мопед.',
+    description: `The SS 3.0 L1e takes the full-size chassis and the 3600 Wh battery and puts them on the road as an L1e moped — lights, mirrors, indicators, plate holder, dual-sport tyres, limited to 45 km/h.\n\nAn AM licence from 16 is enough, and registration at KAT is straightforward with the homologation documents supplied.`,
+    descriptionBg: `SS 3.0 L1e взима пълноразмерното шаси и батерията от 3600 Wh и ги изкарва на пътя като мопед L1e — светлини, огледала, мигачи, поставка за номер, dual sport гуми, ограничен до 45 km/h.\n\nКнижка AM от 16 г. е достатъчна, а регистрацията в КАТ минава лесно с предоставените хомологационни документи.`,
+    specs: [
+      homologationGroup({ topSpeed: '45 km/h', ...L1E_LABELS, ...DUAL_SPORT_19_18 }),
+      SS30_POWERTRAIN,
+      SS30_CHASSIS,
+      SS30_DIMENSIONS,
+    ],
+    faq: [FAQ_L1E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'ss-30', 'l1e'],
+  },
+  {
+    id: 'ss30-l3e',
+    slug: 'ss-30-l3e',
+    family: 'ss-30',
+    familyLabel: 'SS 3.0',
+    version: 'l3e',
+    name: 'E RIDE PRO SS 3.0 — L3e Road Legal',
+    nameBg: 'E RIDE PRO SS 3.0 — L3e пътен',
+    category: 'SS 3.0',
+    published: false,
+    image: '/images/kasta/ss30-l3e-main.webp',
+    gallerySlug: 'ss-30-l1e',
+    galleryCount: 17,
+    alt: 'E RIDE PRO SS 3.0 L3e пътен електрически мотоциклет',
+    title: 'E RIDE PRO SS 3.0 L3e — лек мотоциклет | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SS 3.0 L3e — лек мотоциклет | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SS 3.0 L3e — light motorcycle homologation, 80 km/h, A1 licence. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SS 3.0 L3e — хомологация лек мотоциклет, 80 km/h, книжка A1. Kasta Ventures — официален представител за България.',
+    tagline: 'The same bike, homologated as a light motorcycle. 80 km/h.',
+    taglineBg: 'Същият мотор, хомологиран като лек мотоциклет. 80 km/h.',
+    description: `The SS 3.0 L3e is homologated as a light motorcycle. Same chassis, same battery, same suspension — the limiter sits at 80 km/h instead of 45, and it asks for an A1 licence in return.`,
+    descriptionBg: `SS 3.0 L3e е хомологиран като лек мотоциклет. Същото шаси, същата батерия, същото окачване — ограничителят е на 80 km/h вместо на 45, а в замяна иска книжка A1.`,
+    specs: [
+      homologationGroup({ topSpeed: '80 km/h', ...L3E_LABELS, ...DUAL_SPORT_19_18 }),
+      SS30_POWERTRAIN,
+      SS30_CHASSIS,
+      SS30_DIMENSIONS,
+    ],
+    faq: [FAQ_L3E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'ss-30', 'l3e'],
+  },
+
+  /* -------------------------------------------------------------------- SR */
+  {
+    id: 'sr-off-road',
+    slug: 'sr-off-road',
+    family: 'sr',
+    familyLabel: 'SR',
+    version: 'off-road',
+    name: 'E RIDE PRO SR — Off Road',
+    nameBg: 'E RIDE PRO SR — Офроуд',
+    category: 'SR',
+    price: '€7,499.00',
+    published: true,
+    image: '/images/kasta/sr-offroad-main.png',
+    galleryCount: 15,
+    alt: 'E RIDE PRO SR Off Road електрически мотор',
+    title: 'E RIDE PRO SR Off Road | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SR Офроуд | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SR Off Road — 25 kW peak, 113 km/h, 0–48 km/h in 1.8 s. The flagship. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SR Офроуд — 25 kW пикова, 113 km/h, 0–48 km/h за 1,8 сек. Флагманът. Kasta Ventures — официален представител за България.',
+    tagline: 'The flagship. 25 kW peak and 630 Nm at the wheel.',
+    taglineBg: 'Флагманът. 25 kW пикова мощност и 630 Nm на колелото.',
+    description: `The SR is the top of the range and it does not pretend otherwise: 10 kW rated, 25 kW peak, 630 Nm at the wheel and 0–48 km/h in 1.8 seconds.\n\nThe 3600 Wh Samsung 50S pack is swappable, so a second battery doubles your day. FASTACE suspension with 220 mm of fork travel, DOT4 hydraulics on 220 mm discs front and rear, an RK racing chain and a CNC-machined 7075 sprocket.\n\nThe off-road version is not registered and runs 19"/16" Fatty knobby tyres.`,
+    descriptionBg: `SR е върхът на гамата и не се прави на друго: 10 kW номинална, 25 kW пикова, 630 Nm на колелото и 0–48 km/h за 1,8 секунди.\n\nПакетът Samsung 50S от 3600 Wh е сменяем, тоест втора батерия удвоява деня ти. Окачване FASTACE с ход 220 mm отпред, хидравлика DOT4 на дискове 220 mm отпред и отзад, състезателна верига RK и CNC фрезовано зъбно колело 7075.\n\nОфроуд версията не се регистрира и върти Fatty крос гуми 19"/16".`,
+    specs: [
+      homologationGroup({ topSpeed: '113 km/h', ...OFF_ROAD_LABELS, ...FATTY_19_16 }),
+      SR_POWERTRAIN,
+      SR_CHASSIS,
+      SR_DIMENSIONS,
+    ],
+    faq: [FAQ_OFFROAD_WHERE, FAQ_WARRANTY],
+    filters: ['all', 'sr', 'off-road'],
+  },
+  {
+    id: 'sr-l1e',
+    slug: 'sr-l1e',
+    family: 'sr',
+    familyLabel: 'SR',
+    version: 'l1e',
+    name: 'E RIDE PRO SR — L1e Road Legal',
+    nameBg: 'E RIDE PRO SR — L1e пътен',
+    category: 'SR',
+    price: '€7,499.00',
+    published: true,
+    image: '/images/kasta/sr-l1e-main.webp',
+    galleryCount: 17,
+    alt: 'E RIDE PRO SR L1e пътен електрически мотор',
+    title: 'E RIDE PRO SR L1e — пътен мопед | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SR L1e — пътен мопед | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SR L1e — the flagship, homologated as a moped. 45 km/h, AM licence. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SR L1e — флагманът, хомологиран като мопед. 45 km/h, книжка AM. Kasta Ventures — официален представител за България.',
+    tagline: 'The flagship, homologated as a moped.',
+    taglineBg: 'Флагманът, хомологиран като мопед.',
+    description: `The SR L1e is the flagship with road equipment and an L1e certificate: lights, mirrors, indicators, plate holder and dual-sport tyres, limited to 45 km/h.\n\nUnderneath, nothing is given up — the same 25 kW motor, the same 3600 Wh pack and the same FASTACE suspension. An AM licence from 16 is all it asks for.`,
+    descriptionBg: `SR L1e е флагманът с пътно оборудване и сертификат L1e: светлини, огледала, мигачи, поставка за номер и dual sport гуми, ограничен до 45 km/h.\n\nОтдолу нищо не е орязано — същият двигател от 25 kW, същият пакет от 3600 Wh и същото окачване FASTACE. Иска само книжка AM от 16 г.`,
+    specs: [
+      homologationGroup({ topSpeed: '45 km/h', ...L1E_LABELS, ...DUAL_SPORT_19_18 }),
+      SR_POWERTRAIN,
+      SR_CHASSIS,
+      SR_DIMENSIONS,
+    ],
+    faq: [FAQ_L1E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'sr', 'l1e'],
+  },
+  {
+    id: 'sr-l3e',
+    slug: 'sr-l3e',
+    family: 'sr',
+    familyLabel: 'SR',
+    version: 'l3e',
+    name: 'E RIDE PRO SR — L3e Road Legal',
+    nameBg: 'E RIDE PRO SR — L3e пътен',
+    category: 'SR',
+    published: false,
+    image: '/images/kasta/sr-l3e-main.webp',
+    gallerySlug: 'sr-l1e',
+    galleryCount: 17,
+    alt: 'E RIDE PRO SR L3e пътен електрически мотоциклет',
+    title: 'E RIDE PRO SR L3e — лек мотоциклет | Kasta Ventures България',
+    titleBg: 'E RIDE PRO SR L3e — лек мотоциклет | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO SR L3e — the flagship as a light motorcycle. 80 km/h, A1 licence. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO SR L3e — флагманът като лек мотоциклет. 80 km/h, книжка A1. Kasta Ventures — официален представител за България.',
+    tagline: 'The flagship, homologated as a light motorcycle. 80 km/h.',
+    taglineBg: 'Флагманът, хомологиран като лек мотоциклет. 80 km/h.',
+    description: `The SR L3e is the flagship with a light motorcycle certificate. The limiter sits at 80 km/h instead of 45, which asks for an A1 licence and gives back the roads a moped has no business on.`,
+    descriptionBg: `SR L3e е флагманът със сертификат за лек мотоциклет. Ограничителят е на 80 km/h вместо на 45, което иска книжка A1 и връща пътищата, по които мопедът няма работа.`,
+    specs: [
+      homologationGroup({ topSpeed: '80 km/h', ...L3E_LABELS, ...DUAL_SPORT_19_18 }),
+      SR_POWERTRAIN,
+      SR_CHASSIS,
+      SR_DIMENSIONS,
+    ],
+    faq: [FAQ_L3E_LICENCE, FAQ_REGISTRATION, FAQ_WARRANTY],
+    filters: ['all', 'sr', 'l3e'],
+  },
+
+  /* ------------------------------------------------------------------ Mini */
+  {
+    id: 'mini-r-72v',
+    slug: 'mini-r-72v',
+    family: 'mini',
+    familyLabel: 'Mini',
+    version: 'off-road',
+    name: 'E RIDE PRO Mini R 72V — Off Road',
+    nameBg: 'E RIDE PRO Mini R 72V — Офроуд',
+    category: 'Mini',
+    price: '€3,960.00',
+    published: true,
+    image: '/images/kasta/mini-main.png',
+    galleryCount: 5,
+    alt: 'E RIDE PRO Mini R 72V електрически мотор',
+    title: 'E RIDE PRO Mini R 72V | Kasta Ventures България',
+    titleBg: 'E RIDE PRO Mini R 72V | Kasta Ventures България',
+    metaDesc: 'E RIDE PRO Mini R 72V — 8 kW peak in a compact frame. Off-road only. Kasta Ventures, official representative for Bulgaria.',
+    metaDescBg: 'E RIDE PRO Mini R 72V — 8 kW пикова в компактна рамка. Само офроуд. Kasta Ventures — официален представител за България.',
+    tagline: 'Small frame, real power. Off-road only.',
+    taglineBg: 'Малка рамка, истинска мощност. Само офроуд.',
+    description: `The Mini R is the way into the E RIDE PRO world. Power and top speed are adjustable, so a child can start slowly and an adult can still have 8 kW of fun on the same bike.\n\nNo hot exhaust to burn a leg on, no carburettor to clean, and quiet enough to keep the neighbours friendly. It fits in the boot of a car and makes an excellent pit bike.\n\nThe Mini is sold in the off-road version only — it is not registered for the road.`,
+    descriptionBg: `Mini R е входът към света на E RIDE PRO. Мощността и максималната скорост се настройват, така че дете може да тръгне бавно, а възрастен пак да си направи удоволствието с 8 kW на същия мотор.\n\nНяма горещ ауспух, в който да се опариш, няма карбуратор за чистене, а е и достатъчно тих, че съседите да останат добри. Влиза в багажника на кола и става за отличен пит байк.\n\nMini се предлага само в офроуд версия — не се регистрира за път.`,
+    specs: MINI_SPECS,
     faq: [
-      { q: 'Is this the most powerful model?', qBg: 'Това ли е най-мощният модел?', a: 'Yes, the SS 3.0 Off Road has the highest top speed and longest range in the E RIDE PRO range.', aBg: 'Да, SS 3.0 Off Road има най-висока скорост и най-дълъг обхват в гамата E RIDE PRO.' },
-      { q: 'Can it handle Bulgarian mountains?', qBg: 'Може ли да се справи с българските планини?', a: 'Absolutely. The SS 3.0 is built for mountain terrain and handles Bulgarian trails with ease.', aBg: 'Абсолютно. SS 3.0 е построен за планински терен и се справя с българските пътеки с лекота.' },
-      { q: 'What maintenance is needed?', qBg: 'Каква поддръжка е необходима?', a: 'Minimal maintenance: brake pads, tire checks, and periodic battery health checks at Kasta Ventures.', aBg: 'Минимална поддръжка: накладки, проверка на гуми и периодични проверки на батерията в Kasta Ventures.' },
+      FAQ_OFFROAD_WHERE,
+      {
+        q: 'Is it suitable for a child?',
+        qBg: 'Става ли за дете?',
+        a: 'Yes — power and top speed are adjustable, so it can be set low while a young rider learns and opened up later.',
+        aBg: 'Да — мощността и максималната скорост се настройват, тоест може да се свали ниско, докато детето се учи, и да се отпуши по-късно.',
+      },
+      FAQ_WARRANTY,
     ],
-    filters: ['all', 'ss-30', 'off-road-fatty'],
+    filters: ['all', 'mini', 'off-road'],
   },
 ]
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find(p => p.slug === slug)
+/** Само моделите, които се показват публично. */
+export const publishedProducts = products.filter((product) => product.published)
+
+/** Реда, в който се подреждат семействата — от най-достъпното към флагмана. */
+export const familyOrder: FamilyKey[] = ['ss-25', 'ss-30', 'sr', 'mini']
+
+export const familyLabels: Record<FamilyKey, string> = {
+  'ss-25': 'SS 2.5',
+  'ss-30': 'SS 3.0',
+  sr: 'SR',
+  mini: 'Mini',
 }
 
-export function getProductGallery(product: Pick<Product, 'slug' | 'galleryCount'>): string[] {
+export const versionLabels: Record<VersionKey, { label: string; labelBg: string }> = {
+  'off-road': { label: 'Off Road', labelBg: 'Офроуд' },
+  l1e: { label: 'L1e · moped', labelBg: 'L1e · мопед' },
+  l3e: { label: 'L3e · light motorcycle', labelBg: 'L3e · лек мотоциклет' },
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((product) => product.slug === slug)
+}
+
+export function getProductGallery(product: Pick<Product, 'slug' | 'galleryCount' | 'gallerySlug'>): string[] {
+  const folder = product.gallerySlug ?? product.slug
   return Array.from({ length: product.galleryCount }, (_, index) => {
     const fileNumber = String(index + 1).padStart(2, '0')
-    return `/images/kasta/gallery/${product.slug}/${fileNumber}.webp`
+    return `/images/kasta/gallery/${folder}/${fileNumber}.webp`
   })
+}
+
+/** Ред от техническата таблица, търсен по етикет — за компактните карти. */
+export function findSpec(product: Product, label: string): SpecRow | undefined {
+  for (const group of product.specs) {
+    const row = group.rows.find((item) => item.label === label)
+    if (row) return row
+  }
+  return undefined
 }

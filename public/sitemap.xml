@@ -31,7 +31,25 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://kastaventures.com/product/mini-r-72v</loc>
+    <loc>https://kastaventures.com/product/ss-25-off-road</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kastaventures.com/product/ss-25-l1e</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kastaventures.com/product/ss-30-off-road</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://kastaventures.com/product/ss-30-l1e</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -49,25 +67,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://kastaventures.com/product/ss-30-l1e</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kastaventures.com/product/ss-25-l1e</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kastaventures.com/product/ss-25-off-road</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://kastaventures.com/product/ss-30-off-road</loc>
+    <loc>https://kastaventures.com/product/mini-r-72v</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

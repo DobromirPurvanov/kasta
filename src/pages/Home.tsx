@@ -15,8 +15,8 @@ export default function Home() {
       ? 'E RIDE PRO България — Електрически мотокрос | Kasta Ventures'
       : 'E RIDE PRO Bulgaria | Electric Dirt Bikes & Moto Cross | Kasta Ventures',
     description: isBg
-      ? 'Официален дистрибутор на E RIDE PRO електрически мотокрос за България. Разгледай моделите Mini R, SS 2.5, SS 3.0 и SR. 2 години гаранция, сервиз и части.'
-      : 'Official distributor of E RIDE PRO electric dirt bikes and moto cross in Bulgaria. Explore Mini R, SS 2.5, SS 3.0, SR models. 2-year warranty, service & parts.',
+      ? 'Официален представител на E RIDE PRO електрически мотокрос за България. Разгледай моделите Mini R, SS 2.5, SS 3.0 и SR. 2 години гаранция, сервиз и части.'
+      : 'Official representative of E RIDE PRO electric dirt bikes and moto cross in Bulgaria. Explore Mini R, SS 2.5, SS 3.0, SR models. 2-year warranty, service & parts.',
     path: '/',
   })
 

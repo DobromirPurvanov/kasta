@@ -1,25 +1,147 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLang } from '../hooks/useLang'
-import { products, type FilterKey, type Product } from '../data/products'
+import {
+  familyLabels,
+  familyOrder,
+  findSpec,
+  publishedProducts,
+  versionLabels,
+  type FamilyKey,
+  type FilterKey,
+  type Product,
+} from '../data/products'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const filters: { key: FilterKey; label: string; labelBg: string }[] = [
   { key: 'all', label: 'All', labelBg: 'Всички' },
-  { key: 'mini', label: 'Mini', labelBg: 'Mini' },
-  { key: 'road-legal', label: 'Road Legal', labelBg: 'Пътни' },
-  { key: 'off-road-fatty', label: 'Off Road', labelBg: 'Офроуд' },
-  { key: 'sr', label: 'SR', labelBg: 'SR' },
-  { key: 'ss-30', label: 'SS 3.0', labelBg: 'SS 3.0' },
   { key: 'ss-25', label: 'SS 2.5', labelBg: 'SS 2.5' },
+  { key: 'ss-30', label: 'SS 3.0', labelBg: 'SS 3.0' },
+  { key: 'sr', label: 'SR', labelBg: 'SR' },
+  { key: 'mini', label: 'Mini', labelBg: 'Mini' },
+  { key: 'off-road', label: 'Off Road', labelBg: 'Офроуд' },
   { key: 'l1e', label: 'L1e', labelBg: 'L1e' },
+  { key: 'l3e', label: 'L3e', labelBg: 'L3e' },
 ]
 
-function getSpec(product: Product, label: string) {
-  return product.specs.find((spec) => spec.label.includes(label))?.value.replace(' (limited)', '')
+/**
+ * Редовете, които всяка карта показва — същите за всички модели, за да се
+ * сравняват. SS 2.5 носи „Power“ вместо „Peak power“, затова търсим по списък.
+ */
+const cardSpecs = [
+  { labels: ['Top speed'], short: 'Speed', shortBg: 'Скорост' },
+  { labels: ['Peak power', 'Power'], short: 'Power', shortBg: 'Мощност' },
+  { labels: ['Range'], short: 'Range', shortBg: 'Обхват' },
+  { labels: ['Battery'], short: 'Battery', shortBg: 'Батерия' },
+] as const
+
+/** Обхватът и батерията носят пояснения, които не се побират в тясна плочка. */
+function short(value: string) {
+  return value.split(/ · | при | at /)[0]
+}
+
+const familyBlurb: Record<FamilyKey, { bg: string; en: string }> = {
+  'ss-25': {
+    bg: 'Входът в гамата. Най-лек и най-прощаващ, на същата 72V архитектура.',
+    en: 'The entry into the range. Lightest and most forgiving, on the same 72V architecture.',
+  },
+  'ss-30': {
+    bg: 'Средният брат с голямата батерия и шасито на SR. Моделът, на който повечето се спират.',
+    en: 'The middle brother with the big battery and the SR chassis. The one most riders settle on.',
+  },
+  sr: {
+    bg: 'Флагманът. 25 kW пикова мощност, 630 Nm на колелото и 0–48 km/h за 1,8 секунди.',
+    en: 'The flagship. 25 kW peak, 630 Nm at the wheel and 0–48 km/h in 1.8 seconds.',
+  },
+  mini: {
+    bg: 'Компактният. Настройваема мощност, за да расте заедно с ездача. Само офроуд.',
+    en: 'The compact one. Adjustable power so it grows with the rider. Off-road only.',
+  },
+}
+
+function ProductCard({ product, isBg }: { product: Product; isBg: boolean }) {
+  const version = versionLabels[product.version]
+  const licence = findSpec(product, 'Licence')
+
+  return (
+    <Link
+      to={`/product/${product.slug}`}
+      className="product-card group surface-card card-hover flex flex-col overflow-hidden rounded-[1.4rem] sm:rounded-[1.75rem]"
+    >
+      <div className="media-tile relative flex aspect-[4/3] items-center justify-center overflow-hidden p-4 sm:p-6">
+        <span className="absolute left-4 top-4 z-10 inline-flex min-h-8 items-center gap-2 rounded-full border border-fg/10 bg-[var(--glass)] px-3 text-[9px] font-bold uppercase tracking-[0.1em] text-[var(--text-secondary)] backdrop-blur-md">
+          <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" aria-hidden="true" />
+          {isBg ? version.labelBg : version.label}
+        </span>
+        <div className="pointer-events-none absolute inset-x-[18%] bottom-[12%] h-[22%] rounded-full bg-[rgb(var(--accent-rgb)/0.1)] opacity-0 blur-3xl transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+        <img
+          src={product.image}
+          alt={product.alt}
+          loading="lazy"
+          width="1100"
+          height="922"
+          className="relative h-full w-full object-contain drop-shadow-2xl transition-transform duration-300 ease-premium group-hover:-translate-y-1 group-hover:scale-[1.055]"
+          onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
+        />
+      </div>
+
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
+        <h4 className="text-[17px] font-bold leading-[1.15] tracking-[-0.03em] text-fg transition-colors group-hover:text-[var(--accent-text)] sm:text-[19px]">
+          {isBg ? product.nameBg : product.name}
+        </h4>
+        {licence && (
+          <p className="mt-2 text-[12px] leading-snug text-[var(--text-secondary)]">
+            {isBg ? licence.valueBg ?? licence.value : licence.value}
+          </p>
+        )}
+
+        <dl className="mt-5 divide-y divide-fg/[0.07] border-y border-fg/[0.07]">
+          {cardSpecs.map((item) => {
+            const row = item.labels.reduce<ReturnType<typeof findSpec>>(
+              (found, label) => found ?? findSpec(product, label),
+              undefined
+            )
+            if (!row) return null
+
+            return (
+              <div key={item.short} className="flex items-baseline justify-between gap-3 py-2">
+                <dt className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
+                  {isBg ? item.shortBg : item.short}
+                </dt>
+                <dd className="text-right text-[12.5px] font-bold leading-snug text-fg">
+                  {short(isBg ? row.valueBg ?? row.value : row.value)}
+                </dd>
+              </div>
+            )
+          })}
+        </dl>
+
+        <div className="mt-auto flex items-end justify-between gap-4 pt-5">
+          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+            {product.originalPrice && (
+              <span className="text-[12px] text-[var(--text-muted)] line-through">{product.originalPrice}</span>
+            )}
+            {product.price ? (
+              <span className="text-[20px] font-extrabold tracking-[-0.04em] text-fg">{product.price}</span>
+            ) : (
+              <span className="text-[13px] font-bold text-[var(--text-secondary)]">
+                {isBg ? 'Цена по запитване' : 'Price on request'}
+              </span>
+            )}
+          </div>
+          <span
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-fg/10 bg-fg/[0.06] text-[var(--text-secondary)] transition-all duration-200 group-hover:rotate-[-35deg] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)]"
+            aria-hidden="true"
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </span>
+        </div>
+      </div>
+    </Link>
+  )
 }
 
 interface ModelsProps {
@@ -33,8 +155,19 @@ export default function Models({ showHeader = true }: ModelsProps) {
   const isBg = lang === 'bg'
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  const filtered = products.filter(
-    (product) => activeFilter === 'all' || product.filters.includes(activeFilter)
+  const filtered = useMemo(
+    () => publishedProducts.filter((product) => activeFilter === 'all' || product.filters.includes(activeFilter)),
+    [activeFilter]
+  )
+
+  // Гамата се чете по модел, а не като разбъркан списък: всяко семейство
+  // държи версиите си заедно, за да се вижда кое от кое се различава.
+  const groups = useMemo(
+    () =>
+      familyOrder
+        .map((family) => ({ family, items: filtered.filter((product) => product.family === family) }))
+        .filter((group) => group.items.length > 0),
+    [filtered]
   )
 
   useEffect(() => {
@@ -85,8 +218,8 @@ export default function Models({ showHeader = true }: ModelsProps) {
             <div className="lg:pb-1">
               <p className="text-[15px] sm:text-[16px] text-[var(--text-secondary)] leading-[1.75] max-w-[52ch]">
                 {isBg
-                  ? 'От първото офроуд преживяване до пътно легална ежедневна мобилност — намери точния баланс между мощност, обхват и контрол.'
-                  : 'From your first off-road experience to road-legal everyday mobility — find the right balance of power, range and control.'}
+                  ? 'Три модела — SS 2.5, SS 3.0 и SR — всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Mini се предлага само офроуд.'
+                  : 'Three models — SS 2.5, SS 3.0 and SR — each in three versions: off-road, L1e moped and L3e light motorcycle. The Mini is off-road only.'}
               </p>
               {/* Беше 18px висока — под минимума за палец. Видът не се мени,
                   зоната за докосване става 44px. */}
@@ -123,79 +256,25 @@ export default function Models({ showHeader = true }: ModelsProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {filtered.map((product, index) => {
-            const topSpeed = getSpec(product, 'TOP SPEED')
-            const range = getSpec(product, 'RANGE')
-            const isRoadLegal = product.filters.includes('road-legal')
-            const isFeatured = activeFilter === 'all' && product.slug === 'sr-off-road'
+        <div className="space-y-10 sm:space-y-14">
+          {groups.map(({ family, items }) => (
+            <div key={family}>
+              <div className="mb-4 flex flex-col gap-1.5 border-b border-fg/[0.1] pb-4 sm:mb-5 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+                <h3 className="text-[26px] font-extrabold leading-none tracking-[-0.04em] text-fg sm:text-[32px]">
+                  E RIDE PRO <span className="text-[var(--accent-text)]">{familyLabels[family]}</span>
+                </h3>
+                <p className="max-w-[56ch] text-[13px] leading-relaxed text-[var(--text-secondary)] sm:text-right">
+                  {isBg ? familyBlurb[family].bg : familyBlurb[family].en}
+                </p>
+              </div>
 
-            return (
-              <Link
-                key={product.id}
-                to={`/product/${product.slug}`}
-                className={`product-card group surface-card rounded-[1.4rem] sm:rounded-[1.75rem] overflow-hidden card-hover ${
-                  isFeatured ? 'lg:col-span-2 lg:grid lg:grid-cols-[minmax(0,1.22fr)_minmax(280px,.78fr)]' : ''
-                }`}
-              >
-                <div className={`relative media-tile overflow-hidden flex items-center justify-center p-4 sm:p-6 ${isFeatured ? 'aspect-[4/3] lg:aspect-auto lg:min-h-[490px]' : 'aspect-[4/3]'}`}>
-                  <span className="absolute top-4 left-4 z-10 text-[10px] font-bold tracking-[0.14em] text-fg/45" aria-hidden="true">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 min-h-8 px-3 rounded-full border border-fg/10 bg-[var(--glass)] backdrop-blur-md text-[9px] font-bold tracking-[0.1em] uppercase text-[var(--text-secondary)]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" aria-hidden="true" />
-                    {isRoadLegal ? 'L1e' : isBg ? 'Офроуд' : 'Off road'}
-                  </span>
-                  <div className="absolute inset-x-[18%] bottom-[12%] h-[22%] bg-[rgb(var(--accent-rgb)/0.1)] blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
-                  <img
-                    src={product.image}
-                    alt={product.alt}
-                    loading="lazy"
-                    width="1100"
-                    height="922"
-                    className="relative w-full h-full object-contain transition-transform duration-300 ease-premium group-hover:scale-[1.055] group-hover:-translate-y-1 drop-shadow-2xl"
-                    onError={(event) => { event.currentTarget.style.opacity = '0.12' }}
-                  />
-                </div>
-
-                <div className="p-5 sm:p-6 lg:p-7 flex flex-col">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-[10px] font-extrabold tracking-[0.16em] text-[var(--accent-text)] uppercase">{product.category}</span>
-                    {isFeatured && (
-                      <span className="text-[9px] font-bold tracking-[0.13em] uppercase text-[var(--text-muted)]">{isBg ? 'Препоръчан' : 'Featured'}</span>
-                    )}
-                  </div>
-                  <h3 className={`leading-[1.08] font-bold tracking-[-0.035em] text-fg mt-2 group-hover:text-[var(--accent-text)] transition-colors ${isFeatured ? 'text-[24px] lg:text-[30px]' : 'text-[19px] sm:text-[21px]'}`}>
-                    {isBg ? product.nameBg : product.name}
-                  </h3>
-                  <p className="text-[13px] sm:text-[14px] leading-[1.65] text-[var(--text-secondary)] mt-3 line-clamp-2">
-                    {isBg ? product.taglineBg : product.tagline}
-                  </p>
-
-                  <dl className="grid grid-cols-2 gap-2 mt-5">
-                    <div className="rounded-xl bg-fg/[0.045] border border-fg/[0.06] px-3 py-3">
-                      <dt className="text-[9px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)]">{isBg ? 'Скорост' : 'Speed'}</dt>
-                      <dd className="text-[13px] font-bold text-fg mt-1">{topSpeed || '—'}</dd>
-                    </div>
-                    <div className="rounded-xl bg-fg/[0.045] border border-fg/[0.06] px-3 py-3">
-                      <dt className="text-[9px] font-bold tracking-[0.12em] uppercase text-[var(--text-muted)]">{isBg ? 'Обхват' : 'Range'}</dt>
-                      <dd className="text-[13px] font-bold text-fg mt-1">{range || '—'}</dd>
-                    </div>
-                  </dl>
-
-                  <div className="flex items-end justify-between gap-4 mt-auto pt-6">
-                    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                      {product.originalPrice && <span className="text-[12px] text-[var(--text-muted)] line-through">{product.originalPrice}</span>}
-                      <span className="text-[21px] font-extrabold tracking-[-0.04em] text-fg">{product.price}</span>
-                    </div>
-                    <span className="w-11 h-11 shrink-0 rounded-full bg-fg/[0.06] border border-fg/10 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)] group-hover:border-[var(--accent)] transition-all duration-200 group-hover:rotate-[-35deg]" aria-hidden="true">
-                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            )
-          })}
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+                {items.map((product) => (
+                  <ProductCard key={product.id} product={product} isBg={isBg} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

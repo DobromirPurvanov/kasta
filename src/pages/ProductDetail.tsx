@@ -2,48 +2,56 @@ import { useRef, useState, type KeyboardEvent, type TouchEvent } from 'react'
 import { Link, useParams } from 'react-router'
 import { useLang } from '../hooks/useLang'
 import { usePageMeta } from '../hooks/usePageMeta'
-import { getProductBySlug, getProductGallery, products, type Product } from '../data/products'
+import {
+  getProductBySlug,
+  getProductGallery,
+  publishedProducts,
+  versionLabels,
+  type Product,
+  type SpecRow,
+} from '../data/products'
 
-const keySpecLabels = ['TOP SPEED', 'MOTOR POWER', 'RANGE', 'CHARGING TIME'] as const
+/** Четирите числа, които влизат в лентата под заглавието. */
+const keySpecLabels = ['Top speed', 'Peak power', 'Range', 'Charging'] as const
 
-function getSpec(product: Product, label: string) {
-  return product.specs.find((spec) => spec.label.includes(label))
+function findSpecByPrefix(product: Product, prefix: string): SpecRow | undefined {
+  for (const group of product.specs) {
+    const row = group.rows.find((item) => item.label.startsWith(prefix))
+    if (row) return row
+  }
+  return undefined
 }
 
 function getKeySpecs(product: Product) {
   return keySpecLabels.flatMap((label) => {
-    const spec = getSpec(product, label)
+    const spec = findSpecByPrefix(product, label)
     return spec ? [spec] : []
   })
 }
 
-function getDisplaySpecValue(value: string, isBg: boolean) {
-  if (!isBg) return value
-
-  return value
-    .replace(/SUBJECT TO TERRAIN VARIATIONS/gi, 'СПОРЕД ТЕРЕНА')
-    .replace(/SAMSUNG REPLACEABLE LITHIUM/gi, 'SAMSUNG СМЕНЯЕМА ЛИТИЕВА')
-    .replace(/ADJUSTABLE SPORT SUSPENSION/gi, 'РЕГУЛИРУЕМО СПОРТНО ОКАЧВАНЕ')
-    .replace(/LONG-TRAVEL FRONT & REAR/gi, 'ДЪЛГОХОДОВО ПРЕДНО И ЗАДНО')
-    .replace(/REGENERATIVE BRAKING/gi, 'РЕГЕНЕРАТИВНО СПИРАНЕ')
-    .replace(/Fat off-road knobby/gi, 'Широки офроуд гуми')
-    .replace(/Lightweight aluminum/gi, 'Лек алуминий')
-    .replace(/Moped/gi, 'Мопед')
-    .replace(/limited/gi, 'ограничена')
-    .replace(/category/gi, 'категория')
-    .replace(/HOURS/gi, 'ЧАСА')
-    .replace(/PEAK/gi, 'ПИКОВА')
+function specValue(row: SpecRow, isBg: boolean) {
+  return isBg ? row.valueBg ?? row.value : row.value
 }
 
-function getCompactSpecValue(value: string, isBg: boolean) {
-  return getDisplaySpecValue(value, isBg)
-    .replace(/\s+SUBJECT TO TERRAIN VARIATIONS/i, '')
-    .replace(/\s+СПОРЕД ТЕРЕНА/i, '')
-    .replace(/\s+\((limited|ограничена)\)/i, '')
+/** Дългите стойности не се побират в тесните плочки — режем след разделителя. */
+function compactSpecValue(row: SpecRow, isBg: boolean) {
+  return specValue(row, isBg).split(' · ')[0]
+}
+
+function ProductPrice({ product, isBg, className }: { product: Product; isBg: boolean; className: string }) {
+  if (!product.price) {
+    return (
+      <span className="text-[15px] font-bold tracking-[-0.01em] text-[var(--text-secondary)]">
+        {isBg ? 'Цена по запитване' : 'Price on request'}
+      </span>
+    )
+  }
+
+  return <span className={className}>{product.price}</span>
 }
 
 function ModelTypeBadge({ product, isBg }: { product: Product; isBg: boolean }) {
-  const isRoadLegal = product.filters.includes('road-legal') || product.filters.includes('l1e')
+  const version = versionLabels[product.version]
 
   return (
     <span className="inline-flex min-h-9 items-center gap-2 rounded-full border border-fg/15 bg-fg/[0.055] px-3.5 text-[10px] font-extrabold uppercase tracking-[0.13em] text-[var(--text-secondary)]">
@@ -51,9 +59,7 @@ function ModelTypeBadge({ product, isBg }: { product: Product; isBg: boolean }) 
         className="h-2 w-2 rounded-full bg-[var(--accent)]"
         aria-hidden="true"
       />
-      {isRoadLegal
-        ? (isBg ? 'Пътно легален · L1e' : 'Road legal · L1e')
-        : (isBg ? 'Офроуд модел' : 'Off-road model')}
+      {isBg ? version.labelBg : version.label}
     </span>
   )
 }
@@ -248,13 +254,15 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
   const { lang } = useLang()
   const isBg = lang === 'bg'
 
-  const related = products
-    .filter(
-      (product) =>
-        product.id !== currentProduct.id &&
-        (product.category === currentProduct.category ||
-          product.filters.some((filter) => currentProduct.filters.includes(filter)))
-    )
+  // Другите версии на същия модел са най-полезни, чак после чуждите семейства.
+  const related = publishedProducts
+    .filter((product) => product.id !== currentProduct.id)
+    .sort((a, b) => {
+      const score = (product: Product) =>
+        (product.family === currentProduct.family ? 0 : 2) +
+        (product.version === currentProduct.version ? 0 : 1)
+      return score(a) - score(b)
+    })
     .slice(0, 3)
 
   if (related.length === 0) return null
@@ -283,8 +291,8 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
           {related.map((product) => {
-            const speed = getSpec(product, 'TOP SPEED')
-            const range = getSpec(product, 'RANGE')
+            const speed = findSpecByPrefix(product, 'Top speed')
+            const range = findSpecByPrefix(product, 'Range')
 
             return (
               <Link
@@ -319,18 +327,18 @@ function RelatedModels({ currentProduct }: { currentProduct: Product }) {
                   <dl className="mt-5 grid grid-cols-2 gap-2">
                     <div className="rounded-xl border border-fg/[0.08] bg-fg/[0.045] px-3 py-3">
                       <dt className="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--text-muted)]">{isBg ? 'Скорост' : 'Speed'}</dt>
-                      <dd className="mt-1 text-[13px] font-bold text-fg">{speed ? getCompactSpecValue(speed.value, isBg) : '—'}</dd>
+                      <dd className="mt-1 text-[13px] font-bold text-fg">{speed ? compactSpecValue(speed, isBg) : '—'}</dd>
                     </div>
                     <div className="rounded-xl border border-fg/[0.08] bg-fg/[0.045] px-3 py-3">
                       <dt className="text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--text-muted)]">{isBg ? 'Обхват' : 'Range'}</dt>
-                      <dd className="mt-1 line-clamp-1 text-[13px] font-bold text-fg">{range ? getCompactSpecValue(range.value, isBg) : '—'}</dd>
+                      <dd className="mt-1 line-clamp-1 text-[13px] font-bold text-fg">{range ? compactSpecValue(range, isBg) : '—'}</dd>
                     </div>
                   </dl>
 
                   <div className="mt-6 flex items-end justify-between gap-4 border-t border-fg/[0.08] pt-5">
                     <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                       {product.originalPrice && <span className="text-[12px] text-[var(--text-secondary)] line-through">{product.originalPrice}</span>}
-                      <span className="text-[21px] font-extrabold tracking-[-0.04em] text-fg">{product.price}</span>
+                      <ProductPrice product={product} isBg={isBg} className="text-[21px] font-extrabold tracking-[-0.04em] text-fg" />
                     </div>
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-fg/10 bg-fg/[0.06] text-[var(--text-secondary)] transition-all duration-300 group-hover:rotate-[-35deg] group-hover:border-[var(--accent)] group-hover:bg-[var(--accent)] group-hover:text-[var(--accent-ink)]" aria-hidden="true">
                       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -433,7 +441,7 @@ export default function ProductDetail() {
                 <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-[var(--text-muted)]">{isBg ? 'Цена' : 'Price'}</p>
                 <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   {product.originalPrice && <span className="text-[15px] text-[var(--text-secondary)] line-through">{product.originalPrice}</span>}
-                  <span className="text-[30px] font-extrabold tracking-[-0.045em] text-fg sm:text-[34px]">{product.price}</span>
+                  <ProductPrice product={product} isBg={isBg} className="text-[30px] font-extrabold tracking-[-0.045em] text-fg sm:text-[34px]" />
                 </div>
               </div>
 
@@ -444,7 +452,7 @@ export default function ProductDetail() {
                       {isBg ? spec.labelBg : spec.label}
                     </dt>
                     <dd className="mt-1.5 break-words text-[13px] font-bold leading-snug text-fg">
-                      {getCompactSpecValue(spec.value, isBg)}
+                      {compactSpecValue(spec, isBg)}
                     </dd>
                   </div>
                 ))}
@@ -507,22 +515,40 @@ export default function ProductDetail() {
                   </h2>
                 </div>
                 <p className="max-w-[34ch] text-[13px] leading-relaxed text-[var(--text-secondary)] sm:text-right">
-                  {isBg ? 'Ключовите параметри на модела на едно място.' : 'The model’s key parameters in one place.'}
+                  {isBg
+                    ? 'Пълните параметри на този модел, точно за тази версия.'
+                    : 'The full parameters of this model, for this exact version.'}
                 </p>
               </div>
 
-              <dl className="surface-card grid overflow-hidden rounded-[1.5rem] bg-fg/[0.08] sm:grid-cols-2 sm:rounded-[1.75rem]">
-                {product.specs.map((spec) => (
-                  <div key={spec.label} className="min-h-[96px] border-b border-r border-fg/[0.08] bg-[var(--bg-card)] p-5 sm:p-6">
-                    <dt className="text-[10px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
-                      {isBg ? spec.labelBg : spec.label}
-                    </dt>
-                    <dd className="mt-2 break-words text-[14px] font-bold leading-relaxed text-fg sm:text-[15px]">
-                      {getDisplaySpecValue(spec.value, isBg)}
-                    </dd>
-                  </div>
+              <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
+                {product.specs.map((group) => (
+                  <section
+                    key={group.title}
+                    className="surface-card rounded-[1.5rem] p-5 sm:rounded-[1.75rem] sm:p-7"
+                    aria-label={isBg ? group.titleBg : group.title}
+                  >
+                    <h3 className="border-b border-fg/[0.1] pb-3 text-[10px] font-extrabold uppercase tracking-[0.16em] text-[var(--accent-text)]">
+                      {isBg ? group.titleBg : group.title}
+                    </h3>
+                    <dl className="mt-1">
+                      {group.rows.map((row) => (
+                        <div
+                          key={row.label}
+                          className="flex flex-col gap-0.5 border-b border-fg/[0.07] py-3 last:border-b-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+                        >
+                          <dt className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)] sm:shrink-0">
+                            {isBg ? row.labelBg : row.label}
+                          </dt>
+                          <dd className="break-words text-[14px] font-bold leading-snug text-fg sm:text-right">
+                            {specValue(row, isBg)}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </section>
                 ))}
-              </dl>
+              </div>
             </section>
 
             <section className="border-t border-fg/[0.08] py-16 sm:py-20 lg:py-24" aria-labelledby="product-faq-title">

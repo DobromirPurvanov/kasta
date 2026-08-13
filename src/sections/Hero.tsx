@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
 import gsap from 'gsap'
 import { useLang } from '../hooks/useLang'
+import { findSpec, getProductBySlug } from '../data/products'
 
 export default function Hero() {
   const { lang } = useLang()
@@ -52,10 +53,20 @@ export default function Hero() {
     }
   }
 
+  // Числата се четяха като „гамата може толкова“, а всъщност са на един модел.
+  // Затова вече идват от самия SR и носят името му над себе си.
+  const flagship = getProductBySlug('sr-off-road')
+  const statFor = (label: string) => {
+    const row = flagship && findSpec(flagship, label)
+    if (!row) return '—'
+    // В лентата има място само за числото — уточненията са в таблицата на модела.
+    return (isBg ? row.valueBg ?? row.value : row.value).split(/ · | при | at /)[0]
+  }
+
   const stats = [
-    { value: '8 kW', label: isBg ? 'пикова мощност' : 'peak power' },
-    { value: '77 km/h', label: isBg ? 'макс. скорост' : 'top speed' },
-    { value: '120 km', label: isBg ? 'макс. обхват' : 'max range' },
+    { value: statFor('Peak power'), label: isBg ? 'пикова мощност' : 'peak power' },
+    { value: statFor('Top speed'), label: isBg ? 'макс. скорост' : 'top speed' },
+    { value: statFor('Range'), label: isBg ? 'обхват' : 'range' },
   ]
 
   return (
@@ -101,7 +112,7 @@ export default function Hero() {
             <div className="hero-reveal inline-flex items-center gap-3 min-h-9 px-3.5 rounded-full border border-white/10 bg-white/[0.055] backdrop-blur-md mb-5 sm:mb-7">
               <span className="status-pulse w-1.5 h-1.5 rounded-full bg-[var(--accent-light)]" aria-hidden="true" />
               <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] uppercase text-[var(--text-secondary)]">
-                {isBg ? 'Официален дистрибутор // България' : 'Official distributor // Bulgaria'}
+                {isBg ? 'Официален представител // България' : 'Official representative // Bulgaria'}
               </span>
             </div>
 
@@ -138,14 +149,19 @@ export default function Hero() {
               </a>
             </div>
 
-            <dl className="hero-reveal grid grid-cols-3 max-w-[690px] mt-8 sm:mt-11 border-y border-white/10">
-              {stats.map((stat, index) => (
-                <div key={stat.value} className={`py-4 sm:py-5 ${index > 0 ? 'pl-4 sm:pl-7 border-l border-white/10' : ''}`}>
-                  <dt className="text-[9px] sm:text-[10px] font-bold tracking-[0.13em] uppercase text-[var(--text-muted)] mb-1.5">{stat.label}</dt>
-                  <dd className="text-[16px] sm:text-[21px] font-bold tracking-[-0.035em] text-fg">{stat.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className="hero-reveal max-w-[690px] mt-8 sm:mt-11">
+              <p className="text-[9px] sm:text-[10px] font-bold tracking-[0.16em] uppercase text-[var(--text-muted)] mb-2">
+                {isBg ? 'Данни за SR Офроуд · флагманът' : 'SR Off Road figures · the flagship'}
+              </p>
+              <dl className="grid grid-cols-3 border-y border-white/10">
+                {stats.map((stat, index) => (
+                  <div key={stat.label} className={`py-4 sm:py-5 ${index > 0 ? 'pl-4 sm:pl-7 border-l border-white/10' : ''}`}>
+                    <dt className="text-[9px] sm:text-[10px] font-bold tracking-[0.13em] uppercase text-[var(--text-muted)] mb-1.5">{stat.label}</dt>
+                    <dd className="text-[16px] sm:text-[21px] font-bold tracking-[-0.035em] text-fg">{stat.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
 
           {/* Featured product card creates a direct path from emotion to product detail. */}
@@ -181,7 +197,7 @@ export default function Hero() {
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.14em] font-bold text-[var(--accent-text)]">E RIDE PRO</p>
                   <h2 className="text-[20px] font-bold tracking-[-0.035em] text-fg mt-1">SR Off Road</h2>
-                  <p className="text-[12px] text-[var(--text-muted)] mt-1">75 km/h · 120 km</p>
+                  <p className="text-[12px] text-[var(--text-muted)] mt-1">{statFor('Top speed')} · {statFor('Peak power')}</p>
                 </div>
                 <span className="w-11 h-11 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-35deg]" aria-hidden="true">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>

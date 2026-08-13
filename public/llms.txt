@@ -1,8 +1,8 @@
 # Kasta Ventures — E RIDE PRO България
 
-> Официален вносител и дистрибутор на електрически мотоциклети E RIDE PRO за
-> България. Продажба, гаранция и сервиз на място. Official E RIDE PRO importer
-> and distributor for Bulgaria — sales, warranty and local service.
+> Официален представител за електрически мотоциклети E RIDE PRO за
+> България. Продажба, гаранция и сервиз на място. Official E RIDE PRO
+> representative for Bulgaria — sales, warranty and local service.
 
 Сайт: https://kastaventures.com
 Контакт: office@kastaventures.com
@@ -70,5 +70,5 @@ E RIDE PRO. Част от моделите са с одобрение L1e и с�
   страница, а не този файл.
 - Пълните технически спецификации и въпроси-отговори за всеки модел се намират
   на съответната продуктова страница.
-- Kasta Ventures е вносителят за България; E RIDE PRO е марката на
+- Kasta Ventures е официалният представител за България; E RIDE PRO е марката на
   производителя.

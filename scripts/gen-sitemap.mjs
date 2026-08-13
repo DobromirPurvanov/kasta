@@ -21,10 +21,21 @@ const staticRoutes = [
 ]
 
 const productsSource = readFileSync(join(root, 'src/data/products.ts'), 'utf8')
-const slugs = [...productsSource.matchAll(/^\s*slug: '([^']+)'/gm)].map((m) => m[1])
+
+// Всеки продуктов блок започва със `slug:` — режем на блокове, за да разберем
+// кой от тях е `published: false`. Непубликуваните не влизат в картата на сайта:
+// страницата им още няма цена и няма какво да прави в индекса.
+const blocks = productsSource.split(/^\s*slug: '/gm).slice(1)
+const slugs = blocks
+  .map((block) => ({
+    slug: block.slice(0, block.indexOf("'")),
+    published: !/^\s*published: false/m.test(block),
+  }))
+  .filter((entry) => entry.published)
+  .map((entry) => entry.slug)
 
 if (slugs.length === 0) {
-  throw new Error('gen-sitemap: не намерих нито един slug в src/data/products.ts')
+  throw new Error('gen-sitemap: не намерих нито един публикуван slug в src/data/products.ts')
 }
 
 const lastmod = new Date().toISOString().slice(0, 10)

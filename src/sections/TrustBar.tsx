@@ -12,13 +12,13 @@ export default function TrustBar() {
   const isBg = lang === 'bg'
   const items = isBg
     ? [
-        ['Официален дистрибутор', 'Директно за България'],
+        ['Официален представител', 'Директно за България'],
         ['2 години гаранция', 'Пълно локално покритие'],
         ['Сервиз и части', 'Поддръжка в София'],
         ['L1e съдействие', 'Документи за регистрация'],
       ]
     : [
-        ['Official distributor', 'Direct for Bulgaria'],
+        ['Official representative', 'Direct for Bulgaria'],
         ['2-year warranty', 'Complete local coverage'],
         ['Service & parts', 'Support based in Sofia'],
         ['L1e assistance', 'Registration documents'],

@@ -1,4 +1,5 @@
 import Models from '../sections/Models'
+import { publishedProducts } from '../data/products'
 import { useLang } from '../hooks/useLang'
 import { usePageMeta } from '../hooks/usePageMeta'
 
@@ -11,8 +12,8 @@ export default function ModelsPage() {
       ? 'Модели — E RIDE PRO електрически мотокрос | Kasta Ventures'
       : 'Models — E RIDE PRO Electric Dirt Bikes | Kasta Ventures',
     description: isBg
-      ? 'Всички E RIDE PRO модели в България: Mini R, SR, SS 2.5 и SS 3.0 — офроуд и пътно легални (L1e) електрически мотокроси с 2 години гаранция.'
-      : 'All E RIDE PRO models in Bulgaria: Mini R, SR, SS 2.5 and SS 3.0 — off-road and road-legal (L1e) electric dirt bikes with a 2-year warranty.',
+      ? 'Всички E RIDE PRO модели в България: SS 2.5, SS 3.0, SR и Mini — офроуд, L1e мопед и L3e лек мотоциклет, с 2 години гаранция.'
+      : 'All E RIDE PRO models in Bulgaria: SS 2.5, SS 3.0, SR and Mini — off-road, L1e moped and L3e light motorcycle, with a 2-year warranty.',
     path: '/models',
   })
 
@@ -31,8 +32,8 @@ export default function ModelsPage() {
             </h1>
             <p className="text-[15px] sm:text-[17px] text-[var(--text-secondary)] leading-[1.75] max-w-[600px] mt-6 sm:mt-8">
               {isBg
-                ? 'Сравни офроуд и L1e моделите по мощност, скорост и обхват. Всеки E RIDE PRO идва с локален сервиз, части и 2 години гаранция.'
-                : 'Compare off-road and L1e models by power, speed and range. Every E RIDE PRO comes with local service, parts and a 2-year warranty.'}
+                ? 'Три модела, всеки в три версии: офроуд, L1e мопед и L3e лек мотоциклет. Сравни ги по мощност, скорост и обхват — всеки идва с локален сервиз, части и 2 години гаранция.'
+                : 'Three models, each in three versions: off-road, L1e moped and L3e light motorcycle. Compare them by power, speed and range — every one comes with local service, parts and a 2-year warranty.'}
             </p>
             <a href="#models" className="btn-accent mt-7 sm:w-auto">
               {isBg ? 'Към моделите' : 'Browse the lineup'}
@@ -52,7 +53,7 @@ export default function ModelsPage() {
             />
             <div className="glass-panel absolute right-0 sm:right-3 bottom-0 rounded-2xl p-4 min-w-[150px]">
               <span className="block text-[9px] font-bold tracking-[0.15em] uppercase text-[var(--text-muted)]">{isBg ? 'Пълна гама' : 'Complete range'}</span>
-              <strong className="block text-[28px] font-extrabold tracking-[-0.05em] mt-1">7 <span className="text-[12px] tracking-normal text-[var(--text-secondary)]">{isBg ? 'модела' : 'models'}</span></strong>
+              <strong className="block text-[28px] font-extrabold tracking-[-0.05em] mt-1">{publishedProducts.length} <span className="text-[12px] tracking-normal text-[var(--text-secondary)]">{isBg ? 'модела' : 'models'}</span></strong>
             </div>
           </div>
         </div>

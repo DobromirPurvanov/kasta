@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
 import { useLang } from '../hooks/useLang'
-import { products } from '../data/products'
+import { publishedProducts } from '../data/products'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
@@ -171,7 +171,7 @@ export default function ContactForm() {
           <label className={labelClass} htmlFor={`${uid}-model`}>{t.model}</label>
           <select id={`${uid}-model`} name="model" defaultValue="" className={fieldClass}>
             <option value="">{t.modelAny}</option>
-            {products.map((product) => (
+            {publishedProducts.map((product) => (
               <option key={product.slug} value={product.name}>{product.name}</option>
             ))}
           </select>
