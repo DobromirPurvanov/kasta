@@ -33,4 +33,4 @@ git push origin main
 - `_redirects` - Netlify redirect rules
 - `assets/` - CSS and JS bundles
 - `images/` - All product images (compressed)
-- `videos/hero.mp4` - Hero background video
+- `videos/hero-eride-dust.mp4` + `videos/hero-eride-dust-portrait.mp4` - Hero background video (широк и телефонен кадър)

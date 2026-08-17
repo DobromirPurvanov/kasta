@@ -81,11 +81,18 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover scale-[1.015]"
-          poster="/images/kasta/hero-poster-sr-ride.jpg"
+          poster="/images/kasta/hero-poster-eride-dust.jpg"
           preload="metadata"
           tabIndex={-1}
         >
-          <source src="/videos/hero.mp4" type="video/mp4" media="(min-width: 640px)" />
+          {/* Официалният кадър на E RIDE PRO — истинският мотор, не рендер.
+              Широкият вариант е първи и с media, за да го хванат и браузърите,
+              които изобщо не четат media при <source> (иначе телефонният кадър
+              щеше да отиде на десктопа). Вторият е без media и затова служи и
+              като резерва — под 640px нямаше нито един съвпадащ източник и
+              видеото стоеше замръзнало на постера. */}
+          <source src="/videos/hero-eride-dust.mp4" type="video/mp4" media="(min-width: 640px)" />
+          <source src="/videos/hero-eride-dust-portrait.mp4" type="video/mp4" />
         </video>
         <div className="hero-overlay-side absolute inset-0" />
         <div className="hero-overlay-vertical absolute inset-0" />
