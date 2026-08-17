@@ -44,11 +44,18 @@ if [ ! -f "$SRC" ]; then
   curl -sL --fail -A "Mozilla/5.0" "$SRC_URL" -o "$SRC"
 fi
 
+# Кадърът е контражур и над него сайтът слага плат от 0.9 надолу — суровият клип
+# излизаше на екрана около 20 от 255, тоест почти черен. Затова сенките се вдигат
+# тук, а не с CSS филтър върху видеото (филтърът яде кадри на телефон).
+# Градацията се прилага върху 4K източника, преди смаляването: така смаляването
+# служи и за dithering и прахът не се разслоява на ленти.
+GRADE="curves=all='0/0.05 0.25/0.38 0.6/0.68 1/1',eq=saturation=1.06"
+
 # build <име> <crop филтър или ""> <ширина> <височина> <crf>
 build() {
   local name=$1 crop=$2 w=$3 h=$4 crf=$5
   # флаговете на scale са първи: в zsh „$h:flags" се тълкува като модификатор
-  local vf="${crop:+$crop,}scale=flags=lanczos:w=$w:h=$h"
+  local vf="$GRADE,${crop:+$crop,}scale=flags=lanczos:w=$w:h=$h"
 
   "$FFMPEG" -v error -y -ss 11.72 -t 2.50 -i "$SRC" -an -vf "$vf" \
       -c:v libx264 -crf 15 -preset medium -pix_fmt yuv420p "$OUT/$name-a.mp4"
@@ -64,18 +71,19 @@ build() {
 }
 
 # Широкият кадър — десктоп.
-build hero-eride-dust "" 1600 900 29
+build hero-eride-dust-v2 "" 1600 900 29
 # Портретният — телефон. Изрязваме 9:16 около ездача; x=1505 го държи в средата
 # през целия клип, а телефонният екран е още по-тесен и реже още по 9% от двете
 # страни, тоест центрирането не е излишно.
-build hero-eride-dust-portrait "crop=1215:2160:1505:0" 720 1280 32
+build hero-eride-dust-v2-portrait "crop=1215:2160:1505:0" 720 1280 32
 
-# Постерът е точно първият кадър на широкото видео.
+# Постерът е точно първият кадър на широкото видео — значи минава през същата
+# градация. Без нея постерът е тъмен, видеото светло и смяната се вижда.
 "$FFMPEG" -v error -y -ss 11.72 -i "$SRC" -frames:v 1 \
-    -vf "scale=flags=lanczos:w=1600:h=900" -q:v 3 "$OUT/hero-poster-eride-dust.jpg"
-printf "%-30s %6s KB\n" "hero-poster-eride-dust.jpg" "$(( $(stat -f%z "$OUT/hero-poster-eride-dust.jpg") / 1024 ))"
+    -vf "$GRADE,scale=flags=lanczos:w=1600:h=900" -q:v 3 "$OUT/hero-poster-eride-dust-v2.jpg"
+printf "%-30s %6s KB\n" "hero-poster-eride-dust-v2.jpg" "$(( $(stat -f%z "$OUT/hero-poster-eride-dust-v2.jpg") / 1024 ))"
 
 echo
 echo "Готово в $OUT. Копирането е ръчно, за да не се презапише живото видео случайно:"
 echo "  cp $OUT/*.mp4 public/videos/"
-echo "  cp $OUT/hero-poster-eride-dust.jpg public/images/kasta/"
+echo "  cp $OUT/hero-poster-eride-dust-v2.jpg public/images/kasta/"

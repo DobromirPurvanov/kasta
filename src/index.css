@@ -250,20 +250,27 @@
       linear-gradient(145deg, var(--bg-elevated), var(--bg-deep) 72%);
   }
 
+  /* Платът пази четимостта на текста, но държеше 0.88 още в средата на екрана —
+     а текстът свършва много преди това. Затова плътното остава там, където е
+     текстът (до ~36%), а надясно пада бързо, за да се вижда моторът. */
   .hero-overlay-side {
     background: linear-gradient(
       90deg,
-      rgb(var(--bg-rgb) / 0.98) 0%,
-      rgb(var(--bg-rgb) / 0.88) 46%,
-      rgb(var(--bg-rgb) / 0.48) 100%
+      rgb(var(--bg-rgb) / 0.95) 0%,
+      rgb(var(--bg-rgb) / 0.9) 36%,
+      rgb(var(--bg-rgb) / 0.55) 68%,
+      rgb(var(--bg-rgb) / 0.24) 100%
     );
   }
 
   .hero-overlay-vertical {
     background: linear-gradient(
       180deg,
-      rgb(var(--bg-rgb) / 0.82) 0%,
-      transparent 30%,
+      rgb(var(--bg-rgb) / 0.78) 0%,
+      transparent 32%,
+      transparent 52%,
+      /* Долу стои 0.9: там са дребните етикети на лентата с данни и точно те
+         са най-близо до долната граница за контраст. */
       rgb(var(--bg-rgb) / 0.9) 100%
     );
   }

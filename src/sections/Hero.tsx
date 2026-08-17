@@ -81,7 +81,7 @@ export default function Hero() {
           loop
           playsInline
           className="w-full h-full object-cover scale-[1.015]"
-          poster="/images/kasta/hero-poster-eride-dust.jpg"
+          poster="/images/kasta/hero-poster-eride-dust-v2.jpg"
           preload="metadata"
           tabIndex={-1}
         >
@@ -91,8 +91,8 @@ export default function Hero() {
               щеше да отиде на десктопа). Вторият е без media и затова служи и
               като резерва — под 640px нямаше нито един съвпадащ източник и
               видеото стоеше замръзнало на постера. */}
-          <source src="/videos/hero-eride-dust.mp4" type="video/mp4" media="(min-width: 640px)" />
-          <source src="/videos/hero-eride-dust-portrait.mp4" type="video/mp4" />
+          <source src="/videos/hero-eride-dust-v2.mp4" type="video/mp4" media="(min-width: 640px)" />
+          <source src="/videos/hero-eride-dust-v2-portrait.mp4" type="video/mp4" />
         </video>
         <div className="hero-overlay-side absolute inset-0" />
         <div className="hero-overlay-vertical absolute inset-0" />
