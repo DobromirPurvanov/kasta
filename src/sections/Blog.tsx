@@ -2,75 +2,14 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useLang } from '../hooks/useLang'
+import posts from '../data/blog-posts.json'
 
 gsap.registerPlugin(ScrollTrigger)
-
-interface BlogPost {
-  title: string
-  excerpt: string
-  tag: string
-}
-
-const postsByLang: Record<string, BlogPost[]> = {
-  bg: [
-    {
-      title: 'Електрически мото крос цена България',
-      excerpt:
-        'Колко струва електрически мото крос в България? Разгледайте цените на E RIDE PRO моделите — от €3,960 за Mini R до €7,499 за SR.',
-      tag: 'Цени',
-    },
-    {
-      title: 'E RIDE PRO ревю — реален тест',
-      excerpt:
-        'Пълно ревю на E RIDE PRO електрическите мото крос модели. Производителност, обхват, зареждане и реални впечатления от тестово каране.',
-      tag: 'Ревю',
-    },
-    {
-      title: 'Предимства на електрическите мото крос',
-      excerpt:
-        'Нулеви емисии, мигновен въртящ момент, безшумна работа и минимална поддръжка — защо електрическият мото крос е бъдещето.',
-      tag: 'Съвети',
-    },
-    {
-      title: 'Как да избереш електрически мото крос',
-      excerpt:
-        'Ръководство за избор на правилния електрически мото крос — разлики между моделите, лицензи и за кого е подходящ всеки модел.',
-      tag: 'Ръководство',
-    },
-  ],
-  en: [
-    {
-      title: 'Electric Dirt Bike Price Bulgaria',
-      excerpt:
-        'How much does an electric dirt bike cost in Bulgaria? Check out E RIDE PRO model prices — from €3,960 for Mini R to €7,499 for SR.',
-      tag: 'Prices',
-    },
-    {
-      title: 'E RIDE PRO Review — Real Test',
-      excerpt:
-        'Full review of E RIDE PRO electric dirt bike models. Performance, range, charging and real riding impressions from our test ride.',
-      tag: 'Review',
-    },
-    {
-      title: 'Advantages of Electric Dirt Bikes',
-      excerpt:
-        'Zero emissions, instant torque, silent operation and minimal maintenance — why electric dirt bikes are the future of off-road riding.',
-      tag: 'Tips',
-    },
-    {
-      title: 'How to Choose an Electric Dirt Bike',
-      excerpt:
-        'Guide to choosing the right electric dirt bike — differences between models, licenses and who each model is suitable for.',
-      tag: 'Guide',
-    },
-  ],
-}
 
 export default function Blog() {
   const { lang, t } = useLang()
   const sectionRef = useRef<HTMLElement>(null)
   const isBg = lang === 'bg'
-  const posts = postsByLang[isBg ? 'bg' : 'en']
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   useEffect(() => {
@@ -92,6 +31,8 @@ export default function Blog() {
     return () => ctx.revert()
   }, [prefersReducedMotion])
 
+  if (posts.length === 0) return null
+
   return (
     <section
       ref={sectionRef}
@@ -109,14 +50,18 @@ export default function Blog() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           {posts.map((post, index) => (
-            <article
-              key={index}
-              className="blog-item surface-card min-h-[220px] p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col"
+            /* Статиите са статичен HTML в /public/blog, затова е <a>, а не Link:
+               React Router щеше да ги хване от страна на браузъра и да върне
+               SPA-то вместо готовата страница. */
+            <a
+              key={post.slug}
+              href={`/blog/${post.slug}/`}
+              className="blog-item surface-card card-hover min-h-[220px] p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col"
               style={{ opacity: prefersReducedMotion ? 1 : 0 }}
             >
               <div className="flex items-center justify-between gap-4 mb-8">
                 <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[rgb(var(--accent-rgb)/0.1)] border border-[rgb(var(--accent-rgb)/0.15)] text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
-                  {post.tag}
+                  {new Date(post.date).toLocaleDateString(isBg ? 'bg-BG' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </span>
                 <span className="text-[11px] font-semibold tracking-[0.12em] text-fg/45" aria-hidden="true">
                   0{index + 1}
@@ -128,12 +73,20 @@ export default function Blog() {
               <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed mb-6">
                 {post.excerpt}
               </p>
-              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
-                {t('coming_soon')}
+              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--accent-text)]">
+                {isBg ? 'Прочети' : 'Read'} →
               </span>
-            </article>
+            </a>
           ))}
         </div>
+
+        {posts.length > 1 && (
+          <div className="mt-8">
+            <a href="/blog/" className="btn-outline">
+              {isBg ? 'Всички статии' : 'All articles'}
+            </a>
+          </div>
+        )}
       </div>
     </section>
   )

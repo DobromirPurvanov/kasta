@@ -40,9 +40,20 @@ if (slugs.length === 0) {
 
 const lastmod = new Date().toISOString().slice(0, 10)
 
+// Статиите идват от gen-blog.mjs (върви преди този скрипт) — в картата влизат
+// само вече публикуваните, не и тези, които чакат датата си.
+let posts = []
+try {
+  posts = JSON.parse(readFileSync(join(root, 'src/data/blog-posts.json'), 'utf8'))
+} catch {
+  posts = []
+}
+
 const urls = [
   ...staticRoutes,
+  ...(posts.length ? [{ path: '/blog/', priority: '0.7', changefreq: 'weekly' }] : []),
   ...slugs.map((slug) => ({ path: `/product/${slug}`, priority: '0.8', changefreq: 'monthly' })),
+  ...posts.map((post) => ({ path: `/blog/${post.slug}/`, priority: '0.6', changefreq: 'monthly' })),
 ]
 
 const body = urls

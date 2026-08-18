@@ -35,3 +35,6 @@ pnpm-debug.log*
 
 # Кеш на скриптовете (изходният филм за хиро видеото)
 .cache/
+
+# Генерира се от scripts/gen-blog.mjs при всеки билд
+public/blog/

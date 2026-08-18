@@ -1,0 +1,34 @@
+# Пуска деплой всеки понеделник, за да излязат статиите, чиято дата е дошла.
+#
+# Билдът вика `scripts/gen-blog.mjs`, който публикува само статиите с
+# `date` <= днес. Без този седмичен тласък бъдещите статии стоят в репото и
+# чакат следващия ръчен деплой.
+#
+# Иска еднократна настройка:
+#   1. Cloudflare Pages → проект `kasta` → Settings → Builds & deployments →
+#      Deploy hooks → създаваш hook за branch `main` и копираш адреса.
+#   2. GitHub → repo → Settings → Secrets and variables → Actions →
+#      New repository secret с име CF_PAGES_DEPLOY_HOOK и стойност адреса.
+#
+# Може да се пусне и на ръка от раздела Actions (workflow_dispatch).
+
+name: Седмичен деплой (публикува статиите по график)
+
+on:
+  schedule:
+    # 06:10 UTC всеки понеделник. Статиите са с дата неделя, тоест излизат
+    # най-късно на следващата сутрин.
+    - cron: '10 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Тласък към Cloudflare Pages
+        run: |
+          if [ -z "${{ secrets.CF_PAGES_DEPLOY_HOOK }}" ]; then
+            echo "Липсва secret CF_PAGES_DEPLOY_HOOK — виж коментара най-горе."
+            exit 1
+          fi
+          curl -sS -X POST "${{ secrets.CF_PAGES_DEPLOY_HOOK }}" -w '\nHTTP %{http_code}\n'
