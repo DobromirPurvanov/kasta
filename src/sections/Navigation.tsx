@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router'
 import SectionLink from '../components/SectionLink'
 import { useLang } from '../hooks/useLang'
 import { useTheme } from '../hooks/useTheme'
+import posts from '../data/blog-posts.json'
 
 const anchorLinkClass =
   'min-h-11 inline-flex items-center text-[12px] font-medium tracking-[0.12em] uppercase transition-colors text-[var(--text-secondary)] hover:text-fg focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] rounded-sm'
@@ -48,6 +49,10 @@ function ThemeToggle({ onToggle, isDark, label }: { onToggle: () => void; isDark
     </button>
   )
 }
+
+// Блогът се показва в менюто само когато има поне една публикувана статия —
+// иначе /blog/ още не съществува като файл.
+const hasPosts = posts.length > 0
 
 export default function Navigation() {
   const { lang, setLang, t } = useLang()
@@ -152,6 +157,13 @@ export default function Navigation() {
             >
               {t('nav_models')}
             </NavLink>
+            {hasPosts && (
+              /* Блогът е статичен HTML в /blog, не React маршрут — затова <a>.
+                 С <Link> рутерът щеше да го поеме и да върне SPA-то. */
+              <a href="/blog/" className={anchorLinkClass}>
+                {t('nav_blog')}
+              </a>
+            )}
             <SectionLink section="contact" className={anchorLinkClass}>
               {t('nav_contact')}
             </SectionLink>
@@ -250,7 +262,8 @@ export default function Navigation() {
             {[
               { key: 'about', section: 'about', number: '01', label: t('nav_about'), active: false },
               { key: 'models', to: '/models', number: '02', label: t('nav_models'), active: isModelsPage },
-              { key: 'contact', section: 'contact', number: '03', label: t('nav_contact'), active: false },
+              ...(hasPosts ? [{ key: 'blog', href: '/blog/', number: '03', label: t('nav_blog'), active: false }] : []),
+              { key: 'contact', section: 'contact', number: hasPosts ? '04' : '03', label: t('nav_contact'), active: false },
             ].map((item) => {
               const rowClass = 'group min-h-[76px] flex w-full items-center gap-4 border-b border-fg/10 text-left'
               const body = (
@@ -262,6 +275,14 @@ export default function Navigation() {
                   <svg className="ml-auto text-[var(--text-muted)] group-hover:text-fg transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </>
               )
+
+              if (item.href) {
+                return (
+                  <a key={item.key} href={item.href} className={rowClass}>
+                    {body}
+                  </a>
+                )
+              }
 
               return item.section ? (
                 <SectionLink key={item.key} section={item.section} onNavigate={() => setMobileOpen(false)} className={rowClass}>

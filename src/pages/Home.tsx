@@ -2,6 +2,7 @@ import Hero from '../sections/Hero'
 import TrustBar from '../sections/TrustBar'
 import About from '../sections/About'
 import Models from '../sections/Models'
+import Blog from '../sections/Blog'
 import Contact from '../sections/Contact'
 import { useLang } from '../hooks/useLang'
 import { usePageMeta } from '../hooks/usePageMeta'
@@ -25,6 +26,7 @@ export default function Home() {
       <Hero />
       <TrustBar />
       <Models />
+      <Blog />
       <About />
       <Contact />
     </>

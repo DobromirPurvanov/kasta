@@ -2,10 +2,19 @@ import type { ReactNode } from 'react'
 import { useLang } from '../hooks/useLang'
 import { Link } from 'react-router'
 import SectionLink from '../components/SectionLink'
+import blogPosts from '../data/blog-posts.json'
 
 const footerLinkClass = 'min-h-11 inline-flex items-center text-[14px] text-[var(--text-secondary)] hover:text-fg transition-colors rounded-sm'
 
-function NavItem({ to, section, children }: { to?: string; section?: string; children: ReactNode }) {
+function NavItem({ to, section, href, children }: { to?: string; section?: string; href?: string; children: ReactNode }) {
+  // Блогът е статичен HTML, не маршрут на приложението.
+  if (href) {
+    return (
+      <a href={href} className={footerLinkClass}>
+        {children}
+      </a>
+    )
+  }
   // Секциите минават през SectionLink, за да не се пълни адресът с „#“.
   if (section) {
     return (
@@ -49,6 +58,7 @@ export default function Footer() {
               <NavItem to="/">{isBg ? 'Начало' : 'Home'}</NavItem>
               <NavItem to="/models">{t('nav_models')}</NavItem>
               <NavItem section="about">{t('nav_about')}</NavItem>
+              {blogPosts.length > 0 && <NavItem href="/blog/">{t('nav_blog')}</NavItem>}
               <NavItem section="contact">{t('nav_contact')}</NavItem>
             </nav>
           </div>

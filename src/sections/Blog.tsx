@@ -33,6 +33,11 @@ export default function Blog() {
 
   if (posts.length === 0) return null
 
+  const [featured, ...others] = posts
+  const rest = others.slice(0, 3)
+  const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(isBg ? 'bg-BG' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+
   return (
     <section
       ref={sectionRef}
@@ -48,45 +53,70 @@ export default function Blog() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-          {posts.map((post, index) => (
-            /* Статиите са статичен HTML в /public/blog, затова е <a>, а не Link:
-               React Router щеше да ги хване от страна на браузъра и да върне
-               SPA-то вместо готовата страница. */
-            <a
-              key={post.slug}
-              href={`/blog/${post.slug}/`}
-              className="blog-item surface-card card-hover min-h-[220px] p-5 sm:p-7 rounded-2xl sm:rounded-3xl flex flex-col"
-              style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            >
-              <div className="flex items-center justify-between gap-4 mb-8">
+        {/* Първата статия е витрината — тя е и най-новата. Останалите вървят
+            по-дребно отдолу, за да не изглежда секцията празна с една статия. */}
+        <a
+          href={`/blog/${featured.slug}/`}
+          className="blog-item surface-card card-hover group relative block overflow-hidden rounded-2xl sm:rounded-3xl p-6 sm:p-9 lg:p-11"
+          style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+        >
+          <div
+            className="absolute -right-24 -top-24 w-[26rem] h-[26rem] rounded-full opacity-60 blur-3xl transition-opacity duration-500 group-hover:opacity-90"
+            style={{ background: 'radial-gradient(circle, rgb(var(--accent-rgb) / 0.16), transparent 68%)' }}
+            aria-hidden="true"
+          />
+          <div className="relative flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-12">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-3 mb-5">
                 <span className="inline-flex items-center min-h-8 px-3 rounded-full bg-[rgb(var(--accent-rgb)/0.1)] border border-[rgb(var(--accent-rgb)/0.15)] text-[var(--accent-text)] text-[10px] font-bold tracking-wider uppercase">
-                  {new Date(post.date).toLocaleDateString(isBg ? 'bg-BG' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {isBg ? 'Нова статия' : 'New article'}
                 </span>
-                <span className="text-[11px] font-semibold tracking-[0.12em] text-fg/45" aria-hidden="true">
-                  0{index + 1}
-                </span>
+                <time dateTime={featured.date} className="text-[11px] font-semibold tracking-[0.12em] text-[var(--text-muted)] uppercase">
+                  {formatDate(featured.date)}
+                </time>
               </div>
-              <h3 className="text-[19px] sm:text-[21px] leading-snug font-semibold text-fg mb-3">
-                {post.title}
+              <h3 className="text-[22px] sm:text-[28px] lg:text-[34px] leading-[1.15] font-semibold tracking-[-0.03em] text-fg max-w-[22ch]">
+                {featured.title}
               </h3>
-              <p className="text-[14px] text-[var(--text-secondary)] leading-relaxed mb-6">
-                {post.excerpt}
+              <p className="mt-4 max-w-[62ch] text-[14px] sm:text-[15px] leading-relaxed text-[var(--text-secondary)]">
+                {featured.excerpt}
               </p>
-              <span className="mt-auto text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--accent-text)]">
-                {isBg ? 'Прочети' : 'Read'} →
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-[var(--accent-text)]">
+              {isBg ? 'Прочети' : 'Read'}
+              <span className="w-10 h-10 rounded-full bg-[var(--accent)] text-[var(--accent-ink)] flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
               </span>
-            </a>
-          ))}
-        </div>
+            </span>
+          </div>
+        </a>
 
-        {posts.length > 1 && (
-          <div className="mt-8">
-            <a href="/blog/" className="btn-outline">
-              {isBg ? 'Всички статии' : 'All articles'}
-            </a>
+        {rest.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mt-3 sm:mt-4">
+            {rest.map((post) => (
+              <a
+                key={post.slug}
+                href={`/blog/${post.slug}/`}
+                className="blog-item surface-card card-hover min-h-[190px] p-5 sm:p-6 rounded-2xl flex flex-col"
+                style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+              >
+                <time dateTime={post.date} className="text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--text-muted)]">
+                  {formatDate(post.date)}
+                </time>
+                <h3 className="mt-3 text-[17px] leading-snug font-semibold text-fg">{post.title}</h3>
+                <span className="mt-auto pt-5 text-[10px] font-bold tracking-[0.14em] uppercase text-[var(--accent-text)]">
+                  {isBg ? 'Прочети' : 'Read'} →
+                </span>
+              </a>
+            ))}
           </div>
         )}
+
+        <div className="mt-8">
+          <a href="/blog/" className="btn-outline sm:w-auto">
+            {isBg ? 'Всички статии' : 'All articles'}
+          </a>
+        </div>
       </div>
     </section>
   )
