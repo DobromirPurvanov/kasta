@@ -5,12 +5,16 @@
  * протоколът е изписан на ръка отдолу. Свързваме се с ИМПЛИЦИТЕН TLS (порт 465),
  * а не със STARTTLS: така се спестява договарянето, което е най-крехката част.
  *
- * Тайните се задават в Cloudflare (Settings → Variables and secrets), НЕ в кода:
- *   SMTP_HOST  напр. mail.kastaventures.com
- *   SMTP_PORT  465
- *   SMTP_USER  пълният имейл адрес, от който се праща
- *   SMTP_PASS  паролата на кутията          ← Secret, не Text
- *   MAIL_TO    къде да пристигат запитванията (по подразбиране office@…)
+ * Единственото, което ЗАДЪЛЖИТЕЛНО се задава в Cloudflare
+ * (Settings → Variables and secrets), е паролата:
+ *   SMTP_PASS  паролата на кутията          ← Secret, НЕ Text
+ *
+ * Останалото има работещи стойности по подразбиране и се пипа само ако нещо се
+ * промени — сървърът, кутията или адресът за запитвания:
+ *   SMTP_HOST  по подразбиране mail.kastaventures.com
+ *   SMTP_PORT  по подразбиране 465 (имплицитен TLS)
+ *   SMTP_USER  по подразбиране sales@kastaventures.com — оттам се праща
+ *   MAIL_TO    по подразбиране sales@kastaventures.com — там пристигат
  */
 
 import { connect } from 'cloudflare:sockets'
@@ -114,10 +118,21 @@ class SmtpSession {
   }
 }
 
+/** Стойности по подразбиране: липсва само паролата, тя е тайна. */
+const DEFAULTS = {
+  host: 'mail.kastaventures.com',
+  port: '465',
+  user: 'sales@kastaventures.com',
+  to: 'sales@kastaventures.com',
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = env
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
-    console.error('contact: липсват SMTP тайни')
+  const SMTP_HOST = env.SMTP_HOST || DEFAULTS.host
+  const SMTP_PORT = env.SMTP_PORT || DEFAULTS.port
+  const SMTP_USER = env.SMTP_USER || DEFAULTS.user
+  const SMTP_PASS = env.SMTP_PASS
+  if (!SMTP_PASS) {
+    console.error('contact: липсва SMTP_PASS — формата не може да праща')
     return json({ error: 'not_configured' }, 503)
   }
 
@@ -141,7 +156,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!name || !email || !message) return json({ error: 'missing_fields' }, 400)
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return json({ error: 'bad_email' }, 400)
 
-  const to = env.MAIL_TO || 'office@kastaventures.com'
+  const to = env.MAIL_TO || DEFAULTS.to
   const isBg = payload.lang !== 'en'
   const subject = encodeHeader(
     isBg ? `Запитване от сайта — ${name}` : `Website enquiry — ${name}`
