@@ -1,34 +1,50 @@
-# Пуска деплой всеки понеделник, за да излязат статиите, чиято дата е дошла.
+# Публикува статиите, чиято дата е дошла.
 #
-# Билдът вика `scripts/gen-blog.mjs`, който публикува само статиите с
-# `date` <= днес. Без този седмичен тласък бъдещите статии стоят в репото и
-# чакат следващия ръчен деплой.
+# `scripts/gen-blog.mjs` пуска в `src/data/blog-posts.json` само статиите с
+# `date` <= днес. Този workflow го изпълнява всеки понеделник и ако файлът се е
+# променил — значи има нова статия — комитва и бута. Push-ът вдига автоматичния
+# деплой на Cloudflare Pages и статията излиза.
 #
-# Иска еднократна настройка:
-#   1. Cloudflare Pages → проект `kasta` → Settings → Builds & deployments →
-#      Deploy hooks → създаваш hook за branch `main` и копираш адреса.
-#   2. GitHub → repo → Settings → Secrets and variables → Actions →
-#      New repository secret с име CF_PAGES_DEPLOY_HOOK и стойност адреса.
-#
-# Може да се пусне и на ръка от раздела Actions (workflow_dispatch).
+# Нарочно НЕ ползва deploy hook и никакви тайни: `GITHUB_TOKEN` е вграден в
+# Actions, тоест нищо не се настройва на ръка. Ако няма нова статия, workflow-ът
+# не прави комит и не вдига деплой.
 
-name: Седмичен деплой (публикува статиите по график)
+name: Седмична публикация на блога
 
 on:
   schedule:
-    # 06:10 UTC всеки понеделник. Статиите са с дата неделя, тоест излизат
+    # 06:10 UTC всеки понеделник. Статиите носят дата неделя, тоест излизат
     # най-късно на следващата сутрин.
     - cron: '10 6 * * 1'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Тласък към Cloudflare Pages
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Преизчислява кои статии са публикувани
+        run: node scripts/gen-blog.mjs
+
+      - name: Комитва, само ако е излязла нова статия
         run: |
-          if [ -z "${{ secrets.CF_PAGES_DEPLOY_HOOK }}" ]; then
-            echo "Липсва secret CF_PAGES_DEPLOY_HOOK — виж коментара най-горе."
-            exit 1
+          if git diff --quiet -- src/data/blog-posts.json; then
+            echo "Няма статия с настъпила дата — нищо за публикуване."
+            exit 0
           fi
-          curl -sS -X POST "${{ secrets.CF_PAGES_DEPLOY_HOOK }}" -w '\nHTTP %{http_code}\n'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/blog-posts.json
+          git commit -m "Излиза следващата статия по график"
+          git push
